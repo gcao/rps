@@ -1,10 +1,13 @@
 import jQuery from 'jquery';
+import key from 'keymaster';
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 
 import {
   ROCK, PAPER, SCISSORS,
-  findWinningMoveAgainst, computeResult, showRound,
+  findWinningMoveAgainst,
+  computeResult,
+  showRound,
   toPercentage,
 } from '../rps';
 import GameState  from '../rps/GameState';
@@ -12,6 +15,14 @@ import { ComputerPlayerProxy, DefaultComputerPlayer } from '../rps/computer-play
 
 @observer
 class ComputerPlayerUI extends Component {
+  constructor(props) {
+    super(props);
+
+    key('f, j', () => this.flag(ROCK));
+    key('d, k', () => this.flag(PAPER));
+    key('s, l', () => this.flag(SCISSORS));
+  }
+
   flag(move) {
     var computerPlayer = new ComputerPlayerProxy(DefaultComputerPlayer);
     var gameState = new GameState();
@@ -45,24 +56,23 @@ class ComputerPlayerUI extends Component {
   }
 
   render() {
-    console.log('ComputerPlayerUI');
     return (
       <div>
         <h1>Train the AI player</h1>
         <div className='ready'>
           <div className="rock action-container">
             <span className="before-training"></span><br/>
-            <button id='rock' onClick={this.flag(ROCK)}>Rock (F/J)</button><br/>
+            <button id='rock' onClick={() => this.flag(ROCK)}>Rock (F/J)</button><br/>
             <span className="after-training"></span>
           </div>
           <div className="paper action-container">
             <span className="before-training"></span><br/>
-            <button id='paper' onClick={this.flag(PAPER)}>Paper (D/K)</button><br/>
+            <button id='paper' onClick={() => this.flag(PAPER)}>Paper (D/K)</button><br/>
             <span className="after-training"></span>
           </div>
           <div className="scissors action-container">
             <span className="before-training"></span><br/>
-            <button id='scissors' onClick={this.flag(SCISSORS)}>Scissors (S/L)</button><br/>
+            <button id='scissors' onClick={() => this.flag(SCISSORS)}>Scissors (S/L)</button><br/>
             <span className="after-training"></span>
           </div>
         </div>
