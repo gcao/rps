@@ -1,7 +1,9 @@
-import jQuery from 'jquery';
+//import jQuery from 'jquery';
 import key from 'keymaster';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import { rootReducers } from '../../reducers'
 
 import {
   ROCK, PAPER, SCISSORS,
@@ -9,13 +11,17 @@ import {
   computeResult,
   //showRound,
   toPercentage,
-} from '../rps';
-import GameState  from '../rps/GameState';
-import { ComputerPlayerProxy, DefaultComputerPlayer } from '../rps/computer-player';
+} from '../../rps';
+import GameState  from '../../rps/GameState';
+import { ComputerPlayerProxy, DefaultComputerPlayer } from '../../rps/computer-player';
 
-class ComputerPlayerUI extends Component {
+import reducers from './reducers'
+
+class ComputerPlayerComponent extends Component {
   constructor(props) {
     super(props);
+
+    rootReducers.add(reducers)
 
     this.computerPlayer = new ComputerPlayerProxy(DefaultComputerPlayer);
     this.gameState = new GameState();
@@ -156,5 +162,5 @@ class ComputerPlayerUI extends Component {
   }
 };
 
-export default connect()(ComputerPlayerUI);
+export default connect()(ComputerPlayerComponent);
 

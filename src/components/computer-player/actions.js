@@ -1,8 +1,8 @@
-export const PLAY = 'PLAY'
+const PLAY = 'PLAY'
 
 export function play(move) {
   return {
     type: PLAY,
-    move,
+    move
   }
 }
