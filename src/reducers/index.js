@@ -1,14 +1,8 @@
-import {
-  PLAY
-} from '../actions'
+import ReducerGroup from './ReducerGroup'
 
-export default function reducers(state, action) {
-  switch (action.type) {
-  case PLAY:
-    return Object.assign({}, state, {
-    })
-  default:
-    return state
-  }
+export { ReducerGroup }
+export const defaultReducers = new ReducerGroup
+
+export default function(state, action) {
+  return defaultReducers.handle(state, action)
 }
-

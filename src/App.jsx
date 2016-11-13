@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ComputerPlayerUI from './components/ComputerPlayerUI';
+import ComputerPlayer from './components/computer-player';
 
 import './App.less';
 
@@ -8,7 +8,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <ComputerPlayerUI/>
+        <ComputerPlayer/>
       </div>
     );
   }
