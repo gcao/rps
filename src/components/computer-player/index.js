@@ -26,8 +26,6 @@ class ComputerPlayerComponent extends Component {
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
     key('s, l', () => this.play(SCISSORS))
-
-    this.gameState = new GameState(this.props.rounds)
   }
 
   play(move) {
@@ -41,40 +39,39 @@ class ComputerPlayerComponent extends Component {
   }
 
   render() {
+    var gameState = new GameState(this.props.rounds)
     var reversedRounds = this.props.rounds.slice().reverse()
+    var before = this.props.prediction && this.props.prediction.before
+    var after  = this.props.prediction && this.props.prediction.after
 
     return (
       <div>
         <h1>Train the AI player</h1>
-        <div className='ready'>
-          <div className="rock action-container">
-            {
-              this.before && this.before.prediction &&
-              <span className="before-training">
-                {this.before.prediction.w[0].toFixed(4)}
-                <br/>
-              </span>
-            }
-            <button id='rock' onClick={() => this.play(ROCK)}>Rock (F/J)</button>
-            {
-              this.before && this.before.prediction &&
-              <span className="after-training">
-                {this.after.prediction.w[0].toFixed(4)}
-                <br/>
-                <br/>
-              </span>
-            }
-          </div>
-          <div className="paper action-container">
-            <span className="before-training"></span><br/>
-            <button id='paper' onClick={() => this.play(PAPER)}>Paper (D/K)</button><br/>
-            <span className="after-training"></span>
-          </div>
-          <div className="scissors action-container">
-            <span className="before-training"></span><br/>
-            <button id='scissors' onClick={() => this.play(SCISSORS)}>Scissors (S/L)</button><br/>
-            <span className="after-training"></span>
-          </div>
+        <div>
+          {
+            [
+              { name: 'rock',     label: 'Rock (F/J)',     move: ROCK },
+              { name: 'paper',    label: 'Paper (D/K)',    move: PAPER },
+              { name: 'scissors', label: 'Scissors (S/L)', move: SCISSORS },
+            ].map((item, index) =>
+              <div key={index} className={`${item.name} action-container`}>
+                { before && before.prediction &&
+                  <span className="before-training">
+                    {before.prediction.w[index].toFixed(4)}
+                    <br/>
+                  </span>
+                }
+                <button onClick={() => this.play(item.move)}>{item.label}</button>
+                { before && before.prediction &&
+                  <span className="after-training">
+                    {after.prediction.w[index].toFixed(4)}
+                    <br/>
+                    <br/>
+                  </span>
+                }
+              </div>
+            )
+          }
         </div>
         <div className='stats'>
           <h3>
@@ -82,18 +79,18 @@ class ComputerPlayerComponent extends Component {
           </h3>
           <div className="all">
             Player 1 (Human) winning rate:
-            <span id="player1-winning">{toPercentage(this.gameState.getPlayer1WinningRate())}</span>
+            <span id="player1-winning">{toPercentage(gameState.getPlayer1WinningRate())}</span>
           </div>
           { this.props.rounds.length >= 10 &&
             <div className="recent-10">
               Player 1 Winning rate (last 10 rounds):
-              <span id="player1-winning-10">{toPercentage(this.gameState.getPlayer1WinningRate(10))}</span>
+              <span id="player1-winning-10">{toPercentage(gameState.getPlayer1WinningRate(10))}</span>
             </div>
           }
         </div>
         <div className='results'>
           {
-            reversedRounds.forEach(function(item) {
+            reversedRounds.map(function(item) {
               var player1Class = `player1 ${translateMove(player1Move)}`
               var player2Class = `player2 ${translateMove(player2Move)}`
               var resultClass = 'round '

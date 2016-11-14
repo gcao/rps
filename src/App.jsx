@@ -8,7 +8,10 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <ComputerPlayer rounds={this.props.state.rounds}/>
+        <ComputerPlayer
+          rounds={this.props.state.rounds}
+          prediction={this.props.state.prediction}
+        />
       </div>
     )
   }
