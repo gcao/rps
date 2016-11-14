@@ -1,5 +1,7 @@
 import { ComputerPlayerProxy, DefaultComputerPlayer } from '../../rps/computer-player'
 
+import GameState  from '../../rps/GameState'
+
 import {
   INITIALIZE,
   PLAY,
@@ -10,23 +12,24 @@ export default function reducers(state, action) {
     case INITIALIZE:
       return Object.assign({}, state, {
         computerPlayer: new ComputerPlayerProxy(DefaultComputerPlayer),
-        rounds: [],
       })
     case PLAY:
-      //this.before = this.computerPlayer.predict(this.gameState)
+      var gameState = new GameState(state.rounds)
+      var before = state.computerPlayer.predict(gameState)
 
-      //var computerMove = this.before.winningMove
-      //var result = computeResult(move, computerMove)
+      state.computerPlayer.train(gameState, action.move)
+      var after = state.computerPlayer.predict(gameState)
 
-      //this.computerPlayer.train(this.gameState, move)
-      //this.after = this.computerPlayer.predict(this.gameState)
+      // Add current round to game state
+      var computerMove = before.winningMove
+      var rounds = state.rounds.slice()
+      rounds.push([action.move, computerMove])
 
-      //// Add current round to game state
-      //this.gameState.rounds.push([move, computerMove])
       return Object.assign({}, state, {
+        rounds: rounds,
         prediction: {
-          before: 'TODO',
-          after:  'TODO'
+          before: before,
+          after:  after
         }
       })
     default:

@@ -1,13 +1,7 @@
-import jQuery from 'jquery'
-
 export var ROCK     = 0
 export var PAPER    = 1
 export var SCISSORS = 2
 export var UNKNOWN  = 3
-
-//var loadAndSave = window.location.toString().indexOf('loadAndSave') >= 0
-//var logNet      = window.location.toString().indexOf('logNet')      >= 0
-//var debugNet    = window.location.toString().indexOf('debugNet')    >= 0
 
 export function translate(name) {
   switch (name) {
@@ -65,25 +59,3 @@ export function findWinningMoveAgainst(move) {
   return (move + 1) % 3
 }
 
-export function showRound(player1Move, player2Move, result) {
-  var resultClass = ''
-  switch (result) {
-    case 0:
-      resultClass = 'draw'
-      break
-    case 1:
-      resultClass = 'player1'
-      break
-    case 2:
-      resultClass = 'player2'
-      break
-  }
-
-  jQuery('.results').prepend('<div class="round ' + resultClass + '" style="display:none;"><div class="player1 ' + translateMove(player1Move) + '"></div><div class="vs"></div><div class="player2 ' + translateMove(player2Move) + '"></div></div>')
-  jQuery('.results > :first-child').slideDown(600, 'swing')
-}
-
-export function toPercentage(val, digitsAfterDot) {
-  digitsAfterDot = digitsAfterDot || 2
-  return (val * 100).toFixed(digitsAfterDot) + '%'
-}

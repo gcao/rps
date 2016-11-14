@@ -4,23 +4,25 @@ import { connect } from 'react-redux'
 
 import { defaultReducers } from '../../reducers'
 
-import {
-  ROCK, PAPER, SCISSORS,
-  computeResult,
-  toPercentage,
-  translateMove,
-} from '../../rps'
+import './index.less'
+
+import { ROCK, PAPER, SCISSORS, computeResult, translateMove } from '../../rps'
 import GameState  from '../../rps/GameState'
 
 import reducers from './reducers'
 import { play, initialize } from './actions'
 export { initialize as initializeComputerPlayer }
 
+defaultReducers.add(reducers)
+
+function toPercentage(val, digitsAfterDot) {
+  digitsAfterDot = digitsAfterDot || 2
+  return (val * 100).toFixed(digitsAfterDot) + '%'
+}
+
 class ComputerPlayerComponent extends Component {
   constructor(props) {
     super(props)
-
-    defaultReducers.add(reducers)
 
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
@@ -89,7 +91,7 @@ class ComputerPlayerComponent extends Component {
         </div>
         <div className='results'>
           {
-            reversedRounds.map(function(item) {
+            reversedRounds.map(function(item, index) {
               var player1Move = item[0]
               var player2Move = item[1]
               var player1Class = `player1 ${translateMove(player1Move)}`
@@ -110,7 +112,7 @@ class ComputerPlayerComponent extends Component {
               }
 
               return (
-                <div className={resultClass}>
+                <div key={`${reversedRounds.length}-${index}`} className={resultClass}>
                   <div className={player1Class}></div>
                   <div className="vs"></div>
                   <div className={player2Class}></div>

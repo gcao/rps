@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import ComputerPlayer from './components/computer-player'
 
 import './App.less'
 
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
       <div>
@@ -17,3 +18,4 @@ export default class App extends Component {
   }
 }
 
+export default connect()(App)

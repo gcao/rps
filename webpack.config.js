@@ -37,7 +37,11 @@ module.exports = {
       {
         test: /\.less$/,
         loader: "style!css!less"
-      }
+      },
+      {
+        test: /\.png|jpg|gif$/,
+        loader: 'file?name=[path][name].[ext]&context=src'
+      },
     ]
   },
   eslint: {
