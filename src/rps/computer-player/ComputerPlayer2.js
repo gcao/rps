@@ -1,11 +1,12 @@
+/*global RL */
 export default function ComputerPlayer2() {
-  this.isReinforcementLearning = true;
+  this.isReinforcementLearning = true
 
-  var ROUNDS = 6;
-  var DEPTH = ROUNDS * 6;
+  var ROUNDS = 6
+  var DEPTH = ROUNDS * 6
 
   // create an environment object
-  var env = {};
+  var env = {}
   env.getNumStates = function() { return DEPTH; }
   env.getMaxNumActions = function() { return 3; }
 
@@ -20,40 +21,40 @@ export default function ComputerPlayer2() {
     learning_steps_per_iteration : 1,
     tderror_clamp                : 1.0,      // for robustness
     num_hidden_units             : 120,      // number of neurons in hidden layer
-  };
-  var agent = new RL.DQNAgent(env, spec);
+  }
+  var agent = new RL.DQNAgent(env, spec)
 
   function stateToInput(state) {
-    var data = new Array(DEPTH).fill(0);
-    var reversedRounds = state.rounds.slice().reverse();
+    var data = new Array(DEPTH).fill(0)
+    var reversedRounds = state.rounds.slice().reverse()
 
     for (var i=0; i<ROUNDS && i<reversedRounds.length; i++) {
-      var round = reversedRounds[i];
-      var move1 = round[0], move2 = round[1];
-      data[round * 6 + move1] = 1;
-      data[round * 6 + 3 + move2] = 1;
+      var round = reversedRounds[i]
+      var move1 = round[0], move2 = round[1]
+      data[round * 6 + move1] = 1
+      data[round * 6 + 3 + move2] = 1
     }
 
-    return data;
+    return data
   }
 
-  var myMove;
+  var myMove
 
   this.predict = function(state) {
     myMove = agent.act(stateToInput(state))
 
     return {
       myMove: myMove
-    };
+    }
   }
 
   this.train = function(state, move) {
-    var reward = -0.5;
+    var reward = -0.5
     if (myMove === (move + 1)%3) {
-      reward = 1;
+      reward = 1
     } else if (move === (myMove + 1)%3) {
-      reward = -1;
+      reward = -1
     }
-    agent.learn(reward);
+    agent.learn(reward)
   }
 }

@@ -1,20 +1,21 @@
+/*global convnetjs */
 import { findWinningMoveAgainst } from '..'
 
 export default function ComputerPlayer1(options) {
   var ROUNDS = 10
   var DEPTH = ROUNDS * 6
 
-  var layer_defs = []
+  var layerDefs = []
   // input layer (all volumes are 3D)
-  layer_defs.push({type:'input', out_sx:1, out_sy:1, out_depth:DEPTH})
+  layerDefs.push({type: 'input', out_sx: 1, out_sy: 1, out_depth: DEPTH})
   // some fully connected layers
-  layer_defs.push({type:'fc', num_neurons:720, activation:'sigmoid'})
-  //layer_defs.push({type:'fc', num_neurons:100, activation:'relu'})
+  layerDefs.push({type: 'fc', num_neurons: 720, activation: 'sigmoid'})
+  //layerDefs.push({type:'fc', num_neurons:100, activation:'relu'})
   // a softmax classifier predicting probabilities for three classes: 0,1,2
-  layer_defs.push({type:'softmax', num_classes:3})
+  layerDefs.push({type: 'softmax', num_classes: 3})
 
   this.net = new convnetjs.Net()
-  this.net.makeLayers(layer_defs)
+  this.net.makeLayers(layerDefs)
   this.trainer = new convnetjs.Trainer(this.net, {
     //method: 'adadelta',
     //batch_size: 1,
@@ -28,7 +29,8 @@ export default function ComputerPlayer1(options) {
 
     for (var i=0; i<ROUNDS && i<reversedRounds.length; i++) {
       var round = reversedRounds[i]
-      var move1 = round[0], move2 = round[1]
+      var move1 = round[0]
+      var move2 = round[1]
       data[round * 6 + move1] = 1
       data[round * 6 + 3 + move2] = 1
     }

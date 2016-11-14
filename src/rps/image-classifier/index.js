@@ -1,3 +1,4 @@
+/*global convnetjs */
 import ImageClassifier2 from './ImageClassifier2'
 
 function imageToVol(imageData) {

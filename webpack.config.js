@@ -21,6 +21,13 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.(js|jsx)$/,
+        loader: 'eslint',
+        include: path.join(__dirname, 'src')
+      }
+    ],
     loaders: [
       {
         test: /\.jsx?$/,
@@ -32,5 +39,8 @@ module.exports = {
         loader: "style!css!less"
       }
     ]
-  }
+  },
+  eslint: {
+    formatter: require('eslint-friendly-formatter')
+  },
 };

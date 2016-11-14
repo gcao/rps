@@ -1,3 +1,4 @@
+/*global convnetjs */
 export default function ImageClassifier1(options) {
   var layer_defs = []
   // input layer (all volumes are 3D)
