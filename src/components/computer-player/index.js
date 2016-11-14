@@ -1,7 +1,6 @@
-//import jQuery from 'jquery';
-import key from 'keymaster';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import key from 'keymaster'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import { defaultReducers } from '../../reducers'
 
@@ -9,77 +8,40 @@ import {
   ROCK, PAPER, SCISSORS,
   findWinningMoveAgainst,
   computeResult,
-  //showRound,
   toPercentage,
-} from '../../rps';
-import GameState  from '../../rps/GameState';
-import { ComputerPlayerProxy, DefaultComputerPlayer } from '../../rps/computer-player';
+} from '../../rps'
+import GameState  from '../../rps/GameState'
+import { ComputerPlayerProxy, DefaultComputerPlayer } from '../../rps/computer-player'
 
 import reducers from './reducers'
+import { play, initialize } from './actions'
+export { initialize as initializeComputerPlayer }
 
 class ComputerPlayerComponent extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     defaultReducers.add(reducers)
 
-    this.computerPlayer = new ComputerPlayerProxy(DefaultComputerPlayer);
-    this.gameState = new GameState();
+    key('f, j', () => this.play(ROCK))
+    key('d, k', () => this.play(PAPER))
+    key('s, l', () => this.play(SCISSORS))
 
-    key('f, j', () => this.flag(ROCK));
-    key('d, k', () => this.flag(PAPER));
-    key('s, l', () => this.flag(SCISSORS));
+    this.gameState = new GameState(this.props.rounds)
   }
 
-  //function showRound(player1Move, player2Move, result) {
-  //  var resultClass = '';
-  //  switch (result) {
-  //    case 0:
-  //      resultClass = 'draw';
-  //      break;
-  //    case 1:
-  //      resultClass = 'player1';
-  //      break;
-  //    case 2:
-  //      resultClass = 'player2';
-  //      break;
-  //  }
+  play(move) {
+    this.props.dispatch(play(move))
+  }
 
-  //  jQuery('.results').prepend('<div class="round ' + resultClass + '" style="display:none;"><div class="player1 ' + translateMove(player1Move) + '"></div><div class="vs"></div><div class="player2 ' + translateMove(player2Move) + '"></div></div>');
-  //  jQuery('.results > :first-child').slideDown(600, 'swing');
-  //}
-
-  flag(move) {
-    this.before = this.computerPlayer.predict(this.gameState);
-    //var w = this.before.prediction.w;
-    //jQuery('.rock     .before-training').text(w[0].toFixed(4));
-    //jQuery('.paper    .before-training').text(w[1].toFixed(4));
-    //jQuery('.scissors .before-training').text(w[2].toFixed(4));
-
-    var computerMove = this.before.winningMove;
-    var result = computeResult(move, computerMove);
-    //showRound(move, computerMove, result);
-
-    this.computerPlayer.train(this.gameState, move);
-    this.after = this.computerPlayer.predict(this.gameState);
-    //w = after.prediction.w
-    //jQuery('.rock     .after-training').text(w[0].toFixed(4));
-    //jQuery('.paper    .after-training').text(w[1].toFixed(4));
-    //jQuery('.scissors .after-training').text(w[2].toFixed(4));
-
-    // Add current round to game state
-    this.gameState.rounds.push([move, computerMove]);
-
-    //jQuery('#total-games').text(this.gameState.rounds.length);
-    //jQuery('#player1-winning').text(toPercentage(this.gameState.getPlayer1WinningRate()));
-    //if (this.gameState.rounds.length >= 10) {
-    //  jQuery('.stats .recent-10').show();
-    //  jQuery('#player1-winning-10').text(toPercentage(this.gameState.getPlayer1WinningRate(10)));
-    //}
+  componentWillUnmount() {
+    key.unbind('f, j')
+    key.unbind('d, k')
+    key.unbind('s, l')
   }
 
   render() {
-    var reversedRounds = this.gameState.rounds.slice().reverse();
+    var reversedRounds = this.props.rounds.slice().reverse()
 
     return (
       <div>
@@ -93,7 +55,7 @@ class ComputerPlayerComponent extends Component {
                 <br/>
               </span>
             }
-            <button id='rock' onClick={() => this.flag(ROCK)}>Rock (F/J)</button>
+            <button id='rock' onClick={() => this.play(ROCK)}>Rock (F/J)</button>
             {
               this.before && this.before.prediction &&
               <span className="after-training">
@@ -105,24 +67,24 @@ class ComputerPlayerComponent extends Component {
           </div>
           <div className="paper action-container">
             <span className="before-training"></span><br/>
-            <button id='paper' onClick={() => this.flag(PAPER)}>Paper (D/K)</button><br/>
+            <button id='paper' onClick={() => this.play(PAPER)}>Paper (D/K)</button><br/>
             <span className="after-training"></span>
           </div>
           <div className="scissors action-container">
             <span className="before-training"></span><br/>
-            <button id='scissors' onClick={() => this.flag(SCISSORS)}>Scissors (S/L)</button><br/>
+            <button id='scissors' onClick={() => this.play(SCISSORS)}>Scissors (S/L)</button><br/>
             <span className="after-training"></span>
           </div>
         </div>
         <div className='stats'>
           <h3>
-            Games: <span id="total-games">{this.gameState.rounds.length}</span>
+            Games: <span id="total-games">{this.props.rounds.length}</span>
           </h3>
           <div className="all">
             Player 1 (Human) winning rate:
             <span id="player1-winning">{toPercentage(this.gameState.getPlayer1WinningRate())}</span>
           </div>
-          { this.gameState.rounds.length >= 10 &&
+          { this.props.rounds.length >= 10 &&
             <div className="recent-10">
               Player 1 Winning rate (last 10 rounds):
               <span id="player1-winning-10">{toPercentage(this.gameState.getPlayer1WinningRate(10))}</span>
@@ -132,19 +94,19 @@ class ComputerPlayerComponent extends Component {
         <div className='results'>
           {
             reversedRounds.forEach(function(item) {
-              var player1Class = `player1 ${translateMove(player1Move)}`;
-              var player2Class = `player2 ${translateMove(player2Move)}`;
-              var resultClass = 'round ';
+              var player1Class = `player1 ${translateMove(player1Move)}`
+              var player2Class = `player2 ${translateMove(player2Move)}`
+              var resultClass = 'round '
               switch (result) {
                 case 0:
-                  resultClass += 'draw';
-                  break;
+                  resultClass += 'draw'
+                  break
                 case 1:
-                  resultClass += 'player1';
-                  break;
+                  resultClass += 'player1'
+                  break
                 case 2:
-                  resultClass += 'player2';
-                  break;
+                  resultClass += 'player2'
+                  break
               }
 
               return (
@@ -153,14 +115,14 @@ class ComputerPlayerComponent extends Component {
                   <div className="vs"></div>
                   <div className={player2Class}></div>
                 </div>
-              );
+              )
             })
           }
         </div>
       </div>
-    );
+    )
   }
-};
+}
 
-export default connect()(ComputerPlayerComponent);
+export default connect()(ComputerPlayerComponent)
 
