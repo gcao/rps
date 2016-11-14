@@ -5,9 +5,9 @@ export var PAPER    = 1
 export var SCISSORS = 2
 export var UNKNOWN  = 3
 
-var loadAndSave = location.toString().indexOf('loadAndSave') >= 0
-var logNet      = location.toString().indexOf('logNet')      >= 0
-var debugNet    = location.toString().indexOf('debugNet')    >= 0
+//var loadAndSave = window.location.toString().indexOf('loadAndSave') >= 0
+//var logNet      = window.location.toString().indexOf('logNet')      >= 0
+//var debugNet    = window.location.toString().indexOf('debugNet')    >= 0
 
 export function translate(name) {
   switch (name) {
@@ -85,5 +85,5 @@ export function showRound(player1Move, player2Move, result) {
 
 export function toPercentage(val, digitsAfterDot) {
   digitsAfterDot = digitsAfterDot || 2
-  return (val * 100).toFixed(digitsAfterDot) + "%"
+  return (val * 100).toFixed(digitsAfterDot) + '%'
 }

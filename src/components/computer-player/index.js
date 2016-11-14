@@ -6,12 +6,11 @@ import { defaultReducers } from '../../reducers'
 
 import {
   ROCK, PAPER, SCISSORS,
-  findWinningMoveAgainst,
   computeResult,
   toPercentage,
+  translateMove,
 } from '../../rps'
 import GameState  from '../../rps/GameState'
-import { ComputerPlayerProxy, DefaultComputerPlayer } from '../../rps/computer-player'
 
 import reducers from './reducers'
 import { play, initialize } from './actions'
@@ -91,9 +90,13 @@ class ComputerPlayerComponent extends Component {
         <div className='results'>
           {
             reversedRounds.map(function(item) {
+              var player1Move = item[0]
+              var player2Move = item[1]
               var player1Class = `player1 ${translateMove(player1Move)}`
               var player2Class = `player2 ${translateMove(player2Move)}`
+              var result = computeResult(player1Move, player2Move)
               var resultClass = 'round '
+
               switch (result) {
                 case 0:
                   resultClass += 'draw'
