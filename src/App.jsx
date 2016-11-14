@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import ComputerPlayer from './components/computer-player'
+import ImageClassifier from './components/image-classifier'
 
 import './App.less'
 

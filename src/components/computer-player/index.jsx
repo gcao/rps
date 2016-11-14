@@ -2,13 +2,12 @@ import key from 'keymaster'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { defaultReducers } from '../../reducers'
-
 import './index.less'
 
 import { ROCK, PAPER, SCISSORS, computeResult, translateMove } from '../../rps'
 import GameState  from '../../rps/GameState'
 
+import { defaultReducers } from '../../reducers'
 import reducers from './reducers'
 import { play, initialize } from './actions'
 export { initialize as initializeComputerPlayer }
