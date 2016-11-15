@@ -33,5 +33,6 @@ module.exports = {
     'space-infix-ops': 0,
     'new-cap': 0,
     'key-spacing': 0,
+    'no-return-assign': 0,
   }
 }
