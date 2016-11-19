@@ -1,31 +1,14 @@
 import React, { Component } from 'react'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
 
-import ImageClassifier, { initializeImageClassifier } from '../components/image-classifier'
-
-import { ReducerGroup } from '../reducers'
+import ImageClassifier from '../components/image-classifier'
 
 class ImageClassifierTrainingPage extends Component {
-  constructor(props) {
-    super(props)
-
-    let reducers = new ReducerGroup()
-    const initialState = {
-    }
-
-    this.store = createStore(reducers.handle, initialState)
-    this.store.dispatch(initializeImageClassifier())
-  }
-
   render() {
     return (
-      <Provider store={this.store}>
-        <ImageClassifier
-        />
-      </Provider>
+        <ImageClassifier/>
     )
   }
 }
 
-export default ImageClassifierTrainingPage
+export default connect()(ImageClassifierTrainingPage)

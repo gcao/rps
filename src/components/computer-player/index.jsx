@@ -7,12 +7,9 @@ import './index.less'
 import { ROCK, PAPER, SCISSORS, computeResult, translateMove } from '../../rps'
 import GameState  from '../../rps/GameState'
 
-import { defaultReducers } from '../../reducers'
+import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import { play, initialize } from './actions'
-export { initialize as initializeComputerPlayer }
-
-defaultReducers.add(reducers)
 
 function toPercentage(val, digitsAfterDot) {
   digitsAfterDot = digitsAfterDot || 2
@@ -22,6 +19,9 @@ function toPercentage(val, digitsAfterDot) {
 class ComputerPlayerComponent extends Component {
   constructor(props) {
     super(props)
+
+    addReducer(reducers)
+    this.props.dispatch(initialize())
 
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
@@ -33,6 +33,8 @@ class ComputerPlayerComponent extends Component {
   }
 
   componentWillUnmount() {
+    removeReducer(reducers)
+
     key.unbind('f, j')
     key.unbind('d, k')
     key.unbind('s, l')
@@ -125,5 +127,12 @@ class ComputerPlayerComponent extends Component {
   }
 }
 
-export default connect()(ComputerPlayerComponent)
+function mapStateToProps({rounds, computerPlayer}) {
+  return {
+    rounds,
+    ...computerPlayer,
+  }
+}
+
+export default connect(mapStateToProps)(ComputerPlayerComponent)
 

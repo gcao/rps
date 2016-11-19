@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 
-//import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
+import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
 
 import './index.less'
 
-import { defaultReducers } from '../../reducers'
-import reducers from './reducers'
-import { initialize } from './actions'
-export { initialize as initializeImageClassifier }
+import { capture, flag } from './actions'
+//import { defaultReducers } from '../../reducers'
+//import reducers from './reducers'
+//import { initialize } from './actions'
+//export { initialize as initializeImageClassifier }
 
-defaultReducers.add(reducers)
+//defaultReducers.add(reducers)
 
 class ImageClassifierComponent extends Component {
-  capture() {
+  componentDidMount() {
     var self = this
     var constraints = {
       video: {
@@ -30,37 +32,40 @@ class ImageClassifierComponent extends Component {
 
     navigator.getUserMedia(constraints, function(stream) {
       self.videoElem.src = window.URL.createObjectURL(stream)
-
-      var ctx = self.canvasElem.getContext('2d')
-      ctx.drawImage(self.videoElem, 0, 0)
-      self.canvasElem.style.display = ''
-
-      var imagePixels = ctx.getImageData(0, 0, 320, 240)
-      var imageData = []
-      for (var i=0; i<320; i++) {
-        imageData[i] = []
-        for (var j=0; j<240; j++) {
-          var pixelIndex = (i * 4) * 240 + j * 4
-          // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
-          var grayScale = Math.round((imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3)
-          imageData[i].push(grayScale)
-        }
-      }
-
-      //var result = self.imageClassifier.predict(imageData)
-      //var w = result.prediction.w
-      //jQuery('.rock     .before-training').text(w[ROCK].toFixed(4))
-      //jQuery('.paper    .before-training').text(w[PAPER].toFixed(4))
-      //jQuery('.scissors .before-training').text(w[SCISSORS].toFixed(4))
-      //jQuery('.unknown  .before-training').text(w[UNKNOWN].toFixed(4))
-
-      //jQuery('.rock     .after-training').text('')
-      //jQuery('.paper    .after-training').text('')
-      //jQuery('.scissors .after-training').text('')
-      //jQuery('.unknown  .after-training').text('')
     }, function(e) {
       console.log('Access to camera is rejected!', e)
     })
+  }
+
+  capture() {
+    var ctx = this.canvasElem.getContext('2d')
+    ctx.drawImage(this.videoElem, 0, 0)
+
+    var imagePixels = ctx.getImageData(0, 0, 320, 240)
+    var imageData = []
+    for (var i=0; i<320; i++) {
+      imageData[i] = []
+      for (var j=0; j<240; j++) {
+        var pixelIndex = (i * 4) * 240 + j * 4
+        // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
+        var grayScale = Math.round((imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3)
+        imageData[i].push(grayScale)
+      }
+    }
+
+    this.props.dispatch(capture(imageData))
+
+    //var result = imageClassifier.predict(imageData)
+    //var w = result.prediction.w
+    //jQuery('.rock     .before-training').text(w[ROCK].toFixed(4))
+    //jQuery('.paper    .before-training').text(w[PAPER].toFixed(4))
+    //jQuery('.scissors .before-training').text(w[SCISSORS].toFixed(4))
+    //jQuery('.unknown  .before-training').text(w[UNKNOWN].toFixed(4))
+
+    //jQuery('.rock     .after-training').text('')
+    //jQuery('.paper    .after-training').text('')
+    //jQuery('.scissors .after-training').text('')
+    //jQuery('.unknown  .after-training').text('')
   }
 
   saveTrainingData(imageClass, imageData) {
@@ -75,13 +80,15 @@ class ImageClassifierComponent extends Component {
   }
 
   reset() {
-    //imageClassifier.reset()
+    this.imageClassifier.reset()
   }
 
   flag(imageClass) {
-    //saveTrainingData(imageClass, imageData)
+    this.props.dispatch(flag(imageClass))
 
-    //imageClassifier.train(imageData, imageClass)
+    //this.saveTrainingData(imageClass, this.imageData)
+
+    //this.imageClassifier.train(this.imageData, imageClass)
 
     //var result = imageClassifier.predict(imageData)
     //var w = result.prediction.w
@@ -113,60 +120,60 @@ class ImageClassifierComponent extends Component {
   }
 
   render() {
+    let self = this
+
     return (
       <div>
-        <p>
+        <div>
           <video autoPlay ref={elem => this.videoElem = elem}/>
-        </p>
-        <p>
-          <button onclick='capture()'>Capture (G/H)</button>
+        </div>
+        <div style={{ padding: '20px' }}>
+          <button onClick={ () => self.capture() }>Capture (G/H)</button>
           <br/>
-          <button id='retrain' onclick='retrain()'>Retrain with existing data</button>&nbsp;&nbsp;&nbsp
-          <button onclick='reset()'>Reset</button>
+          <button onClick={ () => self.retrain() }>Retrain with existing data</button>&nbsp;&nbsp;&nbsp;
+          <button onClick={ () => self.reset() }>Reset</button>
           <br/>
-          <span class="load-save-container">
-            <button onclick='imageClassifier.load()'>Load trained model</button>&nbsp;&nbsp;&nbsp
-            <button onclick='imageClassifier.save()'>Save trained model</button>
+          <span className="load-save-container">
+            <button onClick={ () => self.imageClassifier.load() }>Load trained model</button>&nbsp;&nbsp;&nbsp;
+            <button onClick={ () => self.imageClassifier.save() }>Save trained model</button>
             <br/>
           </span>
-          <span>When training is complete, click <a href="index.html">here</a> to play!</span>
-        </p>
-        <div id="training-container" style="display:none">
-          <p>
-            <canvas style="display:none;" width="320px" height="240px" ref={elem => this.canvasElem = elem}/>
-          </p>
-          <p>
-            <div class="save-training-data-container">
-              <label>
-                <input type="checkbox" id="save-training-data"/>
-                <span>Auto save training data</span>
-              </label>
-              <br/>
-              <button onclick='clearTrainingData()'>Clear training data</button>
-            </div>
-            <div class="rock class-container">
-              <span class="before-training"></span><br/>
-              <button id='rock' onclick="flag(ROCK)">Rock (F/J)</button><br/>
-              <span class="after-training"></span>
-            </div>
-            <div class="paper class-container">
-              <span class="before-training"></span><br/>
-              <button id='paper'    onclick="flag(PAPER)">Paper (D/K)</button><br/>
-              <span class="after-training"></span>
-            </div>
-            <div class="scissors class-container">
-              <span class="before-training"></span><br/>
-              <button id='scissors' onclick="flag(SCISSORS)">Scissors (S/L)</button><br/>
-              <span class="after-training"></span>
-            </div>
-            <div class="unknown class-container">
-              <div class="before-vis">&nbsp;</div>
-              <span class="before-training"></span><br/>
-              <button id='unknown'  onclick="flag(UNKNOWN)">Unknown (A/;)</button><br/>
-              <div class="after-vis">&nbsp;</div>
-              <span class="after-training"></span>
-            </div>
-          </p>
+          <span>When training is complete, click <Link to="/">here</Link> to play!</span>
+        </div>
+        <div id="training-container">
+          <div>
+            <canvas width="320px" height="240px" ref={elem => this.canvasElem = elem}/>
+          </div>
+          <div className="save-training-data-container">
+            <label>
+              <input type="checkbox" id="save-training-data"/>
+              <span>Auto save training data</span>
+            </label>
+            <br/>
+            <button onClick={ () => self.clearTrainingData() }>Clear training data</button>
+          </div>
+          <div className="rock class-container">
+            <span className="before-training"></span><br/>
+            <button onClick={ () => self.flag(ROCK) }>Rock (F/J)</button><br/>
+            <span className="after-training"></span>
+          </div>
+          <div className="paper class-container">
+            <span className="before-training"></span><br/>
+            <button onClick={ () => self.flag(PAPER) }>Paper (D/K)</button><br/>
+            <span className="after-training"></span>
+          </div>
+          <div className="scissors class-container">
+            <span className="before-training"></span><br/>
+            <button onClick={ () => self.flag(SCISSORS) }>Scissors (S/L)</button><br/>
+            <span className="after-training"></span>
+          </div>
+          <div className="unknown class-container">
+            <div className="before-vis">&nbsp;</div>
+            <span className="before-training"></span><br/>
+            <button onClick={ () => self.flag(UNKNOWN) }>Unknown (A/;)</button><br/>
+            <div className="after-vis">&nbsp;</div>
+            <span className="after-training"></span>
+          </div>
         </div>
       </div>
     )

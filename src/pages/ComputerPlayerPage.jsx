@@ -1,36 +1,18 @@
 import React, { Component } from 'react'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
-import ComputerPlayer, { initializeComputerPlayer } from '../components/computer-player'
-
-import { ReducerGroup } from '../reducers'
+import ComputerPlayer from '../components/computer-player'
 
 class ComputerPlayerPage extends Component {
-  constructor(props) {
-    super(props)
-
-    let reducers = new ReducerGroup()
-    const initialState = {
-      rounds: []
-    }
-
-    this.store = createStore(reducers.handle, initialState)
-    this.store.dispatch(initializeComputerPlayer())
-  }
-
   render() {
-    let state = this.store.getState()
-
     return (
-      <Provider store={this.store}>
-        <ComputerPlayer
-          rounds={state.rounds}
-          prediction={state.prediction}
-        />
-      </Provider>
+      <div>
+        <ComputerPlayer/>
+        <Link to='/'>Back</Link>
+      </div>
     )
   }
 }
 
-export default ComputerPlayerPage
+export default connect()(ComputerPlayerPage)
