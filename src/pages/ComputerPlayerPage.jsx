@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
-import ComputerPlayer from '../components/computer-player'
+import ComputerPlayer, { initializeComputerPlayer } from '../components/computer-player'
 
 import { ReducerGroup } from '../reducers'
 
@@ -11,7 +11,12 @@ class ComputerPlayerPage extends Component {
     super(props)
 
     let reducers = new ReducerGroup()
-    this.store = createStore(reducers)
+    const initialState = {
+      rounds: []
+    }
+
+    this.store = createStore(reducers.handle, initialState)
+    this.store.dispatch(initializeComputerPlayer())
   }
 
   render() {
@@ -28,4 +33,4 @@ class ComputerPlayerPage extends Component {
   }
 }
 
-export default connect()(ComputerPlayerPage)
+export default ComputerPlayerPage

@@ -1,6 +1,7 @@
 export default class ReducerGroup {
   constructor() {
     this.children = []
+    this.handle = this.handle.bind(this)
   }
 
   add(reducer) {

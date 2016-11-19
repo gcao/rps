@@ -1,40 +1,17 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route } from 'react-router'
-//import { Provider } from 'react-redux'
-//import { createStore } from 'redux'
+import { Router, Route, hashHistory } from 'react-router'
 
-//import reducers from './reducers'
+import './common.less'
+
 import HomePage from './pages/HomePage'
 import ComputerPlayerPage from './pages/ComputerPlayerPage'
-//import { initializeComputerPlayer } from './components/computer-player'
+import ImageClassifierTrainingPage from './pages/ImageClassifierTrainingPage'
 
-//const initialState = {
-//  rounds: [],
-//  ui: {},
-//}
-
-//const store = createStore(reducers, initialState)
-//store.dispatch(initializeComputerPlayer())
-
-//function _render() {
-//  render((
-//    <Provider store={this.store}>
-//      <Router>
-//        <Route path="/" component={HomePage}/>
-//        <Route path="/computer-player" component={ComputerPlayerPage}/>
-//      </Router>
-//    </Provider>
-//  ), document.getElementById('root'))
-//}
-
-//_render()
-
-//store.subscribe(_render)
-
-render((
-  <Router>
+render(
+  <Router history={hashHistory}>
     <Route path="/" component={HomePage}/>
     <Route path="/computer-player" component={ComputerPlayerPage}/>
+    <Route path="/action-trainer" component={ImageClassifierTrainingPage}/>
   </Router>
-), document.getElementById('root'))
+  , document.getElementById('root'))

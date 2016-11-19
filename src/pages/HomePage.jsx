@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import { createStore } from 'redux'
-
-import ComputerPlayer from '../components/computer-player'
+import { Provider } from 'react-redux'
 
 import { ReducerGroup } from '../reducers'
 
@@ -11,21 +10,26 @@ class HomePage extends Component {
     super(props)
 
     let reducers = new ReducerGroup()
-    this.store = createStore(reducers)
+    const initialState = {
+    }
+
+    this.store = createStore(reducers.handle, initialState)
   }
 
   render() {
-    let state = this.store.getState()
-
     return (
       <Provider store={this.store}>
-        <ComputerPlayer
-          rounds={state.rounds}
-          prediction={state.prediction}
-        />
+        <div className='links'>
+          <p>
+            <Link to='/action-trainer'>Training the machine to recognize my action.</Link>
+          </p>
+          <p>
+            <Link to='/computer-player'>Play with the machine(no camera version).</Link>
+          </p>
+        </div>
       </Provider>
     )
   }
 }
 
-export default connect()(HomePage)
+export default HomePage

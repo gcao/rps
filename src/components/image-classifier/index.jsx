@@ -116,7 +116,7 @@ class ImageClassifierComponent extends Component {
     return (
       <div>
         <p>
-          <video autoplay ref={elem => this.videoElem = elem}/>
+          <video autoPlay ref={elem => this.videoElem = elem}/>
         </p>
         <p>
           <button onclick='capture()'>Capture (G/H)</button>
