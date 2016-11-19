@@ -1,16 +1,16 @@
-const ADD_REDUCER = 'ADD_REDUCER'
-const REMOVE_REDUCER = 'REMOVE_REDUCER'
+export const ADD_REDUCER = 'ADD_REDUCER'
+export const REMOVE_REDUCER = 'REMOVE_REDUCER'
 
-export const addReducer = (reducer) => {
+export function addReducer(reducer) {
   return {
-    action: ADD_REDUCER,
+    type: ADD_REDUCER,
     reducer,
   }
 }
 
-export const removeReducer = (reducer) => {
+export function removeReducer(reducer) {
   return {
-    action: REMOVE_REDUCER,
+    type: REMOVE_REDUCER,
     reducer,
   }
 }

@@ -20,7 +20,7 @@ class ComputerPlayerComponent extends Component {
   constructor(props) {
     super(props)
 
-    addReducer(reducers)
+    this.props.dispatch(addReducer(reducers))
     this.props.dispatch(initialize())
 
     key('f, j', () => this.play(ROCK))
@@ -33,7 +33,7 @@ class ComputerPlayerComponent extends Component {
   }
 
   componentWillUnmount() {
-    removeReducer(reducers)
+    this.props.dispatch(removeReducer(reducers))
 
     key.unbind('f, j')
     key.unbind('d, k')

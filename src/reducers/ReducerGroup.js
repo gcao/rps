@@ -13,7 +13,11 @@ export default class ReducerGroup {
   }
 
   remove(reducer) {
-    this.children.remove(reducer)
+    let index = this.children.indexOf(reducer)
+
+    if (index >= 0) {
+      this.children.splice(index, 1)
+    }
   }
 
   handle(state, action) {
