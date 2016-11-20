@@ -7,7 +7,7 @@ class HomePage extends Component {
     return (
       <div className='links'>
         <p>
-          <Link to='/action-trainer'>Training the machine to recognize my action.</Link>
+          <Link to='/action-trainer'>Train the machine to recognize my action.</Link>
         </p>
         <p>
           <Link to='/computer-player'>Play with the machine(no camera version).</Link>

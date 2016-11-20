@@ -2,8 +2,11 @@ export const INITIALIZE = 'imageClassifier.initialize'
 export const CAPTURE = 'imageClassifier.capture'
 export const FLAG = 'imageClassifier.flag'
 
-export function initialize() {
-  return { type: INITIALIZE }
+export function initialize(classifier) {
+  return {
+    type: INITIALIZE,
+    classifier,
+  }
 }
 
 export function capture(image) {

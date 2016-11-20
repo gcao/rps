@@ -7,8 +7,8 @@ export default function ComputerPlayer2() {
 
   // create an environment object
   var env = {}
-  env.getNumStates = function() { return DEPTH; }
-  env.getMaxNumActions = function() { return 3; }
+  env.getNumStates = function() { return DEPTH }
+  env.getMaxNumActions = function() { return 3 }
 
   // create the agent
   var spec = {
@@ -30,7 +30,8 @@ export default function ComputerPlayer2() {
 
     for (var i=0; i<ROUNDS && i<reversedRounds.length; i++) {
       var round = reversedRounds[i]
-      var move1 = round[0], move2 = round[1]
+      var move1 = round[0]
+      var move2 = round[1]
       data[round * 6 + move1] = 1
       data[round * 6 + 3 + move2] = 1
     }

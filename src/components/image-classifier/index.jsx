@@ -6,15 +6,18 @@ import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
 
 import './index.less'
 
-import { capture, flag } from './actions'
-//import { defaultReducers } from '../../reducers'
-//import reducers from './reducers'
-//import { initialize } from './actions'
-//export { initialize as initializeImageClassifier }
-
-//defaultReducers.add(reducers)
+import { addReducer, removeReducer } from '../../reducers'
+import reducers from './reducers'
+import { capture, flag, initialize } from './actions'
 
 class ImageClassifierComponent extends Component {
+  constructor(props) {
+    super(props)
+
+    this.props.dispatch(addReducer(reducers))
+    this.props.dispatch(initialize())
+  }
+
   componentDidMount() {
     var self = this
     var constraints = {
@@ -37,6 +40,10 @@ class ImageClassifierComponent extends Component {
     })
   }
 
+  componentWillUnmount() {
+    this.props.dispatch(removeReducer(reducers))
+  }
+
   capture() {
     var ctx = this.canvasElem.getContext('2d')
     ctx.drawImage(this.videoElem, 0, 0)
@@ -54,18 +61,6 @@ class ImageClassifierComponent extends Component {
     }
 
     this.props.dispatch(capture(imageData))
-
-    //var result = imageClassifier.predict(imageData)
-    //var w = result.prediction.w
-    //jQuery('.rock     .before-training').text(w[ROCK].toFixed(4))
-    //jQuery('.paper    .before-training').text(w[PAPER].toFixed(4))
-    //jQuery('.scissors .before-training').text(w[SCISSORS].toFixed(4))
-    //jQuery('.unknown  .before-training').text(w[UNKNOWN].toFixed(4))
-
-    //jQuery('.rock     .after-training').text('')
-    //jQuery('.paper    .after-training').text('')
-    //jQuery('.scissors .after-training').text('')
-    //jQuery('.unknown  .after-training').text('')
   }
 
   saveTrainingData(imageClass, imageData) {
