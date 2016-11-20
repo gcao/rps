@@ -1,21 +1,25 @@
+/* globals fetch */
 import key from 'keymaster'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
+import {
+  ROCK, PAPER, SCISSORS, UNKNOWN,
+  translateMove,
+} from '../../rps'
 
 import './index.less'
 
 import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
-import { capture, flag, initialize } from './actions'
+import * as actions from './actions'
 
 class ImageClassifierComponent extends Component {
   constructor(props) {
     super(props)
 
     this.props.dispatch(addReducer(reducers))
-    this.props.dispatch(initialize())
+    this.props.dispatch(actions.initialize())
 
     key('g, h', () => this.capture())
     key('f, j', () => this.flag(ROCK))
@@ -48,6 +52,7 @@ class ImageClassifierComponent extends Component {
 
   componentWillUnmount() {
     this.props.dispatch(removeReducer(reducers))
+    this.props.dispatch(actions.destroy())
 
     key.unbind('g, h')
     key.unbind('f, j')
@@ -72,14 +77,18 @@ class ImageClassifierComponent extends Component {
       }
     }
 
-    this.props.dispatch(capture(imageData))
+    this.props.dispatch(actions.capture(imageData))
   }
 
   saveTrainingData(imageClass, imageData) {
-    //if (jQuery('#save-training-data').is(':checked')) {
-    //  var saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
-    //  jQuery.post(saveAs, JSON.stringify(imageData))
-    //}
+    if (this.props.saveTrainingData) {
+      var saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
+      fetch(saveAs, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(imageData),
+      })
+    }
   }
 
   clearTrainingData() {
@@ -87,13 +96,12 @@ class ImageClassifierComponent extends Component {
   }
 
   reset() {
-    this.imageClassifier.reset()
   }
 
   flag(imageClass) {
-    this.props.dispatch(flag(imageClass))
+    this.props.dispatch(actions.flag(imageClass))
 
-    //this.saveTrainingData(imageClass, this.imageData)
+    this.saveTrainingData(imageClass, this.props.image)
 
     //this.imageClassifier.train(this.imageData, imageClass)
 
@@ -103,6 +111,10 @@ class ImageClassifierComponent extends Component {
     //jQuery('.paper    .after-training').text(w[PAPER].toFixed(4))
     //jQuery('.scissors .after-training').text(w[SCISSORS].toFixed(4))
     //jQuery('.unknown  .after-training').text(w[UNKNOWN].toFixed(4))
+  }
+
+  toggleSaveTrainingData() {
+    this.props.dispatch(actions.update({saveTrainingData: !this.props.saveTrainingData}))
   }
 
   retrain() {
@@ -154,7 +166,7 @@ class ImageClassifierComponent extends Component {
           </div>
           <div className="save-training-data-container">
             <label>
-              <input type="checkbox" id="save-training-data"/>
+              <input type="checkbox" onClick={ () => self.toggleSaveTrainingData() }/>
               <span>Auto save training data</span>
             </label>
             <br/>

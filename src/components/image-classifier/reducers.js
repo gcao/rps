@@ -1,6 +1,6 @@
 import { ImageClassifierProxy } from '../../rps/image-classifier'
 
-import { INITIALIZE, CAPTURE, FLAG } from './actions'
+import * as actions from './actions'
 
 var imageClassifier
 
@@ -9,16 +9,18 @@ export default function reducers(state, action) {
   let result
 
   switch (action.type) {
-    case INITIALIZE:
+    case actions.INITIALIZE:
       // TODO validate action.name
       let implementation = window[action.name || 'DefaultImageClassifier']
       imageClassifier = new ImageClassifierProxy(implementation)
 
-      return update(state, {
-        name: action.name,
+      return Object.assign({}, state, {
+        imageClassifier: {
+          name: action.name
+        }
       })
 
-    case CAPTURE:
+    case actions.CAPTURE:
       result = imageClassifier.predict(action.image)
 
       return update(state, {
@@ -27,7 +29,7 @@ export default function reducers(state, action) {
         after: undefined,
       })
 
-    case FLAG:
+    case actions.FLAG:
       image = state.imageClassifier.image
       imageClassifier.train(image, action.imageClass)
       result = imageClassifier.predict(image)
@@ -35,6 +37,14 @@ export default function reducers(state, action) {
       return update(state, {
         imageClass: action.imageClass,
         after: result.prediction,
+      })
+
+    case actions.UPDATE:
+      return update(state, action.payload)
+
+    case actions.DESTROY:
+      return Object.assign({}, state, {
+        imageClassifier: undefined
       })
 
     default:
