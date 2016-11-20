@@ -13,6 +13,9 @@ new WebpackDevServer(webpack(config), {
   hot: true,
   historyApiFallback: true,
   stats: { colors: true },
+  devServer: {
+    headers: { "Access-Control-Allow-Origin": "*" },
+  },
 }).listen(3100, 'localhost', function (err, result) {
   if (err) {
     console.log(err);

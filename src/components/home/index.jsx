@@ -5,7 +5,7 @@ import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import * as actions from './actions'
 
-class HomePage extends Component {
+class Home extends Component {
   constructor(props) {
     super(props)
 
@@ -73,4 +73,4 @@ class HomePage extends Component {
   }
 }
 
-export default connect()(HomePage)
+export default connect()(Home)
