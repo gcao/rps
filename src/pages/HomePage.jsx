@@ -2,19 +2,22 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-class HomePage extends Component {
+import Home from '../components/home'
+
+class Homepage extends Component {
   render() {
     return (
-      <div className='links'>
+      <div>
         <p>
-          <Link to='/action-trainer'>Train the machine to recognize my action.</Link>
+          If you haven't, <Link to='/action-trainer'>train the gesture detector</Link> first.
         </p>
         <p>
-          <Link to='/computer-player'>Play with the machine(no camera version).</Link>
+          You can also <Link to='/computer-player'>play with the machine without camera</Link>.
         </p>
+        <Home/>
       </div>
     )
   }
 }
 
-export default connect()(HomePage)
+export default connect()(Homepage)
