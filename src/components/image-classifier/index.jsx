@@ -14,7 +14,6 @@ class ImageClassifierComponent extends Component {
   constructor(props) {
     super(props)
 
-    debugger
     this.props.dispatch(addReducer(reducers))
     this.props.dispatch(initialize())
 
@@ -129,8 +128,8 @@ class ImageClassifierComponent extends Component {
 
   render() {
     let self = this
-    var before = this.props.prediction && this.props.prediction.before
-    var after  = this.props.prediction && this.props.prediction.after
+    var before = this.props.before
+    var after  = this.props.after
 
     return (
       <div>
@@ -169,16 +168,16 @@ class ImageClassifierComponent extends Component {
               { name: 'unknown',  label: 'Unknown (A/;)',  value: UNKNOWN },
             ].map((item, index) =>
               <div key={index} className={`${item.name} class-container`}>
-                { before && before.prediction &&
+                { before &&
                   <span className="before-training">
-                    { before.prediction.w[index].toFixed(4) }
+                    { before.w[index].toFixed(4) }
                     <br/>
                   </span>
                 }
                 <button onClick={ () => self.flag(item.value) }>{item.label}</button><br/>
-                { after && after.prediction &&
+                { after &&
                   <span className="after-training">
-                    { after.prediction.w[index].toFixed(4) }
+                    { after.w[index].toFixed(4) }
                   </span>
                 }
               </div>
@@ -191,7 +190,7 @@ class ImageClassifierComponent extends Component {
 }
 
 function mapStateToProps(state) {
-  return state.imageClassifier
+  return state.imageClassifier || {}
 }
 
 export default connect(mapStateToProps)(ImageClassifierComponent)

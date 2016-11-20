@@ -5,6 +5,9 @@ import { INITIALIZE, CAPTURE, FLAG } from './actions'
 var imageClassifier
 
 export default function reducers(state, action) {
+  let image
+  let result
+
   switch (action.type) {
     case INITIALIZE:
       // TODO validate action.name
@@ -16,18 +19,22 @@ export default function reducers(state, action) {
       })
 
     case CAPTURE:
-      let prediction = imageClassifier.predict(action.image)
+      result = imageClassifier.predict(action.image)
 
       return update(state, {
         image: action.image,
-        prediction,
+        before: result.prediction,
+        after: undefined,
       })
 
     case FLAG:
-      imageClassifier.train(action.image, action.imageClass)
+      image = state.imageClassifier.image
+      imageClassifier.train(image, action.imageClass)
+      result = imageClassifier.predict(image)
 
       return update(state, {
         imageClass: action.imageClass,
+        after: result.prediction,
       })
 
     default:
