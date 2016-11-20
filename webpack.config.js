@@ -5,14 +5,14 @@ module.exports = {
   devtool: 'eval-source-map',
   entry: [
     'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://localhost:3100',
     'webpack/hot/only-dev-server',
     './src/index'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: 'http://localhost:3100/static/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()
