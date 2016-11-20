@@ -28,6 +28,6 @@ render(
       <Route path="/computer-player" component={ComputerPlayerPage}/>
       <Route path="/action-trainer" component={ImageClassifierTrainingPage}/>
     </Router>
-  </Provider>
-  , document.getElementById('root')
+  </Provider>,
+  document.getElementById('root')
 )

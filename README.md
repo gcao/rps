@@ -11,4 +11,3 @@ open http://localhost:3000
 
 ### Credits
 
-* [MobX](https://github.com/mobxjs): simple, scalable state management.
