@@ -1,5 +1,5 @@
+import key from 'keymaster'
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
 
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
@@ -14,8 +14,15 @@ class ImageClassifierComponent extends Component {
   constructor(props) {
     super(props)
 
+    debugger
     this.props.dispatch(addReducer(reducers))
     this.props.dispatch(initialize())
+
+    key('g, h', () => this.capture())
+    key('f, j', () => this.flag(ROCK))
+    key('d, k', () => this.flag(PAPER))
+    key('s, l', () => this.flag(SCISSORS))
+    key('a, ;', () => this.flag(SCISSORS))
   }
 
   componentDidMount() {
@@ -42,6 +49,12 @@ class ImageClassifierComponent extends Component {
 
   componentWillUnmount() {
     this.props.dispatch(removeReducer(reducers))
+
+    key.unbind('g, h')
+    key.unbind('f, j')
+    key.unbind('d, k')
+    key.unbind('s, l')
+    key.unbind('a, ;')
   }
 
   capture() {
@@ -116,6 +129,8 @@ class ImageClassifierComponent extends Component {
 
   render() {
     let self = this
+    var before = this.props.prediction && this.props.prediction.before
+    var after  = this.props.prediction && this.props.prediction.after
 
     return (
       <div>
@@ -133,9 +148,8 @@ class ImageClassifierComponent extends Component {
             <button onClick={ () => self.imageClassifier.save() }>Save trained model</button>
             <br/>
           </span>
-          <span>When training is complete, click <Link to="/">here</Link> to play!</span>
         </div>
-        <div id="training-container">
+        <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
           <div>
             <canvas width="320px" height="240px" ref={elem => this.canvasElem = elem}/>
           </div>
@@ -147,33 +161,37 @@ class ImageClassifierComponent extends Component {
             <br/>
             <button onClick={ () => self.clearTrainingData() }>Clear training data</button>
           </div>
-          <div className="rock class-container">
-            <span className="before-training"></span><br/>
-            <button onClick={ () => self.flag(ROCK) }>Rock (F/J)</button><br/>
-            <span className="after-training"></span>
-          </div>
-          <div className="paper class-container">
-            <span className="before-training"></span><br/>
-            <button onClick={ () => self.flag(PAPER) }>Paper (D/K)</button><br/>
-            <span className="after-training"></span>
-          </div>
-          <div className="scissors class-container">
-            <span className="before-training"></span><br/>
-            <button onClick={ () => self.flag(SCISSORS) }>Scissors (S/L)</button><br/>
-            <span className="after-training"></span>
-          </div>
-          <div className="unknown class-container">
-            <div className="before-vis">&nbsp;</div>
-            <span className="before-training"></span><br/>
-            <button onClick={ () => self.flag(UNKNOWN) }>Unknown (A/;)</button><br/>
-            <div className="after-vis">&nbsp;</div>
-            <span className="after-training"></span>
-          </div>
+          {
+            [
+              { name: 'rock',     label: 'Rock (F/J)',     value: ROCK },
+              { name: 'paper',    label: 'Paper (D/K)',    value: PAPER },
+              { name: 'scissors', label: 'Scissors (S/L)', value: SCISSORS },
+              { name: 'unknown',  label: 'Unknown (A/;)',  value: UNKNOWN },
+            ].map((item, index) =>
+              <div key={index} className={`${item.name} class-container`}>
+                { before && before.prediction &&
+                  <span className="before-training">
+                    { before.prediction.w[index].toFixed(4) }
+                    <br/>
+                  </span>
+                }
+                <button onClick={ () => self.flag(item.value) }>{item.label}</button><br/>
+                { after && after.prediction &&
+                  <span className="after-training">
+                    { after.prediction.w[index].toFixed(4) }
+                  </span>
+                }
+              </div>
+            )
+          }
         </div>
       </div>
     )
   }
 }
 
-export default connect()(ImageClassifierComponent)
+function mapStateToProps(state) {
+  return state.imageClassifier
+}
 
+export default connect(mapStateToProps)(ImageClassifierComponent)

@@ -9,7 +9,9 @@ class ComputerPlayerPage extends Component {
     return (
       <div>
         <ComputerPlayer/>
-        <Link to='/'>Back</Link>
+        <p>
+          <Link to='/'>Back</Link>
+        </p>
       </div>
     )
   }

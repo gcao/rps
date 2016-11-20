@@ -8,8 +8,8 @@ class ImageClassifierTrainingPage extends Component {
   render() {
     return (
       <div>
+        <p>When training is complete, click <Link to="/">here</Link> to play!</p>
         <ImageClassifier/>
-        <Link to='/'>Back</Link>
       </div>
     )
   }

@@ -7,22 +7,26 @@ var imageClassifier
 export default function reducers(state, action) {
   switch (action.type) {
     case INITIALIZE:
-      let name = action.imageClassifier || 'DefaultImageClassifier'
+      // TODO validate action.name
+      let implementation = window[action.name || 'DefaultImageClassifier']
+      imageClassifier = new ImageClassifierProxy(implementation)
 
-      imageClassifier = new ImageClassifierProxy(window[name])
-      return state
+      return update(state, {
+        name: action.name,
+      })
 
     case CAPTURE:
-      imageClassifier.predict(action.image)
+      let prediction = imageClassifier.predict(action.image)
 
-      return Object.assign({}, state, {
+      return update(state, {
         image: action.image,
+        prediction,
       })
 
     case FLAG:
       imageClassifier.train(action.image, action.imageClass)
 
-      return Object.assign({}, state, {
+      return update(state, {
         imageClass: action.imageClass,
       })
 
@@ -31,3 +35,8 @@ export default function reducers(state, action) {
   }
 }
 
+function update(state, update) {
+  return Object.assign({}, state, {
+    imageClassifier: Object.assign({}, state.imageClassifier, update)
+  })
+}
