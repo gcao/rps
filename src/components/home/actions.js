@@ -1,5 +1,5 @@
-export const INITIALIZE = 'homepage.initialize'
-export const DESTROY = 'homepage.destroy'
+export const INITIALIZE = 'home.initialize'
+export const DESTROY    = 'home.destroy'
 
 export function initialize() {
   return { type: INITIALIZE }

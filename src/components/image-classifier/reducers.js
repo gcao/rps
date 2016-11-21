@@ -1,4 +1,9 @@
+/* globals fetch */
 import { ImageClassifierProxy } from '../../rps/image-classifier'
+
+import {
+  translateMove,
+} from '../../rps'
 
 import * as actions from './actions'
 
@@ -6,6 +11,7 @@ var imageClassifier
 
 export default function reducers(state, action) {
   let image
+  let imageClass
   let result
 
   switch (action.type) {
@@ -31,6 +37,17 @@ export default function reducers(state, action) {
 
     case actions.FLAG:
       image = state.imageClassifier.image
+      imageClass = action.imageClass
+
+      if (state.saveTrainingData) {
+        var saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
+        fetch(saveAs, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(image),
+        })
+      }
+
       imageClassifier.train(image, action.imageClass)
       result = imageClassifier.predict(image)
 

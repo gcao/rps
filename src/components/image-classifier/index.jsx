@@ -1,11 +1,9 @@
-/* globals fetch */
 import key from 'keymaster'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {
   ROCK, PAPER, SCISSORS, UNKNOWN,
-  translateMove,
 } from '../../rps'
 
 import './index.less'
@@ -80,37 +78,16 @@ class ImageClassifierComponent extends Component {
     this.props.dispatch(actions.capture(imageData))
   }
 
-  saveTrainingData(imageClass, imageData) {
-    if (this.props.saveTrainingData) {
-      var saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
-      fetch(saveAs, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(imageData),
-      })
-    }
-  }
-
   clearTrainingData() {
     //jQuery.ajax({ url: 'data/image-classifier/', type: 'DELETE' })
   }
 
   reset() {
+    this.props.dispatch(actions.initialize())
   }
 
   flag(imageClass) {
     this.props.dispatch(actions.flag(imageClass))
-
-    this.saveTrainingData(imageClass, this.props.image)
-
-    //this.imageClassifier.train(this.imageData, imageClass)
-
-    //var result = imageClassifier.predict(imageData)
-    //var w = result.prediction.w
-    //jQuery('.rock     .after-training').text(w[ROCK].toFixed(4))
-    //jQuery('.paper    .after-training').text(w[PAPER].toFixed(4))
-    //jQuery('.scissors .after-training').text(w[SCISSORS].toFixed(4))
-    //jQuery('.unknown  .after-training').text(w[UNKNOWN].toFixed(4))
   }
 
   toggleSaveTrainingData() {
