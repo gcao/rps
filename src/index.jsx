@@ -2,7 +2,8 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, hashHistory } from 'react-router'
 import { routerReducer, syncHistoryWithStore } from 'react-router-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 import { Provider } from 'react-redux'
 
 import './common.less'
@@ -22,10 +23,16 @@ let rootReducers = function(state, action) {
     routing: routerReducer(state.routing, action),
   })
 }
+const composeEnhancers =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    actionsBlacklist: ['ADD_REDUCER', 'REMOVE_REDUCER'],
+  }) ||
+  compose
 const store = createStore(
   rootReducers,
   initialState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(thunkMiddleware))
 )
 const history = syncHistoryWithStore(hashHistory, store)
 
