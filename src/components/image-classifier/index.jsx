@@ -64,18 +64,18 @@ class ImageClassifierComponent extends Component {
     ctx.drawImage(this.videoElem, 0, 0)
 
     var imagePixels = ctx.getImageData(0, 0, 320, 240)
-    var imageData = []
+    this.image = []
     for (var i=0; i<320; i++) {
-      imageData[i] = []
+      this.image[i] = []
       for (var j=0; j<240; j++) {
         var pixelIndex = (i * 4) * 240 + j * 4
         // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
         var grayScale = Math.round((imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3)
-        imageData[i].push(grayScale)
+        this.image[i].push(grayScale)
       }
     }
 
-    this.props.dispatch(actions.capture(imageData))
+    this.props.dispatch(actions.capture(this.image))
   }
 
   clearTrainingData() {
@@ -87,11 +87,11 @@ class ImageClassifierComponent extends Component {
   }
 
   flag(imageClass) {
-    this.props.dispatch(actions.flag(imageClass))
+    this.props.dispatch(actions.flag(this.image, imageClass, this.props.saveTrainingData))
   }
 
   toggleSaveTrainingData() {
-    this.props.dispatch(actions.update({saveTrainingData: !this.props.saveTrainingData}))
+    this.props.dispatch(actions.toggleSaveTrainingData())
   }
 
   retrain() {

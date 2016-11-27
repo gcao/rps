@@ -1,76 +1,25 @@
-/* globals fetch */
-import { ImageClassifierProxy } from '../../rps/image-classifier'
+import { TOGGLE_SAVE_TRAINING_DATA } from './actions'
 
-import {
-  translateMove,
-} from '../../rps'
-
-import * as actions from './actions'
-
-var imageClassifier
+const REPLACE_STATE_PATTERN = /^imageClassifier\.[initialize|destroy]$/
+const UPDATE_STATE_PATTERN  = /^imageClassifier/
 
 export default function reducers(state, action) {
-  let image
-  let imageClass
-  let result
+  if (TOGGLE_SAVE_TRAINING_DATA === action.type) {
+    let saveTrainingData = state.imageClassifier && state.imageClassifier.saveTrainingData
 
-  switch (action.type) {
-    case actions.INITIALIZE:
-      // TODO validate action.name
-      let implementation = window[action.name || 'DefaultImageClassifier']
-      imageClassifier = new ImageClassifierProxy(implementation)
-
-      return Object.assign({}, state, {
-        imageClassifier: {
-          name: action.name
-        }
-      })
-
-    case actions.CAPTURE:
-      result = imageClassifier.predict(action.image)
-
-      return update(state, {
-        image: action.image,
-        before: result.prediction,
-        after: undefined,
-      })
-
-    case actions.FLAG:
-      image = state.imageClassifier.image
-      imageClass = action.imageClass
-
-      if (state.saveTrainingData) {
-        var saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
-        fetch(saveAs, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(image),
-        })
-      }
-
-      imageClassifier.train(image, action.imageClass)
-      result = imageClassifier.predict(image)
-
-      return update(state, {
-        imageClass: action.imageClass,
-        after: result.prediction,
-      })
-
-    case actions.UPDATE:
-      return update(state, action.payload)
-
-    case actions.DESTROY:
-      return Object.assign({}, state, {
-        imageClassifier: undefined
-      })
-
-    default:
-      return state
+    return Object.assign({}, state, {
+      imageClassifier: Object.assign({}, state.imageClassifier, { saveTrainingData })
+    })
+  } else if (REPLACE_STATE_PATTERN.test(action.type)) {
+    return Object.assign({}, state, {
+      imageClassifier: action.payload
+    })
+  } else if (UPDATE_STATE_PATTERN.test(action.type)) {
+    return Object.assign({}, state, {
+      imageClassifier: Object.assign({}, state.imageClassifier, action.payload)
+    })
+  } else {
+    return state
   }
 }
 
-function update(state, update) {
-  return Object.assign({}, state, {
-    imageClassifier: Object.assign({}, state.imageClassifier, update)
-  })
-}
