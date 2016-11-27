@@ -87,11 +87,11 @@ class ImageClassifierComponent extends Component {
   }
 
   flag(imageClass) {
-    this.props.dispatch(actions.flag(this.image, imageClass, this.props.saveTrainingData))
+    this.props.dispatch(actions.flag(this.image, imageClass, this.props.saveFlag))
   }
 
-  toggleSaveTrainingData() {
-    this.props.dispatch(actions.toggleSaveTrainingData())
+  toggleSaveFlag() {
+    this.props.dispatch(actions.toggleSaveFlag(this.props.saveFlag))
   }
 
   retrain() {
@@ -143,7 +143,7 @@ class ImageClassifierComponent extends Component {
           </div>
           <div className="save-training-data-container">
             <label>
-              <input type="checkbox" onClick={ () => self.toggleSaveTrainingData() }/>
+              <input type="checkbox" onClick={ () => self.toggleSaveFlag() }/>
               <span>Auto save training data</span>
             </label>
             <br/>

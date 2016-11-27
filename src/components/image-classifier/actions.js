@@ -2,11 +2,11 @@
 import { translateMove } from '../../rps'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
 
-export const INITIALIZE                = 'imageClassifier.initialize'
-export const CAPTURE                   = 'imageClassifier.capture'
-export const FLAG                      = 'imageClassifier.flag'
-export const TOGGLE_SAVE_TRAINING_DATA = 'imageClassifier.toggleSaveTrainingData'
-export const DESTROY                   = 'imageClassifier.destroy'
+export const initialize       = 'imageclassifier.initialize'
+export const capture          = 'imageclassifier.capture'
+export const flag             = 'imageclassifier.flag'
+export const toggle_save_flag = 'imageclassifier.toggleSaveflag'
+export const destroy          = 'imageclassifier.destroy'
 
 var imageClassifier
 
@@ -33,9 +33,9 @@ export function capture(image) {
   }
 }
 
-export function flag(image, imageClass, saveTrainingData) {
+export function flag(image, imageClass, saveFlag) {
   return dispatch => {
-    if (saveTrainingData) {
+    if (saveFlag) {
       let saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
       fetch(saveAs, {
         method: 'POST',
@@ -57,9 +57,11 @@ export function flag(image, imageClass, saveTrainingData) {
   }
 }
 
-export function toggleSaveTrainingData() {
+export function toggleSaveFlag(saveFlag) {
+  saveFlag = !saveFlag
   return {
-    type: TOGGLE_SAVE_TRAINING_DATA,
+    type: TOGGLE_SAVE_FLAG,
+    payload: { saveFlag }
   }
 }
 
