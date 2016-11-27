@@ -1,4 +1,4 @@
-const REPLACE_STATE_PATTERN = /^imageClassifier\.[initialize|destroy]$/
+const REPLACE_STATE_PATTERN = /^imageClassifier\.(initialize|destroy)$/
 const UPDATE_STATE_PATTERN  = /^imageClassifier/
 
 export default function reducers(state, action) {
