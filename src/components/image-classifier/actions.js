@@ -2,11 +2,11 @@
 import { translateMove } from '../../rps'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
 
-export const initialize       = 'imageclassifier.initialize'
-export const capture          = 'imageclassifier.capture'
-export const flag             = 'imageclassifier.flag'
-export const toggle_save_flag = 'imageclassifier.toggleSaveflag'
-export const destroy          = 'imageclassifier.destroy'
+export const INITIALIZE       = 'imageClassifier.initialize'
+export const CAPTURE          = 'imageClassifier.capture'
+export const FLAG             = 'imageClassifier.flag'
+export const TOGGLE_SAVE_FLAG = 'imageClassifier.toggleSaveFlag'
+export const DESTROY          = 'imageClassifier.destroy'
 
 var imageClassifier
 
