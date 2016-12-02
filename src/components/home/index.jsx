@@ -53,21 +53,6 @@ class Home extends Component {
           <p id='not-recognized' style={{ display:'none' }}>Not recognized!</p>
         </div>
         <canvas style={{ display:'none' }} width="320px" height="240px"></canvas>
-        <div className='stats'>
-          <h3>
-            Games: <span id="total-games">0</span>
-          </h3>
-          <div className="all">
-            Player 1 (Human) winning rate:
-            <span id="player1-winning"></span>
-          </div>
-
-          <div className="recent-10">
-            Player 1 Winning rate (last 10 rounds):
-            <span id="player1-winning-10"></span>
-          </div>
-        </div>
-        <div className='results'></div>
       </div>
     )
   }

@@ -117,7 +117,6 @@ class ImageClassifierComponent extends Component {
   }
 
   render() {
-    let self = this
     var before = this.props.before
     var after  = this.props.after
 
@@ -127,15 +126,15 @@ class ImageClassifierComponent extends Component {
           <video autoPlay ref={elem => this.videoElem = elem}/>
         </p>
         <p>
-          <Button primary onClick={ () => self.capture() }>Capture (G/H)</Button>
+          <Button primary onClick={ () => this.capture() }>Capture (G/H)</Button>
         </p>
         <p>
-          <Button size='tiny' onClick={ () => self.retrain() }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
-          <Button size='tiny' onClick={ () => self.reset() }>Reset</Button>
+          <Button size='tiny' onClick={ () => this.retrain() }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
+          <Button size='tiny' onClick={ () => this.reset() }>Reset</Button>
         </p>
         <p className="load-save-container">
-          <Button size='tiny' onClick={ () => self.imageClassifier.load() }>Load trained model</Button>&nbsp;&nbsp;&nbsp;
-          <Button size='tiny' onClick={ () => self.imageClassifier.save() }>Save trained model</Button>
+          <Button size='tiny' onClick={ () => this.imageClassifier.load() }>Load trained model</Button>&nbsp;&nbsp;&nbsp;
+          <Button size='tiny' onClick={ () => this.imageClassifier.save() }>Save trained model</Button>
           <br/>
         </p>
         <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
@@ -144,11 +143,11 @@ class ImageClassifierComponent extends Component {
           </p>
           <p className="save-training-data-container">
             <label>
-              <input type="checkbox" onClick={ () => self.toggleSaveFlag() }/>
+              <input type="checkbox" onClick={ () => this.toggleSaveFlag() }/>
               <span> Auto save training data</span>
             </label>
             <br/>
-            <Button size='tiny' onClick={ () => self.clearTrainingData() }>Clear training data</Button>
+            <Button size='tiny' onClick={ () => this.clearTrainingData() }>Clear training data</Button>
           </p>
           {
             [
@@ -164,7 +163,7 @@ class ImageClassifierComponent extends Component {
                     <br/>
                   </span>
                 }
-                <Button primary size='tiny' onClick={ () => self.flag(item.value) }>{item.label}</Button><br/>
+                <Button primary size='tiny' onClick={ () => this.flag(item.value) }>{item.label}</Button><br/>
                 { after &&
                   <span className="after-training">
                     { after.w[index].toFixed(4) }
@@ -174,6 +173,9 @@ class ImageClassifierComponent extends Component {
             )
           }
         </div>
+        <br/>
+        <br/>
+        <br/>
       </Container>
     )
   }
