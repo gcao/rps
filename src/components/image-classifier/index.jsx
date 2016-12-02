@@ -1,5 +1,6 @@
 import key from 'keymaster'
 import React, { Component } from 'react'
+import { Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
 import {
@@ -121,34 +122,34 @@ class ImageClassifierComponent extends Component {
     var after  = this.props.after
 
     return (
-      <div>
-        <div>
+      <Container textAlign='center'>
+        <p>
           <video autoPlay ref={elem => this.videoElem = elem}/>
-        </div>
-        <div style={{ padding: '20px' }}>
-          <button onClick={ () => self.capture() }>Capture (G/H)</button>
+        </p>
+        <p>
+          <Button primary onClick={ () => self.capture() }>Capture (G/H)</Button>
+        </p>
+        <p>
+          <Button size='tiny' onClick={ () => self.retrain() }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
+          <Button size='tiny' onClick={ () => self.reset() }>Reset</Button>
+        </p>
+        <p className="load-save-container">
+          <Button size='tiny' onClick={ () => self.imageClassifier.load() }>Load trained model</Button>&nbsp;&nbsp;&nbsp;
+          <Button size='tiny' onClick={ () => self.imageClassifier.save() }>Save trained model</Button>
           <br/>
-          <button onClick={ () => self.retrain() }>Retrain with existing data</button>&nbsp;&nbsp;&nbsp;
-          <button onClick={ () => self.reset() }>Reset</button>
-          <br/>
-          <span className="load-save-container">
-            <button onClick={ () => self.imageClassifier.load() }>Load trained model</button>&nbsp;&nbsp;&nbsp;
-            <button onClick={ () => self.imageClassifier.save() }>Save trained model</button>
-            <br/>
-          </span>
-        </div>
+        </p>
         <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
-          <div>
+          <p>
             <canvas width="320px" height="240px" ref={elem => this.canvasElem = elem}/>
-          </div>
-          <div className="save-training-data-container">
+          </p>
+          <p className="save-training-data-container">
             <label>
               <input type="checkbox" onClick={ () => self.toggleSaveFlag() }/>
-              <span>Auto save training data</span>
+              <span> Auto save training data</span>
             </label>
             <br/>
-            <button onClick={ () => self.clearTrainingData() }>Clear training data</button>
-          </div>
+            <Button size='tiny' onClick={ () => self.clearTrainingData() }>Clear training data</Button>
+          </p>
           {
             [
               { name: 'rock',     label: 'Rock (F/J)',     value: ROCK },
@@ -163,7 +164,7 @@ class ImageClassifierComponent extends Component {
                     <br/>
                   </span>
                 }
-                <button onClick={ () => self.flag(item.value) }>{item.label}</button><br/>
+                <Button primary size='tiny' onClick={ () => self.flag(item.value) }>{item.label}</Button><br/>
                 { after &&
                   <span className="after-training">
                     { after.w[index].toFixed(4) }
@@ -173,7 +174,7 @@ class ImageClassifierComponent extends Component {
             )
           }
         </div>
-      </div>
+      </Container>
     )
   }
 }

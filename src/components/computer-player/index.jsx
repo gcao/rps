@@ -1,5 +1,6 @@
 import key from 'keymaster'
 import React, { Component } from 'react'
+import { Button, Progress } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
 import './index.less'
@@ -48,7 +49,6 @@ class ComputerPlayerComponent extends Component {
 
     return (
       <div>
-        <h1>Train the AI player</h1>
         <div>
           {
             [
@@ -63,7 +63,7 @@ class ComputerPlayerComponent extends Component {
                     <br/>
                   </span>
                 }
-                <button onClick={() => this.play(item.move)}>{item.label}</button>
+                <Button primary size='small' style={{width: '120px'}} onClick={() => this.play(item.move)}>{item.label}</Button>
                 { before && before.prediction &&
                   <span className="after-training">
                     {after.prediction.w[index].toFixed(4)}
@@ -75,13 +75,15 @@ class ComputerPlayerComponent extends Component {
             )
           }
         </div>
-        <div className='stats'>
+        <div className='stats' style={{ padding: '20px' }}>
           <h3>
-            Games: <span id="total-games">{this.props.rounds.length}</span>
+            Games played: <span id="total-games">{this.props.rounds.length}</span>
           </h3>
           <div className="all">
-            Player 1 (Human) winning rate:
-            <span id="player1-winning">{toPercentage(gameState.getPlayer1WinningRate())}</span>
+            Your winning rate: <span id="player1-winning">{toPercentage(gameState.getPlayer1WinningRate())}</span>
+            <div style={{display: 'inline-block', width: '150px'}}>
+              <Progress size='small' percent={100 * gameState.getPlayer1WinningRate()} success style={{margin: '0 5px', height: '1em'}}/>
+            </div>
           </div>
           { this.props.rounds.length >= 10 &&
             <div className="recent-10">
@@ -89,6 +91,10 @@ class ComputerPlayerComponent extends Component {
               <span id="player1-winning-10">{toPercentage(gameState.getPlayer1WinningRate(10))}</span>
             </div>
           }
+        </div>
+        <div className='results'>
+          <div style={{display: 'inline-block', width: '49%', textAlign: 'right', padding: '0 8px'}}>You</div>
+          <div style={{display: 'inline-block', width: '49%', textAlign: 'left', padding: '0 8px'}}>The Machine</div>
         </div>
         <div className='results'>
           {
@@ -113,7 +119,7 @@ class ComputerPlayerComponent extends Component {
               }
 
               return (
-                <div key={`${reversedRounds.length}-${index}`} className={resultClass}>
+                <div key={`${reversedRounds.length}-${index}`} className={resultClass} style={{padding: '1px'}}>
                   <div className={player1Class}></div>
                   <div className="vs"></div>
                   <div className={player2Class}></div>
