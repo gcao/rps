@@ -38,7 +38,7 @@ class Home extends Component {
           </p>
           <p id='not-recognized' style={{ display:'none' }}>Not recognized!</p>
         </div>
-        <canvas style={{ display:'none' }} width="320px" height="240px" ref={elem => this.videoElem = elem}></canvas>
+        <canvas style={{ display:'none' }} width="320px" height="240px" ref={elem => this.canvasElem = elem}></canvas>
         <ResultComponent rounds={this.props.rounds}/>
       </div>
     )
