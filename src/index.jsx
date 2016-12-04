@@ -18,6 +18,11 @@ const initialState = {
   rounds: [],
 }
 let rootReducers = function(state, action) {
+  // Do not proceed if action and action type are not passed
+  if (!action && !action.type) {
+    return state
+  }
+
   let updatedState = reducers(state, action)
   return Object.assign({}, updatedState, {
     routing: routerReducer(state.routing, action),
@@ -46,3 +51,6 @@ render(
   </Provider>,
   document.getElementById('root')
 )
+
+// Added to window for debugging purpose
+window.store = store

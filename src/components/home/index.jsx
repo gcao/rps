@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
 import ResultComponent from '../result'
@@ -14,11 +15,24 @@ class Home extends Component {
     this.props.dispatch(addReducer(reducers))
   }
 
-  componentDidMount() {
-    this.props.dispatch(actions.initialize({
+  start() {
+    this.props.dispatch(actions.start({
       videoElem: this.videoElem,
       canvasElem: this.canvasElem,
     }))
+  }
+
+  restart() {
+    this.props.dispatch(actions.stop())
+    this.props.dispatch(actions.start())
+  }
+
+  pause() {
+    this.props.dispatch(actions.pause())
+  }
+
+  resume() {
+    this.props.dispatch(actions.resume())
   }
 
   componentWillUnmount() {
@@ -29,25 +43,41 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <p>
-          <video autoPlay ref={elem => this.videoElem = elem}/>
-        </p>
-        <div id="training-container" style={{ display:'none' }}>
-          <p>
-            <img id='captured' src=""/>
+        { this.props.started
+          ? <div>
+            <p>
+              <Button primary onClick={() => this.restart()}>Restart</Button>
+              <Button primary onClick={() => this.pause()}>Pause</Button>
+              { this.props.paused &&
+                <Button primary onClick={() => this.resume()}>Resume</Button>
+              }
+              <Button primary onClick={() => this.stop()}>Stop</Button>
+            </p>
+            <p>
+              <video autoPlay ref={elem => this.videoElem = elem}/>
+            </p>
+            <div id="training-container" style={{ display:'none' }}>
+              <p>
+                <img id='captured' src=""/>
+              </p>
+              <p id='not-recognized' style={{ display:'none' }}>Not recognized!</p>
+            </div>
+            <canvas style={{ display:'none' }} width="320px" height="240px" ref={elem => this.canvasElem = elem}></canvas>
+            <ResultComponent rounds={this.props.rounds}/>
+          </div>
+        : <p>
+            <Button primary onClick={() => this.start()}>Play!</Button>
           </p>
-          <p id='not-recognized' style={{ display:'none' }}>Not recognized!</p>
-        </div>
-        <canvas style={{ display:'none' }} width="320px" height="240px" ref={elem => this.canvasElem = elem}></canvas>
-        <ResultComponent rounds={this.props.rounds}/>
+        }
       </div>
     )
   }
 }
 
-function mapStateToProps({rounds}) {
+function mapStateToProps({rounds, home}) {
   return {
     rounds,
+    ...home
   }
 }
 
