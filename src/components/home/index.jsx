@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import ResultComponent from '../result'
+
 import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import * as actions from './actions'
@@ -10,29 +12,13 @@ class Home extends Component {
     super(props)
 
     this.props.dispatch(addReducer(reducers))
-    this.props.dispatch(actions.initialize())
   }
 
   componentDidMount() {
-    var self = this
-    var constraints = {
-      video: {
-        mandatory: {
-          maxWidth: 320,
-          maxHeight: 240
-        }
-      }
-    }
-
-    navigator.getUserMedia = navigator.getUserMedia ||
-                             navigator.webkitGetUserMedia ||
-                             navigator.mozGetUserMedia
-
-    navigator.getUserMedia(constraints, function(stream) {
-      self.videoElem.src = window.URL.createObjectURL(stream)
-    }, function(e) {
-      console.log('Access to camera is rejected!', e)
-    })
+    this.props.dispatch(actions.initialize({
+      videoElem: this.videoElem,
+      canvasElem: this.canvasElem,
+    }))
   }
 
   componentWillUnmount() {
@@ -52,10 +38,17 @@ class Home extends Component {
           </p>
           <p id='not-recognized' style={{ display:'none' }}>Not recognized!</p>
         </div>
-        <canvas style={{ display:'none' }} width="320px" height="240px"></canvas>
+        <canvas style={{ display:'none' }} width="320px" height="240px" ref={elem => this.videoElem = elem}></canvas>
+        <ResultComponent rounds={this.props.rounds}/>
       </div>
     )
   }
 }
 
-export default connect()(Home)
+function mapStateToProps({rounds}) {
+  return {
+    rounds,
+  }
+}
+
+export default connect(mapStateToProps)(Home)
