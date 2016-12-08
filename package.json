@@ -23,6 +23,7 @@
   },
   "homepage": "http://gcao.github.com/rock-paper-scissors",
   "devDependencies": {
+    "awesome-typescript-loader": "^3.0.0-beta.9",
     "babel-core": "^6.9.1",
     "babel-eslint": "^6.1.0",
     "babel-loader": "^6.2.4",
@@ -46,11 +47,15 @@
     "less-loader": "^2.2.3",
     "proxy-middleware": "^0.15.0",
     "react-hot-loader": "^1.3.1",
+    "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
+    "typescript": "^2.1.4",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "@types/react": "^0.14.54",
+    "@types/react-dom": "^0.14.19",
     "jquery": "^3.1.1",
     "keymaster": "madrobby/keymaster#v1.6.3",
     "react": "^15.1.0",

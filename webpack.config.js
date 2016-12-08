@@ -17,12 +17,12 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', '.ts', '.tsx']
   },
   module: {
     preLoaders: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         loader: 'eslint',
         include: path.join(__dirname, 'src')
       }
@@ -30,8 +30,13 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: ['react-hot', 'babel', 'source-map-loader'],
         include: path.join(__dirname, 'src')
+      },
+      {
+        // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+        test: /\.tsx?$/,
+        loader: "awesome-typescript-loader"
       },
       {
         test: /\.less$/,
