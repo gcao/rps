@@ -12,6 +12,10 @@ export default class VideoActions {
     this.videoElem = videoElem
     this.canvasElem = canvasElem
 
+    this.start()
+  }
+
+  start() {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
     navigator.getUserMedia(CONSTRAINTS, (stream) => {

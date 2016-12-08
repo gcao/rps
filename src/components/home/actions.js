@@ -34,18 +34,19 @@ export class HomeActions {
   }
 
   restart() {
+    this.videoActions.start()
   }
 
   pause() {
-    this.videoElem.pause()
+    this.videoActions.pause()
   }
 
   resume() {
-    this.videoElem.resume()
+    this.videoActions.resume()
   }
 
   stop() {
-    this.videoElem.pause()
+    this.videoActions.pause()
   }
 
   detect(image) {

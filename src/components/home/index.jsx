@@ -16,6 +16,10 @@ class Home extends Component {
     this.actions = new HomeActions(this)
   }
 
+  componentDidMount() {
+    this.actions.start()
+  }
+
   componentWillUnmount() {
     this.props.dispatch(removeReducer(reducers))
   }
