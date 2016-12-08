@@ -14,16 +14,18 @@ const ACTION_DETECTION_INTERVAL = 150
 
 export class HomeActions {
   constructor(target) {
+    this.target = target
     this.dispatch = target.props.dispatch
     this.actionDetector = new ActionDetector()
     this.computerPlayer = new ComputerPlayerProxy(DefaultComputerPlayer)
   }
 
   capture() {
-    if (this.videoElem && this.canvasElem) {
-      let videoActions = new VideoActions(this.videoElem, this.canvasElem)
-      return videoActions.capture()
+    if (!this.videoActions && this.videoElem && this.canvasElem) {
+      this.videoActions = new VideoActions(this.videoElem, this.canvasElem)
     }
+
+    return this.videoActions && this.videoActions.capture()
   }
 
   start() {
@@ -35,18 +37,20 @@ export class HomeActions {
   }
 
   pause() {
+    this.videoElem.pause()
   }
 
   resume() {
+    this.videoElem.resume()
   }
 
   stop() {
+    this.videoElem.pause()
   }
 
   detect(image) {
     let action = this.actionDetector.detect(image)
     if (action.detected) {
-      debugger
       this.stop()
 
       // let the AI predict and play, then train with the real human move, add to game state

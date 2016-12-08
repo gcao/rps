@@ -24,7 +24,6 @@ new WebpackDevServer(webpack(config), {
   console.log('Webpack Dev Server is listening at localhost:3100');
 });
 
-
 // --------your proxy----------------------
 var app = express();
 
