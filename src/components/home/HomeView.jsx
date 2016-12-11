@@ -12,14 +12,19 @@ class HomeView extends Component {
           ? <div>
             <p>
               <Button primary onClick={() => this.props.restart()}>Restart</Button>
-              <Button primary onClick={() => this.props.pause()}>Pause</Button>
-              { this.props.paused &&
+              { !this.props.videoPaused &&
+                <Button primary onClick={() => this.props.pause()}>Pause</Button>
+              }
+              { this.props.videoPaused &&
                 <Button primary onClick={() => this.props.resume()}>Resume</Button>
               }
               <Button primary onClick={() => this.props.stop()}>Stop</Button>
             </p>
             <p>
-              <Video autoPlay ref={elem => this.props.setVideoElem(elem)}/>
+              <Video
+                paused={this.props.videoPaused}
+                setVideoElem={this.props.setVideoElem}
+              />
             </p>
             <div id="training-container" style={{ display:'none' }}>
               <p>

@@ -21,14 +21,19 @@ export default class Video extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.status === 'running' && this.elem.paused) {
+    if (!this.props.paused && this.elem.paused) {
       this.elem.play()
-    } else if (this.props.status === 'paused' && !this.elem.paused) {
+    } else if (this.props.paused && !this.elem.paused) {
       this.elem.pause()
     }
   }
 
+  setVideoElem = (elem) => {
+    this.elem = elem
+    this.props.setVideoElem && this.props.setVideoElem(elem)
+  }
+
   render() {
-    return <video ref={(el => this.elem = el)}{...this.props}/>
+    return <video autoPlay ref={this.setVideoElem}/>
   }
 }

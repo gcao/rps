@@ -8,6 +8,20 @@ export default function reducers(state, {type, payload}) {
     case actions.START:
       return update(state, {started: true})
 
+    case actions.PAUSE:
+      return Object.assign({}, state, {
+        video: {
+          paused: true
+        }
+      })
+
+    case actions.RESUME:
+      return Object.assign({}, state, {
+        video: {
+          paused: false
+        }
+      })
+
     case actions.DESTROY:
       return Object.assign({}, state, {
         home: undefined

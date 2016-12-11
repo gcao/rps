@@ -94,6 +94,7 @@ class Home extends Component {
     return (
       <HomeView
         started={this.props.started}
+        videoPaused={this.props.videoPaused}
         rounds={this.props.rounds}
         setVideoElem={this.setVideoElem}
         setCanvasElem={this.setCanvasElem}
@@ -107,9 +108,10 @@ class Home extends Component {
   }
 }
 
-function mapStateToProps({rounds, home}) {
+function mapStateToProps({rounds, home, video}) {
   return {
     rounds,
+    videoPaused: video && video.paused,
     ...home
   }
 }
