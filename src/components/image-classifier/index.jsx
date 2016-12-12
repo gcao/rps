@@ -13,7 +13,7 @@ import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import * as actions from './actions'
 
-class ImageClassifierComponent extends Component {
+class ImageClassifier extends Component {
   constructor(props) {
     super(props)
 
@@ -185,4 +185,4 @@ function mapStateToProps(state) {
   return state.imageClassifier || {}
 }
 
-export default connect(mapStateToProps)(ImageClassifierComponent)
+export default connect(mapStateToProps)(ImageClassifier)

@@ -71,7 +71,7 @@ class Home extends Component {
       this.stop()
 
       // let the AI predict and play, then train with the real human move, add to game state
-      let gameState = new GameState(this.target.props.rounds)
+      let gameState = new GameState(this.props.rounds)
       let prediction = this.computerPlayer.predict(gameState)
 
       let humanMove = action.imageClass

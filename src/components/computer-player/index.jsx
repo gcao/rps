@@ -2,7 +2,7 @@ import key from 'keymaster'
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import ResultComponent from '../result'
+import Result from '../result'
 
 import './index.less'
 
@@ -12,7 +12,7 @@ import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import { play, initialize } from './actions'
 
-class ComputerPlayerComponent extends Component {
+class ComputerPlayer extends Component {
   constructor(props) {
     super(props)
 
@@ -68,7 +68,7 @@ class ComputerPlayerComponent extends Component {
             )
           }
         </div>
-        <ResultComponent rounds={this.props.rounds}/>
+        <Result rounds={this.props.rounds}/>
       </div>
     )
   }
@@ -81,5 +81,5 @@ function mapStateToProps({rounds, computerPlayer}) {
   }
 }
 
-export default connect(mapStateToProps)(ComputerPlayerComponent)
+export default connect(mapStateToProps)(ComputerPlayer)
 

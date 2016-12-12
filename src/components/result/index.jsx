@@ -11,7 +11,7 @@ function toPercentage(val, digitsAfterDot) {
   return (val * 100).toFixed(digitsAfterDot) + '%'
 }
 
-class ResultComponent extends Component {
+class Result extends Component {
   render() {
     var gameState = new GameState(this.props.rounds)
     var reversedRounds = this.props.rounds.slice().reverse()
@@ -80,5 +80,5 @@ class ResultComponent extends Component {
   }
 }
 
-export default ResultComponent
+export default Result
 

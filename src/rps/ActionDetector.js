@@ -21,6 +21,11 @@ export default class ActionDetector {
   detect(newImage) {
     let result = {detected: false}
 
+    if (!newImage) {
+      this.reset()
+      return result
+    }
+
     let oldImage = this.rememberedImage
     this.rememberedImage = newImage
 
