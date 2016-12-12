@@ -21,9 +21,9 @@ export default class Video extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!this.props.paused && this.elem.paused) {
+    if (!newProps.paused && this.elem.paused) {
       this.elem.play()
-    } else if (this.props.paused && !this.elem.paused) {
+    } else if (newProps.paused && !this.elem.paused) {
       this.elem.pause()
     }
   }
