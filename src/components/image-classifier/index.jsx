@@ -1,17 +1,41 @@
+import './index.less'
+
 import key from 'keymaster'
 import React, { Component } from 'react'
 import { Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-
-import {
-  ROCK, PAPER, SCISSORS, UNKNOWN,
-} from '../../rps'
-
-import './index.less'
-
+import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
+import _capture from '../capture'
+import Video from '../Video'
 import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import * as actions from './actions'
+
+//function ButtonWithData(props) {
+//  return (
+//    <div className={`${props.item.name} class-container`}>
+//      { props.before &&
+//        <span className="before-training">
+//          { props.before }
+//          <br/>
+//        </span>
+//      }
+//      <Button primary size='tiny' onClick={ props.onClick }>{props.item.label}</Button><br/>
+//      { props.after &&
+//        <span className="after-training">
+//          { props.after }
+//        </span>
+//      }
+//    </div>
+//  )
+//}
+//              <ButtonWithData
+//                key={index}
+//                item={item}
+//                before={before && before.w[index].toFixed(4)}
+//                after={after && after.w[index].toFixed(4)}
+//                onClick={() => this.flag(item.value)}
+//              />
 
 class ImageClassifier extends Component {
   constructor(props) {
@@ -20,33 +44,11 @@ class ImageClassifier extends Component {
     this.props.dispatch(addReducer(reducers))
     this.props.dispatch(actions.initialize())
 
-    key('g, h', () => this.capture())
+    key('g, h', this.capture)
     key('f, j', () => this.flag(ROCK))
     key('d, k', () => this.flag(PAPER))
     key('s, l', () => this.flag(SCISSORS))
-    key('a, ;', () => this.flag(SCISSORS))
-  }
-
-  componentDidMount() {
-    var self = this
-    var constraints = {
-      video: {
-        mandatory: {
-          maxWidth: 320,
-          maxHeight: 240
-        }
-      }
-    }
-
-    navigator.getUserMedia = navigator.getUserMedia ||
-                             navigator.webkitGetUserMedia ||
-                             navigator.mozGetUserMedia
-
-    navigator.getUserMedia(constraints, function(stream) {
-      self.videoElem.src = window.URL.createObjectURL(stream)
-    }, function(e) {
-      console.log('Access to camera is rejected!', e)
-    })
+    key('a, ;', () => this.flag(UNKNOWN))
   }
 
   componentWillUnmount() {
@@ -60,22 +62,8 @@ class ImageClassifier extends Component {
     key.unbind('a, ;')
   }
 
-  capture() {
-    var ctx = this.canvasElem.getContext('2d')
-    ctx.drawImage(this.videoElem, 0, 0)
-
-    var imagePixels = ctx.getImageData(0, 0, 320, 240)
-    this.image = []
-    for (var i=0; i<320; i++) {
-      this.image[i] = []
-      for (var j=0; j<240; j++) {
-        var pixelIndex = (i * 4) * 240 + j * 4
-        // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
-        var grayScale = Math.round((imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3)
-        this.image[i].push(grayScale)
-      }
-    }
-
+  capture = () => {
+    this.image = _capture(this.videoElem, this.canvasElem)
     this.props.dispatch(actions.capture(this.image))
   }
 
@@ -116,6 +104,10 @@ class ImageClassifier extends Component {
     //})
   }
 
+  setVideoElem = (videoElem) => {
+    this.videoElem = videoElem
+  }
+
   render() {
     var before = this.props.before
     var after  = this.props.after
@@ -123,10 +115,10 @@ class ImageClassifier extends Component {
     return (
       <Container textAlign='center'>
         <p>
-          <video autoPlay ref={elem => this.videoElem = elem}/>
+          <Video setVideoElem={this.setVideoElem}/>
         </p>
         <p>
-          <Button primary onClick={ () => this.capture() }>Capture (G/H)</Button>
+          <Button primary onClick={this.capture}>Capture (G/H)</Button>
         </p>
         <p>
           <Button size='tiny' onClick={ () => this.retrain() }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
