@@ -22,10 +22,15 @@ module.exports = {
   module: {
     preLoaders: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.(js|jsx)$/,
         loader: 'eslint',
         include: path.join(__dirname, 'src')
-      }
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        loader: 'tslint',
+        include: path.join(__dirname, 'src')
+      },
     ],
     loaders: [
       {

@@ -1,17 +1,17 @@
-import React from 'react'
+import * as React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, hashHistory } from 'react-router'
-import { routerReducer, syncHistoryWithStore } from 'react-router-redux'
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunkMiddleware from 'redux-thunk'
 import { Provider } from 'react-redux'
+import { hashHistory, Route, Router } from 'react-router'
+import { routerReducer, syncHistoryWithStore } from 'react-router-redux'
+import { applyMiddleware, compose, createStore } from 'redux'
+// import thunkMiddleware from 'redux-thunk'
 
 import './common.less'
 
 import reducers from './reducers'
 
-import HomePage from './pages/HomePage'
 import ComputerPlayerPage from './pages/ComputerPlayerPage'
+import HomePage from './pages/HomePage'
 import ImageClassifierTrainingPage from './pages/ImageClassifierTrainingPage'
 
 import Action from './Action'
@@ -27,7 +27,7 @@ declare global {
 const initialState = new AppState()
 initialState.rounds = []
 
-let rootReducers = function(state: AppState, action: Action) {
+function rootReducers(state: AppState, action: Action) {
   // Do not proceed if action and action type are not passed
   if (!action && !action.type) {
     return state
@@ -47,7 +47,8 @@ const composeEnhancers =
 const store = createStore(
   rootReducers,
   initialState,
-  composeEnhancers(applyMiddleware(thunkMiddleware))
+  // composeEnhancers(applyMiddleware(thunkMiddleware)),
+  composeEnhancers(),
 )
 const history = syncHistoryWithStore(hashHistory, store)
 
@@ -59,7 +60,7 @@ render(
       <Route path="/action-trainer" component={ImageClassifierTrainingPage}/>
     </Router>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )
 
 // Added to window for debugging purpose
