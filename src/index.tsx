@@ -16,6 +16,7 @@ import ImageClassifierTrainingPage from './pages/ImageClassifierTrainingPage'
 
 import Action from './Action'
 import AppState from './AppState'
+import Round from './Round'
 
 declare global {
   interface Window {
@@ -24,8 +25,9 @@ declare global {
   }
 }
 
-const initialState = new AppState()
-initialState.rounds = []
+const initialState: AppState = {
+  rounds: [] as Round[],
+}
 
 function rootReducers(state: AppState, action: Action) {
   // Do not proceed if action and action type are not passed

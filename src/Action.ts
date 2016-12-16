@@ -1,4 +1,6 @@
-export default class Action {
+interface Action {
   type: string
-  payload: any
+  payload?: any
 }
+
+export default Action
