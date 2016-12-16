@@ -14,10 +14,20 @@ import HomePage from './pages/HomePage'
 import ComputerPlayerPage from './pages/ComputerPlayerPage'
 import ImageClassifierTrainingPage from './pages/ImageClassifierTrainingPage'
 
-const initialState = {
-  rounds: [],
+import Action from './Action'
+import AppState from './AppState'
+
+declare global {
+  interface Window {
+    store: any,
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any,
+  }
 }
-let rootReducers = function(state, action) {
+
+const initialState = new AppState()
+initialState.rounds = []
+
+let rootReducers = function(state: AppState, action: Action) {
   // Do not proceed if action and action type are not passed
   if (!action && !action.type) {
     return state
