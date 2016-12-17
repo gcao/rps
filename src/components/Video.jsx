@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 
+const WIDTH  = 320
+const HEIGHT = 240
+
 const CONSTRAINTS = {
   video: {
     mandatory: {
-      maxWidth: 320,
-      maxHeight: 240,
+      maxWidth: WIDTH,
+      maxHeight: HEIGHT,
     }
   }
 }
@@ -14,26 +17,50 @@ export default class Video extends Component {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
     navigator.getUserMedia(CONSTRAINTS, (stream) => {
-      this.elem.src = window.URL.createObjectURL(stream)
+      this.video.src = window.URL.createObjectURL(stream)
     }, function(e) {
       console.log('Access to camera is rejected!', e)
     })
   }
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.paused && this.elem.paused) {
-      this.elem.play()
-    } else if (newProps.paused && !this.elem.paused) {
-      this.elem.pause()
+    if (!newProps.paused && this.video.paused) {
+      this.video.play()
+    } else if (newProps.paused && !this.video.paused) {
+      this.video.pause()
     }
   }
 
-  setVideoElem = (elem) => {
-    this.elem = elem
-    this.props.setVideoElem && this.props.setVideoElem(elem)
+  capture() {
+    let data = null
+
+    let ctx = this.canvas.getContext('2d')
+    ctx.drawImage(this.video, 0, 0)
+
+    let imagePixels = ctx.getImageData(0, 0, 320, 240)
+    data = []
+    for (var i=0; i<320; i++) {
+      data[i] = []
+      for (var j=0; j<240; j++) {
+        var pixelIndex = (i * 4) * 240 + j * 4
+        // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
+        var grayScale = (imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3
+        data[i].push(grayScale)
+      }
+    }
+
+    return data
   }
 
   render() {
-    return <video autoPlay ref={this.setVideoElem}/>
+    return (
+      <span>
+        <video autoPlay ref={ (el) => this.video = el }/>
+        <canvas width={ WIDTH } height={ HEIGHT }
+          style={{ display: 'none' }}
+          ref={ (el) => this.canvas = el }
+        />
+      </span>
+    )
   }
 }
