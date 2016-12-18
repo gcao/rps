@@ -44,7 +44,13 @@ class ImageClassifier extends Component {
     let image = this.video.capture()
     let result = this.imageClassifier.predict(image)
     let before = result.prediction
-    this.dispatch(actions.capture({image, before}))
+    this.dispatch(actions.capture({
+      image,
+      before,
+      after: undefined,
+      captured: true,
+      flagged: false,
+    }))
   }
 
   flag = (imageClass) => {
@@ -60,7 +66,11 @@ class ImageClassifier extends Component {
     this.imageClassifier.train(this.props.image, imageClass)
     let result = this.imageClassifier.predict(this.props.image)
     let after = result.prediction
-    this.dispatch(actions.flag({imageClass, after}))
+    this.dispatch(actions.flag({
+      imageClass,
+      after,
+      flagged: true,
+    }))
   }
 
   clearTrainingData = () => {
@@ -115,53 +125,59 @@ class ImageClassifier extends Component {
     return (
       <Container textAlign='center'>
         <p>
-          <Video ref={ this.setVideo }/>
+          <Video paused={!this.props.flagged} ref={ this.setVideo }/>
         </p>
-        <p>
-          <Button primary onClick={ this.capture }>Capture (G/H)</Button>
-        </p>
-        <p>
-          <Button size='tiny' onClick={ this.retrain }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
-          <Button size='tiny' onClick={ this.reset }>Reset</Button>
-        </p>
-        <p className="load-save-container">
-          <Button size='tiny' onClick={ this.load }>Load trained model</Button>&nbsp;&nbsp;&nbsp;
-          <Button size='tiny' onClick={ this.save }>Save trained model</Button>
-          <br/>
-        </p>
-        <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
-          <p className="save-training-data-container">
-            <label>
-              <input type="checkbox" onClick={ this.toggleSaveFlag }/>
-              <span> Auto save training data</span>
-            </label>
-            <br/>
-            <Button size='tiny' onClick={ this.clearTrainingData }>Clear training data</Button>
-          </p>
-          {
-            [
-              { name: 'rock',     label: 'Rock (F/J)',     value: ROCK },
-              { name: 'paper',    label: 'Paper (D/K)',    value: PAPER },
-              { name: 'scissors', label: 'Scissors (S/L)', value: SCISSORS },
-              { name: 'unknown',  label: 'Unknown (A/;)',  value: UNKNOWN },
-            ].map((item, index) =>
-              <div key={index} className={`${item.name} class-container`}>
-                { before &&
-                  <span className="before-training">
-                    { before.w[index].toFixed(4) }
-                    <br/>
-                  </span>
-                }
-                <Button primary size='tiny' onClick={ () => this.flag(item.value) }>{item.label}</Button><br/>
-                { after &&
-                  <span className="after-training">
-                    { after.w[index].toFixed(4) }
-                  </span>
-                }
-              </div>
-            )
-          }
-        </div>
+        { (!this.props.captured || this.props.flagged) &&
+          <div>
+            <p>
+              <Button primary onClick={ this.capture }>Capture (G/H)</Button>
+            </p>
+            <p>
+              <Button size='tiny' onClick={ this.retrain }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
+              <Button size='tiny' onClick={ this.reset }>Reset</Button>
+            </p>
+            <p className="load-save-container">
+              <Button size='tiny' onClick={ this.load }>Load trained model</Button>&nbsp;&nbsp;&nbsp;
+              <Button size='tiny' onClick={ this.save }>Save trained model</Button>
+              <br/>
+            </p>
+          </div>
+        }
+        { this.props.captured &&
+          <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
+            <p className="save-training-data-container">
+              <label>
+                <input type="checkbox" onClick={ this.toggleSaveFlag }/>
+                <span> Auto save training data</span>
+              </label>
+              <br/>
+              <Button size='tiny' onClick={ this.clearTrainingData }>Clear training data</Button>
+            </p>
+            {
+              [
+                { name: 'rock',     label: 'Rock (F/J)',     value: ROCK },
+                { name: 'paper',    label: 'Paper (D/K)',    value: PAPER },
+                { name: 'scissors', label: 'Scissors (S/L)', value: SCISSORS },
+                { name: 'unknown',  label: 'Unknown (A/;)',  value: UNKNOWN },
+              ].map((item, index) =>
+                <div key={index} className={`${item.name} class-container`}>
+                  { before &&
+                    <span className="before-training">
+                      { before.w[index].toFixed(4) }
+                      <br/>
+                    </span>
+                  }
+                  <Button primary size='tiny' onClick={ () => this.flag(item.value) }>{item.label}</Button><br/>
+                  { after &&
+                    <span className="after-training">
+                      { after.w[index].toFixed(4) }
+                    </span>
+                  }
+                </div>
+              )
+            }
+          </div>
+        }
         <br/>
         <br/>
         <br/>
