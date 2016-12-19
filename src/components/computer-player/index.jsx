@@ -12,7 +12,12 @@ import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import * as actions from './actions'
 
-class ComputerPlayer extends Component {
+function mapStateToProps({rounds, computerPlayer}) {
+  return { rounds, ...computerPlayer }
+}
+
+@connect(mapStateToProps)
+export default class ComputerPlayer extends Component {
   constructor(props) {
     super(props)
 
@@ -20,7 +25,7 @@ class ComputerPlayer extends Component {
     this.computerPlayer = new ComputerPlayerProxy(window[name])
 
     this.dispatch = props.dispatch
-    this.dispatch(addReducer(reducers))
+    this.dispatch(addReducer({reducers}))
     this.dispatch(actions.initialize({name}))
 
     key('f, j', () => this.play(ROCK))
@@ -93,13 +98,3 @@ class ComputerPlayer extends Component {
     )
   }
 }
-
-function mapStateToProps({rounds, computerPlayer}) {
-  return {
-    rounds,
-    ...computerPlayer,
-  }
-}
-
-export default connect(mapStateToProps)(ComputerPlayer)
-

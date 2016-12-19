@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { Container, Header, Divider } from 'semantic-ui-react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
-
 import ComputerPlayer from '../components/computer-player'
 
-class ComputerPlayerPage extends Component {
+export default class ComputerPlayerPage extends Component {
   render() {
     return (
       <Container textAlign='center'>
@@ -19,5 +17,3 @@ class ComputerPlayerPage extends Component {
     )
   }
 }
-
-export default connect()(ComputerPlayerPage)

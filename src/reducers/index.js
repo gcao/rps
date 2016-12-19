@@ -6,9 +6,9 @@ const defaultReducers = new ReducerGroup()
 
 export default function(state, action) {
   if (action.type === ADD_REDUCER) {
-    defaultReducers.add(action.reducer)
+    defaultReducers.add(action.payload.reducers)
   } else if (action.type === REMOVE_REDUCER) {
-    defaultReducers.remove(action.reducer)
+    defaultReducers.remove(action.payload.reducers)
   }
 
   return defaultReducers.handle(state, action)

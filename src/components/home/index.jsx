@@ -11,18 +11,27 @@ import * as actions from './actions'
 
 const ACTION_DETECTION_INTERVAL = 150
 
-class Home extends Component {
+function mapStateToProps({rounds, home, video}) {
+  return {
+    rounds,
+    videoPaused: video && video.paused,
+    ...home
+  }
+}
+
+@connect(mapStateToProps)
+export default class Home extends Component {
   constructor(props) {
     super(props)
 
     this.dispatch = props.dispatch
-    this.dispatch(addReducer(reducers))
+    this.dispatch(addReducer({reducers}))
 
     this.actionDetector = new ActionDetector()
   }
 
   componentWillUnmount() {
-    this.dispatch(removeReducer(reducers))
+    this.dispatch(removeReducer({reducers}))
   }
 
   setVideo = (video) => {
@@ -116,13 +125,3 @@ class Home extends Component {
     )
   }
 }
-
-function mapStateToProps({rounds, home, video}) {
-  return {
-    rounds,
-    videoPaused: video && video.paused,
-    ...home
-  }
-}
-
-export default connect(mapStateToProps)(Home)

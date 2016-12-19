@@ -1,17 +1,7 @@
-export const ADD_REDUCER = 'ADD_REDUCER'
+import { createAction } from 'redux-actions'
+
+export const ADD_REDUCER    = 'ADD_REDUCER'
 export const REMOVE_REDUCER = 'REMOVE_REDUCER'
 
-export function addReducer(reducer) {
-  return {
-    type: ADD_REDUCER,
-    reducer,
-  }
-}
-
-export function removeReducer(reducer) {
-  return {
-    type: REMOVE_REDUCER,
-    reducer,
-  }
-}
-
+export let addReducer    = createAction(ADD_REDUCER)
+export let removeReducer = createAction(REMOVE_REDUCER)

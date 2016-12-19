@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
-
 import Home from '../components/home'
 
-class Homepage extends Component {
+export default class Homepage extends Component {
   render() {
     return (
       <div>
@@ -19,5 +17,3 @@ class Homepage extends Component {
     )
   }
 }
-
-export default connect()(Homepage)

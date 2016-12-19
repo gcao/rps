@@ -9,17 +9,22 @@ import Video from '../Video'
 import { ROCK, PAPER, SCISSORS, UNKNOWN, shuffle, translateMove } from '../../rps'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
 import { addReducer, removeReducer } from '../../reducers'
-import reducers from './reducers'
+import reducers, { STATE_KEY } from './reducers'
 import * as actions from './actions'
 
 const SHOW_TRAINING_TIMEOUT = 1500
 
-class ImageClassifier extends Component {
+function mapStateToProps(state) {
+  return state[STATE_KEY] || {}
+}
+
+@connect(mapStateToProps)
+export default class ImageClassifier extends Component {
   constructor(props) {
     super(props)
 
     this.dispatch = props.dispatch
-    this.dispatch(addReducer(reducers))
+    this.dispatch(addReducer({reducers}))
     this.reset()
 
     key('g, h', this.capture)
@@ -206,9 +211,3 @@ class ImageClassifier extends Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return state.imageClassifier || {}
-}
-
-export default connect(mapStateToProps)(ImageClassifier)
