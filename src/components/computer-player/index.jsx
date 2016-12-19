@@ -1,23 +1,27 @@
+import './index.less'
+
 import key from 'keymaster'
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Result from '../result'
-
-import './index.less'
-
 import { ROCK, PAPER, SCISSORS } from '../../rps'
-
+import GameState from '../../rps/GameState'
+import { ComputerPlayerProxy } from '../../rps/computer-player'
 import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
-import { play, initialize } from './actions'
+import * as actions from './actions'
 
 class ComputerPlayer extends Component {
   constructor(props) {
     super(props)
 
-    this.props.dispatch(addReducer(reducers))
-    this.props.dispatch(initialize(this.props.computerPlayer))
+    let name = this.props.name || 'DefaultComputerPlayer'
+    this.computerPlayer = new ComputerPlayerProxy(window[name])
+
+    this.dispatch = props.dispatch
+    this.dispatch(addReducer(reducers))
+    this.dispatch(actions.initialize(name))
 
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
@@ -25,11 +29,27 @@ class ComputerPlayer extends Component {
   }
 
   play(move) {
-    this.props.dispatch(play(move))
+    let gameState    = new GameState(this.props.rounds)
+    let before       = this.computerPlayer.predict(gameState)
+    let computerMove = before.winningMove
+
+    this.computerPlayer.train(gameState, move)
+    let after = this.computerPlayer.predict(gameState)
+
+    let prediction = {
+      before: before,
+      after:  after,
+    }
+
+    this.dispatch(actions.play({
+      player1Move: move,
+      player2Move: computerMove,
+      prediction,
+    }))
   }
 
   componentWillUnmount() {
-    this.props.dispatch(removeReducer(reducers))
+    this.dispatch(removeReducer(reducers))
 
     key.unbind('f, j')
     key.unbind('d, k')

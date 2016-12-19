@@ -1,39 +1,26 @@
-import { ComputerPlayerProxy } from '../../rps/computer-player'
-import GameState from '../../rps/GameState'
-
-import {
-  INITIALIZE,
-  PLAY,
-} from './actions'
-
-var computerPlayer
+import { INITIALIZE, PLAY } from './actions'
 
 export default function reducers(state, action) {
   switch (action.type) {
     case INITIALIZE:
-      let name = action.computerPlayer || 'DefaultComputerPlayer'
-
-      computerPlayer = new ComputerPlayerProxy(window[name])
-      return state
+      return Object.assign({}, state, {
+        computerPlayer: {
+          name: action.name,
+        }
+      })
 
     case PLAY:
-      var gameState = new GameState(state.rounds)
-      var before = computerPlayer.predict(gameState)
-
-      computerPlayer.train(gameState, action.move)
-      var after = computerPlayer.predict(gameState)
-
-      // Add current round to game state
-      var computerMove = before.winningMove
-      var rounds = state.rounds.slice()
-      rounds.push([action.move, computerMove])
+      let { rounds } = state
+      let player1Move = action.payload.player1Move
+      let player2Move = action.payload.player2Move
+      let prediction = action.payload.prediction
+      rounds.push([player1Move, player2Move])
 
       return Object.assign({}, state, {
-        rounds: rounds,
-        prediction: {
-          before: before,
-          after:  after
-        }
+        rounds,
+        computerPlayer: Object.assign({}, state.computerPlayer, {
+          prediction,
+        })
       })
 
     default:

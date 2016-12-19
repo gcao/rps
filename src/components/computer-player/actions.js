@@ -1,16 +1,7 @@
+import { createAction } from 'redux-actions'
+
 export const INITIALIZE = 'computerPlayer.initialize'
 export const PLAY       = 'computerPlayer.play'
 
-export function initialize(computerPlayer) {
-  return {
-    type: INITIALIZE,
-    computerPlayer,
-  }
-}
-
-export function play(move) {
-  return {
-    type: PLAY,
-    move,
-  }
-}
+export let initialize = createAction(INITIALIZE)
+export let play       = createAction(PLAY)
