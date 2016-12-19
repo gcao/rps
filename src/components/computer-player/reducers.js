@@ -1,27 +1,27 @@
 import { INITIALIZE, PLAY } from './actions'
+import replace from '../../reducers/replace'
+import update from '../../reducers/update'
+
+export const STATE_KEY = 'computerPlayer'
 
 export default function reducers(state, action) {
   switch (action.type) {
     case INITIALIZE:
-      return Object.assign({}, state, {
-        computerPlayer: {
-          name: action.name,
-        }
-      })
+      return replace(state, STATE_KEY, action.payload)
 
     case PLAY:
-      let { rounds } = state
+      let { rounds }  = state
       let player1Move = action.payload.player1Move
       let player2Move = action.payload.player2Move
-      let prediction = action.payload.prediction
+      let prediction  = action.payload.prediction
+
       rounds.push([player1Move, player2Move])
 
-      return Object.assign({}, state, {
-        rounds,
-        computerPlayer: Object.assign({}, state.computerPlayer, {
-          prediction,
-        })
-      })
+      return update(
+        replace(state, 'rounds', rounds),
+        STATE_KEY,
+        { prediction },
+      )
 
     default:
       return state

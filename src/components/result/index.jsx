@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import { Progress } from 'semantic-ui-react'
-
 import './index.less'
 
+import React, { Component } from 'react'
+import { Progress } from 'semantic-ui-react'
 import { computeResult, translateMove } from '../../rps'
 import GameState  from '../../rps/GameState'
 

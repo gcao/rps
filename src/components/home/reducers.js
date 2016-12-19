@@ -1,46 +1,27 @@
 import * as actions from './actions'
+import replace from '../../reducers/replace'
+import update from '../../reducers/update'
+
+export const STATE_KEY = 'home'
 
 export default function reducers(state, {type, payload}) {
   switch (type) {
     case actions.INITIALIZE:
-      return replace(state, {})
+      return replace(state, STATE_KEY, {})
 
     case actions.START:
-      return update(state, {started: true})
+      return update(state, STATE_KEY, {started: true})
 
     case actions.PAUSE:
-      return Object.assign({}, state, {
-        video: {
-          paused: true
-        }
-      })
+      return update(state, 'video', {paused: true})
 
     case actions.RESUME:
-      return Object.assign({}, state, {
-        video: {
-          paused: false
-        }
-      })
+      return update(state, 'video', {paused: false})
 
     case actions.DESTROY:
-      return Object.assign({}, state, {
-        home: undefined
-      })
+      return replace(state, STATE_KEY)
 
     default:
       return state
   }
 }
-
-function replace(state, payload) {
-  return Object.assign({}, state, {
-    home: payload
-  })
-}
-
-function update(state, payload) {
-  return Object.assign({}, state, {
-    home: Object.assign({}, state.home, payload)
-  })
-}
-

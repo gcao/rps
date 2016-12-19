@@ -21,7 +21,7 @@ class ComputerPlayer extends Component {
 
     this.dispatch = props.dispatch
     this.dispatch(addReducer(reducers))
-    this.dispatch(actions.initialize(name))
+    this.dispatch(actions.initialize({name}))
 
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
