@@ -12,6 +12,8 @@ import { addReducer, removeReducer } from '../../reducers'
 import reducers from './reducers'
 import * as actions from './actions'
 
+const SHOW_TRAINING_TIMEOUT = 1500
+
 class ImageClassifier extends Component {
   constructor(props) {
     super(props)
@@ -50,6 +52,7 @@ class ImageClassifier extends Component {
       after: undefined,
       captured: true,
       flagged: false,
+      showTraining: true,
     }))
   }
 
@@ -71,6 +74,9 @@ class ImageClassifier extends Component {
       after,
       flagged: true,
     }))
+
+    // Hide training
+    setTimeout(() => this.dispatch(actions.update({showTraining: false})), SHOW_TRAINING_TIMEOUT)
   }
 
   clearTrainingData = () => {
@@ -118,6 +124,14 @@ class ImageClassifier extends Component {
     this.video = video
   }
 
+  showLast = () => {
+    this.dispatch(actions.update({showTraining: true}))
+  }
+
+  hideTraining = () => {
+    this.dispatch(actions.update({showTraining: false}))
+  }
+
   render() {
     var before = this.props.before
     var after  = this.props.after
@@ -125,12 +139,15 @@ class ImageClassifier extends Component {
     return (
       <Container textAlign='center'>
         <p>
-          <Video paused={!this.props.flagged} ref={ this.setVideo }/>
+          <Video showCaptured={this.props.showTraining} ref={ this.setVideo }/>
         </p>
-        { (!this.props.captured || this.props.flagged) &&
+        { !this.props.showTraining &&
           <div>
             <p>
               <Button primary onClick={ this.capture }>Capture (G/H)</Button>
+              { this.props.captured &&
+                <Button onClick={ this.showLast }>Show Last</Button>
+              }
             </p>
             <p>
               <Button size='tiny' onClick={ this.retrain }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
@@ -143,8 +160,13 @@ class ImageClassifier extends Component {
             </p>
           </div>
         }
-        { this.props.captured &&
+        { this.props.showTraining &&
           <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
+            { this.props.showTraining &&
+              <p>
+                <Button primary onClick={ this.hideTraining }>Cancel</Button>
+              </p>
+            }
             <p className="save-training-data-container">
               <label>
                 <input type="checkbox" onClick={ this.toggleSaveFlag }/>
