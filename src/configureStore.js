@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import thunkMiddleware from 'redux-thunk'
 import reducers from './reducers'
 
 let rootReducers = function(state, action) {
@@ -25,6 +24,6 @@ export default function(initialState) {
   return createStore(
     rootReducers,
     initialState,
-    composeEnhancers(applyMiddleware(thunkMiddleware))
+    composeEnhancers(applyMiddleware())
   )
 }

@@ -19,11 +19,8 @@ class ImageClassifier extends Component {
     super(props)
 
     this.dispatch = props.dispatch
-
     this.dispatch(addReducer(reducers))
-
-    let implementation = window[this.props.name || 'DefaultImageClassifier']
-    this.imageClassifier = new ImageClassifierProxy(implementation)
+    this.reset()
 
     key('g, h', this.capture)
     key('f, j', () => this.flag(ROCK))
@@ -84,7 +81,9 @@ class ImageClassifier extends Component {
   }
 
   reset = () => {
-    console.log('TODO: ImageClassifier.reset')
+    let implementation = window[this.props.name || 'DefaultImageClassifier']
+    this.imageClassifier = new ImageClassifierProxy(implementation)
+    this.dispatch(actions.initialize())
   }
 
   toggleSaveFlag = () => {
@@ -113,11 +112,11 @@ class ImageClassifier extends Component {
   }
 
   load = () => {
-    console.log('TODO: ImageClassifier.load')
+    this.imageClassifier.load()
   }
 
   save = () => {
-    console.log('TODO: ImageClassifier.save')
+    this.imageClassifier.save()
   }
 
   setVideo = (video) => {

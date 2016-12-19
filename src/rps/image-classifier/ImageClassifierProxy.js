@@ -1,5 +1,4 @@
-/*global convnetjs */
-import jQuery from 'jquery'
+/*global fetch, convnetjs */
 
 function imageToVol(imageData) {
   var sx = imageData.length
@@ -23,10 +22,9 @@ export default function ImageClassifierProxy(modelClass, options) {
       console.log('The image classifier model is loaded successfully.')
     } else {
       //console.log('No saved image classifier model for ' + modelClass.name + ' is found.')
-      var self = this
       var modelUrl = 'models/' + modelClass.name + '.json'
-      jQuery.getJSON(modelUrl, function(data) {
-        self.model.net.fromJSON(data)
+      fetch(modelUrl).then((data) => {
+        this.model.net.fromJSON(data)
         console.log('The image classifier model is loaded successfully.')
       })
     }
