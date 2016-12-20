@@ -57,9 +57,9 @@ const history = syncHistoryWithStore(hashHistory, store)
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={HomePage}/>
-      <Route path="/computer-player" component={ComputerPlayerPage}/>
-      <Route path="/action-trainer" component={ImageClassifierTrainingPage}/>
+      <Route path="/" component={HomePage} />
+      <Route path="/computer-player" component={ComputerPlayerPage} />
+      <Route path="/action-trainer" component={ImageClassifierTrainingPage} />
     </Router>
   </Provider>,
   document.getElementById('root'),

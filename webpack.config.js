@@ -31,6 +31,14 @@ module.exports = {
         loader: 'tslint',
         include: path.join(__dirname, 'src')
       },
+      {
+        test: /\.(ts|tsx)$/,
+        loader: 'tsfmt-loader',
+        query: {
+          replace: true
+        },
+        include: path.join(__dirname, 'src')
+      },
     ],
     loaders: [
       {
