@@ -4,6 +4,7 @@
   "description": "Rock Paper Scissors: You vs The Machine",
   "scripts": {
     "start": "node server.js",
+    "build": "node_modules/.bin/webpack -d --optimize-minimize --optimize-dedupe",
     "lint": "eslint src"
   },
   "repository": {

@@ -3,18 +3,35 @@ var webpack = require('webpack');
 
 module.exports = {
   devtool: 'eval-source-map',
-  entry: [
-    'webpack-dev-server/client?http://localhost:3100',
-    'webpack/hot/only-dev-server',
-    './src/index'
-  ],
+  entry: {
+    main: [
+      'webpack-dev-server/client?http://localhost:3100',
+      'webpack/hot/only-dev-server',
+      './src/index'
+    ],
+    vendor: [
+      "react",
+      "react-dom",
+      "react-router",
+      "redux",
+      "react-router-redux",
+      "semantic-ui-react",
+      "keymaster",
+    ],
+  },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: 'http://localhost:3100/static/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      minChunks: Infinity,
+      // (with more entries, this ensures that no other module
+      //  goes into the vendor chunk)
+    }),
   ],
   resolve: {
     extensions: ['', '.js', '.jsx']
