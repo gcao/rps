@@ -1,4 +1,14 @@
-node_modules
-npm-debug.log
+.svn/
+build/
+dist/
+node_modules/
+*.log
+tags
 .DS_Store
+/.tmp
+/js-coverage
+*.swp
+*.swo
+*.bkup
+.idea/
 public/data/
