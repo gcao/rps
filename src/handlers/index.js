@@ -1,6 +1,16 @@
-export HandlerGroup from './HandlerGroup'
 import GroupHandler from './GroupHandler'
 import middleware from './middleware'
-export middleware, { addHandler, removeHandler } from './middleware'
 
-middleware.handlers.add(new GroupHandler(middleware.handlers))
+export HandlerGroup from './HandlerGroup'
+export { middleware }
+
+let handleGroupActions = new GroupHandler(middleware.handlers).handle
+middleware.handlers.add(handleGroupActions)
+
+export function addHandler(handler) {
+  middleware.handlers.add(handler)
+}
+
+export function removeHandler(handler) {
+  middleware.handlers.remove(handler)
+}

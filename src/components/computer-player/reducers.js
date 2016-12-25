@@ -1,3 +1,5 @@
+import { addReducer } from '../../reducers'
+
 import { INITIALIZE, PLAY } from './actions'
 import replace from '../../reducers/replace'
 import update from '../../reducers/update'
@@ -28,3 +30,4 @@ export default function reducers(state, action) {
   }
 }
 
+addReducer(reducers)

@@ -6,11 +6,8 @@ import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Result from '../result'
 import { ROCK, PAPER, SCISSORS } from '../../rps'
-import GameState from '../../rps/GameState'
-import { ComputerPlayerProxy } from '../../rps/computer-player'
-import { addReducer, removeReducer } from '../../reducers'
-import reducers from './reducers'
-import * as actions from './actions'
+import { initialize as initComputerPlayer, play } from './actions'
+import './reducers'
 
 function mapStateToProps({rounds, computerPlayer}) {
   return { rounds, ...computerPlayer }
@@ -21,12 +18,7 @@ export default class ComputerPlayer extends Component {
   constructor(props) {
     super(props)
 
-    let name = this.props.name || 'DefaultComputerPlayer'
-    this.computerPlayer = new ComputerPlayerProxy(window[name])
-
-    this.dispatch = props.dispatch
-    this.dispatch(addReducer({reducers}))
-    this.dispatch(actions.initialize({name}))
+    this.props.dispatch(initComputerPlayer(this.props.name))
 
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
@@ -34,28 +26,10 @@ export default class ComputerPlayer extends Component {
   }
 
   play(move) {
-    let gameState    = new GameState(this.props.rounds)
-    let before       = this.computerPlayer.predict(gameState)
-    let computerMove = before.winningMove
-
-    this.computerPlayer.train(gameState, move)
-    let after = this.computerPlayer.predict(gameState)
-
-    let prediction = {
-      before: before,
-      after:  after,
-    }
-
-    this.dispatch(actions.play({
-      player1Move: move,
-      player2Move: computerMove,
-      prediction,
-    }))
+    this.props.dispatch(play(move))
   }
 
   componentWillUnmount() {
-    this.dispatch(removeReducer(reducers))
-
     key.unbind('f, j')
     key.unbind('d, k')
     key.unbind('s, l')

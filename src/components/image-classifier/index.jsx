@@ -8,8 +8,7 @@ import { connect } from 'react-redux'
 import Video from '../Video'
 import { ROCK, PAPER, SCISSORS, UNKNOWN, shuffle, translateMove } from '../../rps'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
-import { addReducer, removeReducer } from '../../reducers'
-import reducers, { STATE_KEY } from './reducers'
+import { STATE_KEY } from './reducers'
 import * as actions from './actions'
 
 const SHOW_TRAINING_TIMEOUT = 1500
@@ -24,7 +23,6 @@ export default class ImageClassifier extends Component {
     super(props)
 
     this.dispatch = props.dispatch
-    this.dispatch(addReducer({reducers}))
     this.reset()
 
     key('g, h', this.capture)
@@ -35,8 +33,6 @@ export default class ImageClassifier extends Component {
   }
 
   componentWillUnmount() {
-    this.dispatch(removeReducer(reducers))
-
     key.unbind('g, h')
     key.unbind('f, j')
     key.unbind('d, k')

@@ -5,8 +5,7 @@ import Result from '../result'
 import Video from '../Video'
 import GameState from '../../rps/GameState'
 import ActionDetector from '../../rps/ActionDetector'
-import { addReducer, removeReducer } from '../../reducers'
-import reducers from './reducers'
+import './reducers'
 import * as actions from './actions'
 
 const ACTION_DETECTION_INTERVAL = 150
@@ -25,13 +24,8 @@ export default class Home extends Component {
     super(props)
 
     this.dispatch = props.dispatch
-    this.dispatch(addReducer({reducers}))
 
     this.actionDetector = new ActionDetector()
-  }
-
-  componentWillUnmount() {
-    this.dispatch(removeReducer({reducers}))
   }
 
   setVideo = (video) => {

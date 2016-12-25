@@ -14,14 +14,13 @@ export default class HandlerGroup {
     this.children.remove(child)
   }
 
-  handle(action) {
+  handle(action, ...args) {
     let result
     let child
 
     for (var i = 0; i < this.children.length; i++) {
-      child = this.children[i]
-      result = child.handle(action)
-      //result = this.middleware.check_result(result)
+      child  = this.children[i]
+      result = child(action, ...args)
       if (result && result.isAbort) {
         break
       }
