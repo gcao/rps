@@ -13,7 +13,7 @@ let computerPlayer
 
 addHandler((action, {store}) => {
   if (action.type === INITIALIZE) {
-    let name = action.name || 'DefaultComputerPlayer'
+    let name = action.payload || 'DefaultComputerPlayer'
     computerPlayer = new ComputerPlayerProxy(window[name])
   } else if (action.type === PLAY) {
     let move         = action.payload

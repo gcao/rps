@@ -1,4 +1,3 @@
-/* globals fetch */
 import './index.less'
 
 import key from 'keymaster'
@@ -6,12 +5,13 @@ import React, { Component } from 'react'
 import { Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Video from '../Video'
-import { ROCK, PAPER, SCISSORS, UNKNOWN, shuffle, translateMove } from '../../rps'
-import { ImageClassifierProxy } from '../../rps/image-classifier'
+//import { ROCK, PAPER, SCISSORS, UNKNOWN, shuffle, translateMove } from '../../rps'
+import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
+//import { ImageClassifierProxy } from '../../rps/image-classifier'
 import { STATE_KEY } from './reducers'
-import * as actions from './actions'
+import { initialize as initImageClassifier, capture, flag, toggleSaveFlag, update } from './actions'
 
-const SHOW_TRAINING_TIMEOUT = 1500
+//const SHOW_TRAINING_TIMEOUT = 1500
 
 function mapStateToProps(state) {
   return state[STATE_KEY] || {}
@@ -22,7 +22,7 @@ export default class ImageClassifier extends Component {
   constructor(props) {
     super(props)
 
-    this.dispatch = props.dispatch
+    //this.dispatch = props.dispatch
     this.reset()
 
     key('g, h', this.capture)
@@ -41,95 +41,101 @@ export default class ImageClassifier extends Component {
   }
 
   capture = () => {
-    let image = this.video.capture()
-    let result = this.imageClassifier.predict(image)
-    let before = result.prediction
-    this.dispatch(actions.capture({
-      image,
-      before,
-      after: undefined,
-      captured: true,
-      flagged: false,
-      showTraining: true,
-    }))
+    this.props.dispatch(capture())
+    //let image = this.video.capture()
+    //let result = this.imageClassifier.predict(image)
+    //let before = result.prediction
+    //this.dispatch(actions.capture({
+    //  image,
+    //  before,
+    //  after: undefined,
+    //  captured: true,
+    //  flagged: false,
+    //  showTraining: true,
+    //}))
   }
 
   flag = (imageClass) => {
-    if (this.props.saveFlag) {
-      let saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
-      fetch(saveAs, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(this.props.image),
-      })
-    }
+    this.props.dispatch(flag({imageClass}))
+    //if (this.props.saveFlag) {
+    //  let saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
+    //  fetch(saveAs, {
+    //    method: 'POST',
+    //    headers: {'Content-Type': 'application/json'},
+    //    body: JSON.stringify(this.props.image),
+    //  })
+    //}
 
-    this.imageClassifier.train(this.props.image, imageClass)
-    let result = this.imageClassifier.predict(this.props.image)
-    let after = result.prediction
-    this.dispatch(actions.flag({
-      imageClass,
-      after,
-      flagged: true,
-    }))
+    //this.imageClassifier.train(this.props.image, imageClass)
+    //let result = this.imageClassifier.predict(this.props.image)
+    //let after = result.prediction
+    //this.dispatch(actions.flag({
+    //  imageClass,
+    //  after,
+    //  flagged: true,
+    //}))
 
-    // Hide training
-    setTimeout(() => this.dispatch(actions.update({showTraining: false})), SHOW_TRAINING_TIMEOUT)
+    //// Hide training
+    //setTimeout(() => this.dispatch(actions.update({showTraining: false})), SHOW_TRAINING_TIMEOUT)
   }
 
   clearTrainingData = () => {
-    fetch('data/image-classifier/', {method: 'POST'})
+    //fetch('data/image-classifier/', {method: 'POST'})
   }
 
   reset = () => {
-    let implementation = window[this.props.name || 'DefaultImageClassifier']
-    this.imageClassifier = new ImageClassifierProxy(implementation)
-    this.dispatch(actions.initialize())
+    this.props.dispatch(initImageClassifier(this.props.name))
+    //let implementation = window[this.props.name || 'DefaultImageClassifier']
+    //this.imageClassifier = new ImageClassifierProxy(implementation)
+    //this.dispatch(actions.initialize())
   }
 
   toggleSaveFlag = () => {
-    this.dispatch(actions.toggleSaveFlag({saveFlag: this.props.saveFlag}))
+    this.props.dispatch(toggleSaveFlag({saveFlag: this.props.saveFlag}))
+    //this.dispatch(actions.toggleSaveFlag({saveFlag: this.props.saveFlag}))
   }
 
   retrain = () => {
-    fetch('data/image-classifier/').then(imageUrls => {
-      shuffle(imageUrls).forEach(function(imageUrl) {
-        var imageClass
-        if (imageUrl.match(/rock/)) {
-          imageClass = ROCK
-        } else if (imageUrl.match(/paper/)) {
-          imageClass = PAPER
-        } else if (imageUrl.match(/scissors/)) {
-          imageClass = SCISSORS
-        } else {
-          imageClass = UNKNOWN
-        }
+    //fetch('data/image-classifier/').then(imageUrls => {
+    //  shuffle(imageUrls).forEach(function(imageUrl) {
+    //    var imageClass
+    //    if (imageUrl.match(/rock/)) {
+    //      imageClass = ROCK
+    //    } else if (imageUrl.match(/paper/)) {
+    //      imageClass = PAPER
+    //    } else if (imageUrl.match(/scissors/)) {
+    //      imageClass = SCISSORS
+    //    } else {
+    //      imageClass = UNKNOWN
+    //    }
 
-        fetch(imageUrl).then(imageData => {
-          this.imageClassifier.train(imageData, imageClass)
-        })
-      })
-    })
+    //    fetch(imageUrl).then(imageData => {
+    //      this.imageClassifier.train(imageData, imageClass)
+    //    })
+    //  })
+    //})
   }
 
   load = () => {
-    this.imageClassifier.load()
+    //this.imageClassifier.load()
   }
 
   save = () => {
-    this.imageClassifier.save()
+    //this.imageClassifier.save()
   }
 
-  setVideo = (video) => {
-    this.video = video
-  }
+  //setVideo = (video) => {
+  //  this.video = video
+  //}
 
   showLast = () => {
-    this.dispatch(actions.update({showTraining: true}))
+    this.props.dispatch(update({showTraining: true}))
+    //this.dispatch(actions.update({showTraining: true}))
   }
 
   hideTraining = () => {
-    this.dispatch(actions.update({showTraining: false}))
+    this.props.dispatch(update({showTraining: false}))
+    //this.dispatch(actions.update({showTraining: false}))
   }
 
   render() {
