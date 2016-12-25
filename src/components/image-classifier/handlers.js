@@ -1,7 +1,7 @@
 import { WIDTH, HEIGHT } from '../../common'
 import { addHandler } from '../../handlers'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
-import { INITIALIZE, CAPTURE, FLAG } from './actions'
+import { INITIALIZE, CAPTURE, FLAG, update } from './actions'
 
 let imageClassifier
 
@@ -56,6 +56,18 @@ export let flag = (action, {store}) => {
   return action
 }
 addHandler(flag)
+
+const SHOW_TRAINING_TIMEOUT = 1500
+
+// This logic can be included in flag as well. However it might be better to separate this
+export let hideTraining = (action, {store}) => {
+  if (action.type !== FLAG) {
+    return
+  }
+
+  setTimeout(() => store.dispatch(update({showTraining: false})), SHOW_TRAINING_TIMEOUT)
+}
+addHandler(hideTraining)
 
 function _capture(video, canvas) {
   let ctx = canvas.getContext('2d')

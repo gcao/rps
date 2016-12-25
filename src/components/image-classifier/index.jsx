@@ -10,8 +10,6 @@ import { STATE_KEY } from './reducers'
 import { initialize as initImageClassifier, capture, flag, toggleSaveFlag, update } from './actions'
 import './handlers'
 
-//const SHOW_TRAINING_TIMEOUT = 1500
-
 function mapStateToProps(state) {
   return state[STATE_KEY] || {}
 }
@@ -40,41 +38,10 @@ export default class ImageClassifier extends Component {
 
   capture = () => {
     this.props.dispatch(capture())
-    //let image = this.video.capture()
-    //let result = this.imageClassifier.predict(image)
-    //let before = result.prediction
-    //this.dispatch(actions.capture({
-    //  image,
-    //  before,
-    //  after: undefined,
-    //  captured: true,
-    //  flagged: false,
-    //  showTraining: true,
-    //}))
   }
 
   flag = (imageClass) => {
     this.props.dispatch(flag({imageClass}))
-    //if (this.props.saveFlag) {
-    //  let saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
-    //  fetch(saveAs, {
-    //    method: 'POST',
-    //    headers: {'Content-Type': 'application/json'},
-    //    body: JSON.stringify(this.props.image),
-    //  })
-    //}
-
-    //this.imageClassifier.train(this.props.image, imageClass)
-    //let result = this.imageClassifier.predict(this.props.image)
-    //let after = result.prediction
-    //this.dispatch(actions.flag({
-    //  imageClass,
-    //  after,
-    //  flagged: true,
-    //}))
-
-    //// Hide training
-    //setTimeout(() => this.dispatch(actions.update({showTraining: false})), SHOW_TRAINING_TIMEOUT)
   }
 
   clearTrainingData = () => {
@@ -83,14 +50,10 @@ export default class ImageClassifier extends Component {
 
   reset = () => {
     this.props.dispatch(initImageClassifier(this.props.name))
-    //let implementation = window[this.props.name || 'DefaultImageClassifier']
-    //this.imageClassifier = new ImageClassifierProxy(implementation)
-    //this.dispatch(actions.initialize())
   }
 
   toggleSaveFlag = () => {
     this.props.dispatch(toggleSaveFlag({saveFlag: this.props.saveFlag}))
-    //this.dispatch(actions.toggleSaveFlag({saveFlag: this.props.saveFlag}))
   }
 
   retrain = () => {
@@ -122,18 +85,12 @@ export default class ImageClassifier extends Component {
     //this.imageClassifier.save()
   }
 
-  //setVideo = (video) => {
-  //  this.video = video
-  //}
-
   showLast = () => {
     this.props.dispatch(update({showTraining: true}))
-    //this.dispatch(actions.update({showTraining: true}))
   }
 
   hideTraining = () => {
     this.props.dispatch(update({showTraining: false}))
-    //this.dispatch(actions.update({showTraining: false}))
   }
 
   render() {

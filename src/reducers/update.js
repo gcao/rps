@@ -4,7 +4,7 @@ export default function update(state, name, payload) {
     return Object.assign({}, state, payload)
   } else if (arguments.length === 3) {
     return Object.assign({}, state, {
-      [name]: Object.assign({}, state.name, payload)
+      [name]: Object.assign({}, state[name], payload)
     })
   } else {
     return state
