@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerReducer } from 'react-router-redux'
+import { middleware } from './handlers'
 import reducers from './reducers'
 
 let rootReducers = function(state, action) {
@@ -24,6 +25,6 @@ export default function(initialState) {
   return createStore(
     rootReducers,
     initialState,
-    composeEnhancers(applyMiddleware())
+    composeEnhancers(applyMiddleware(middleware))
   )
 }
