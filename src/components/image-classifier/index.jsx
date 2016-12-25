@@ -5,11 +5,10 @@ import React, { Component } from 'react'
 import { Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Video from '../Video'
-//import { ROCK, PAPER, SCISSORS, UNKNOWN, shuffle, translateMove } from '../../rps'
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
-//import { ImageClassifierProxy } from '../../rps/image-classifier'
 import { STATE_KEY } from './reducers'
 import { initialize as initImageClassifier, capture, flag, toggleSaveFlag, update } from './actions'
+import './handlers'
 
 //const SHOW_TRAINING_TIMEOUT = 1500
 
@@ -22,7 +21,6 @@ export default class ImageClassifier extends Component {
   constructor(props) {
     super(props)
 
-    //this.dispatch = props.dispatch
     this.reset()
 
     key('g, h', this.capture)
@@ -145,7 +143,7 @@ export default class ImageClassifier extends Component {
     return (
       <Container textAlign='center'>
         <p>
-          <Video showCaptured={this.props.showTraining} ref={ this.setVideo }/>
+          <Video showCaptured={this.props.showTraining}/>
         </p>
         { !this.props.showTraining &&
           <div>
