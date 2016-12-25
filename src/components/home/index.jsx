@@ -7,8 +7,9 @@ import GameState from '../../rps/GameState'
 import ActionDetector from '../../rps/ActionDetector'
 import './reducers'
 import * as actions from './actions'
+import './handlers'
 
-const ACTION_DETECTION_INTERVAL = 150
+//const ACTION_DETECTION_INTERVAL = 150
 
 function mapStateToProps({rounds, home, video}) {
   return {
@@ -33,7 +34,7 @@ export default class Home extends Component {
   }
 
   start = () => {
-    this.dispatch(actions.start())
+    this.props.dispatch(actions.start())
     this._start()
   }
 
@@ -42,10 +43,11 @@ export default class Home extends Component {
   }
 
   _start() {
-    this.timeoutRef = setTimeout(() => {
-      let image = this.video.capture()
-      this.detect(image)
-    }, ACTION_DETECTION_INTERVAL)
+    this.props.dispatch(actions.detect())
+    //this.timeoutRef = setTimeout(() => {
+    //  let image = this.video.capture()
+    //  this.detect(image)
+    //}, ACTION_DETECTION_INTERVAL)
   }
 
   pause = () => {
