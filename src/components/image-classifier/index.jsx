@@ -6,9 +6,9 @@ import { Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Video from '../Video'
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
-import { STATE_KEY } from './reducers'
-import { initialize as initImageClassifier, capture, flag, toggleSaveFlag, update } from './actions'
+import * as actions from './actions'
 import './handlers'
+import { STATE_KEY } from './reducers'
 
 function mapStateToProps(state) {
   return state[STATE_KEY] || {}
@@ -19,9 +19,9 @@ export default class ImageClassifier extends Component {
   constructor(props) {
     super(props)
 
-    this.reset()
+    this.props.dispatch(actions.initialize())
 
-    key('g, h', this.capture)
+    key('g, h', () => this.props.dispatch(actions.capture()))
     key('f, j', () => this.flag(ROCK))
     key('d, k', () => this.flag(PAPER))
     key('s, l', () => this.flag(SCISSORS))
@@ -36,63 +36,6 @@ export default class ImageClassifier extends Component {
     key.unbind('a, ;')
   }
 
-  capture = () => {
-    this.props.dispatch(capture())
-  }
-
-  flag = (imageClass) => {
-    this.props.dispatch(flag({imageClass}))
-  }
-
-  clearTrainingData = () => {
-    //fetch('data/image-classifier/', {method: 'POST'})
-  }
-
-  reset = () => {
-    this.props.dispatch(initImageClassifier(this.props.name))
-  }
-
-  toggleSaveFlag = () => {
-    this.props.dispatch(toggleSaveFlag({saveFlag: this.props.saveFlag}))
-  }
-
-  retrain = () => {
-    //fetch('data/image-classifier/').then(imageUrls => {
-    //  shuffle(imageUrls).forEach(function(imageUrl) {
-    //    var imageClass
-    //    if (imageUrl.match(/rock/)) {
-    //      imageClass = ROCK
-    //    } else if (imageUrl.match(/paper/)) {
-    //      imageClass = PAPER
-    //    } else if (imageUrl.match(/scissors/)) {
-    //      imageClass = SCISSORS
-    //    } else {
-    //      imageClass = UNKNOWN
-    //    }
-
-    //    fetch(imageUrl).then(imageData => {
-    //      this.imageClassifier.train(imageData, imageClass)
-    //    })
-    //  })
-    //})
-  }
-
-  load = () => {
-    //this.imageClassifier.load()
-  }
-
-  save = () => {
-    //this.imageClassifier.save()
-  }
-
-  showLast = () => {
-    this.props.dispatch(update({showTraining: true}))
-  }
-
-  hideTraining = () => {
-    this.props.dispatch(update({showTraining: false}))
-  }
-
   render() {
     var before = this.props.before
     var after  = this.props.after
@@ -105,18 +48,18 @@ export default class ImageClassifier extends Component {
         { !this.props.showTraining &&
           <div>
             <p>
-              <Button primary onClick={ this.capture }>Capture (G/H)</Button>
+              <Button primary onClick={() => this.props.dispatch(actions.capture())}>Capture (G/H)</Button>
               { this.props.captured &&
-                <Button onClick={ this.showLast }>Show Last</Button>
+                <Button onClick={() => this.props.dispatch(actions.showTraining())}>Show Last</Button>
               }
             </p>
             <p>
-              <Button size='tiny' onClick={ this.retrain }>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
-              <Button size='tiny' onClick={ this.reset }>Reset</Button>
+              <Button size='tiny' onClick={() => this.props.dispatch(actions.retrain())}>Retrain with existing data</Button>&nbsp;&nbsp;&nbsp;
+              <Button size='tiny' onClick={() => this.props.dispatch(actions.reset())}>Reset</Button>
             </p>
             <p className="load-save-container">
-              <Button size='tiny' onClick={ this.load }>Load trained model</Button>&nbsp;&nbsp;&nbsp;
-              <Button size='tiny' onClick={ this.save }>Save trained model</Button>
+              <Button size='tiny' onClick={() => this.props.dispatch(actions.load())}>Load trained model</Button>&nbsp;&nbsp;&nbsp;
+              <Button size='tiny' onClick={() => this.props.dispatch(actions.save())}>Save trained model</Button>
               <br/>
             </p>
           </div>
@@ -125,16 +68,16 @@ export default class ImageClassifier extends Component {
           <div id="training-container" style={{ display: this.props.image ? '' : 'none' }}>
             { this.props.showTraining &&
               <p>
-                <Button primary onClick={ this.hideTraining }>Cancel</Button>
+                <Button primary onClick={() => this.props.dispatch(actions.cancel())}>Cancel</Button>
               </p>
             }
             <p className="save-training-data-container">
               <label>
-                <input type="checkbox" onClick={ this.toggleSaveFlag }/>
+                <input type="checkbox" onClick={() => this.props.dispatch(actions.toggleTrainingFlag())}/>
                 <span> Auto save training data</span>
               </label>
               <br/>
-              <Button size='tiny' onClick={ this.clearTrainingData }>Clear training data</Button>
+              <Button size='tiny' onClick={() => this.props.dispatch(actions.clearTraining())}>Clear training data</Button>
             </p>
             {
               [
@@ -150,7 +93,7 @@ export default class ImageClassifier extends Component {
                       <br/>
                     </span>
                   }
-                  <Button primary size='tiny' onClick={ () => this.flag(item.value) }>{item.label}</Button><br/>
+                  <Button primary size='tiny' onClick={() => this.props.dispatch(actions.flag(item.value))}>{item.label}</Button><br/>
                   { after &&
                     <span className="after-training">
                       { after.w[index].toFixed(4) }

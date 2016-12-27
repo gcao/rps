@@ -1,12 +1,12 @@
 import { default as _capture } from '../../common/capture'
 import { addHandler } from '../../handlers'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
-import { INITIALIZE, CAPTURE, FLAG, update } from './actions'
+import * as actions from './actions'
 
 let imageClassifier
 
 export let initialize = (action) => {
-  if (action.type !== INITIALIZE) {
+  if (action.type !== actions.INITIALIZE) {
     return
   }
 
@@ -16,7 +16,7 @@ export let initialize = (action) => {
 addHandler(initialize)
 
 export let capture = (action, {store}) => {
-  if (action.type !== CAPTURE) {
+  if (action.type !== actions.CAPTURE) {
     return
   }
 
@@ -36,7 +36,7 @@ export let capture = (action, {store}) => {
 addHandler(capture)
 
 export let flag = (action, {store}) => {
-  if (action.type !== FLAG) {
+  if (action.type !== actions.FLAG) {
     return
   }
 
@@ -57,14 +57,14 @@ export let flag = (action, {store}) => {
 }
 addHandler(flag)
 
-const SHOW_TRAINING_TIMEOUT = 1500
+const HIDE_TRAINING_TIMEOUT = 1500
 
 // This logic can be included in flag as well. However it might be better to separate this
 export let hideTraining = (action, {store}) => {
-  if (action.type !== FLAG) {
+  if (action.type !== actions.FLAG) {
     return
   }
 
-  setTimeout(() => store.dispatch(update({showTraining: false})), SHOW_TRAINING_TIMEOUT)
+  setTimeout(() => store.dispatch(actions.hideTraining()), HIDE_TRAINING_TIMEOUT)
 }
 addHandler(hideTraining)

@@ -1,13 +1,15 @@
 import { createAction } from 'redux-actions'
 
 export const INITIALIZE       = 'imageClassifier.initialize'
-export const UPDATE           = 'imageClassifier.update'
+export const CANCEL           = 'imageClassifier.cancel'
+export const SHOW_TRAINING    = 'imageClassifier.showTraining'
 export const CAPTURE          = 'imageClassifier.capture'
 export const FLAG             = 'imageClassifier.flag'
 export const TOGGLE_SAVE_FLAG = 'imageClassifier.toggleSaveFlag'
 
 export let initialize     = createAction(INITIALIZE)
-export let update         = createAction(UPDATE)
+export let cancel         = createAction(CANCEL)
+export let showTraining   = createAction(SHOW_TRAINING)
 export let capture        = createAction(CAPTURE)
 export let flag           = createAction(FLAG)
 export let toggleSaveFlag = createAction(TOGGLE_SAVE_FLAG)

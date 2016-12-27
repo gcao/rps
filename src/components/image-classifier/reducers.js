@@ -1,20 +1,32 @@
 import { addReducer } from '../../reducers'
 import replace from '../../reducers/replace'
 import update from '../../reducers/update'
-
-const REPLACE_STATE_PATTERN = /^imageClassifier\.(initialize|destroy)$/
-const UPDATE_STATE_PATTERN  = /^imageClassifier/
+import * as actions from './actions'
 
 export const STATE_KEY = 'imageClassifier'
 
 export default function reducers(state, action) {
-  if (REPLACE_STATE_PATTERN.test(action.type)) {
-    return replace(state, STATE_KEY, action.payload)
-  } else if (UPDATE_STATE_PATTERN.test(action.type)) {
-    return update(state, STATE_KEY, action.payload)
-  } else {
-    return state
+  switch (action.type) {
+    case actions.INITIALIZE:
+      return replace(state, STATE_KEY, action.payload)
+
+    case actions.CANCEL:
+      return update(state, STATE_KEY, {
+        showTraining: undefined,
+      })
+
+    case actions.SHOW_TRAINING:
+      return update(state, STATE_KEY, {
+        showTraining: true,
+      })
+
+    case actions.FLAG:
+    case actions.CAPTURE:
+    case actions.TOGGLE_SAVE_FLAG:
+      return update(state, STATE_KEY, action.payload)
+
+    default:
+      return state
   }
 }
-
 addReducer(reducers)
