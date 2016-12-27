@@ -3,13 +3,9 @@ import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import Result from '../result'
 import Video from '../Video'
-import GameState from '../../rps/GameState'
-import ActionDetector from '../../rps/ActionDetector'
-import './reducers'
 import * as actions from './actions'
+import './reducers'
 import './handlers'
-
-//const ACTION_DETECTION_INTERVAL = 150
 
 function mapStateToProps({rounds, home, video}) {
   return {
@@ -21,70 +17,24 @@ function mapStateToProps({rounds, home, video}) {
 
 @connect(mapStateToProps)
 export default class Home extends Component {
-  constructor(props) {
-    super(props)
-
-    this.dispatch = props.dispatch
-
-    this.actionDetector = new ActionDetector()
-  }
-
-  setVideo = (video) => {
-    this.video = video
-  }
-
   start = () => {
     this.props.dispatch(actions.start())
-    this._start()
   }
 
   restart = () => {
-    this.dispatch(actions.restart())
-  }
-
-  _start() {
-    this.props.dispatch(actions.detect())
-    //this.timeoutRef = setTimeout(() => {
-    //  let image = this.video.capture()
-    //  this.detect(image)
-    //}, ACTION_DETECTION_INTERVAL)
+    this.props.dispatch(actions.restart())
   }
 
   pause = () => {
-    this.dispatch(actions.pause())
+    this.props.dispatch(actions.pause())
   }
 
   resume = () => {
-    this.dispatch(actions.resume())
+    this.props.dispatch(actions.resume())
   }
 
   stop = () => {
-    this.dispatch(actions.stop())
-  }
-
-  detect(image) {
-    let action = this.actionDetector.detect(image)
-    if (action.detected) {
-      this.stop()
-
-      // let the AI predict and play, then train with the real human move, add to game state
-      let gameState = new GameState(this.props.rounds)
-      let prediction = this.computerPlayer.predict(gameState)
-
-      let humanMove = action.imageClass
-      let computerMove = prediction.myMove
-
-      this.computerPlayer.train(gameState, humanMove)
-
-      this.dispatch(
-        actions.play({
-          player1Move: humanMove,
-          player2Move: computerMove,
-        })
-      )
-    }
-
-    this._start()
+    this.props.dispatch(actions.stop())
   }
 
   render() {
@@ -93,17 +43,17 @@ export default class Home extends Component {
         { this.props.started
           ? <div>
             <p>
-              <Button primary onClick={() => this.restart()}>Restart</Button>
+              <Button primary onClick={this.restart}>Restart</Button>
               { !this.props.videoPaused &&
-                <Button primary onClick={() => this.pause()}>Pause</Button>
+                <Button primary onClick={this.pause}>Pause</Button>
               }
               { this.props.videoPaused &&
-                <Button primary onClick={() => this.resume()}>Resume</Button>
+                <Button primary onClick={this.resume}>Resume</Button>
               }
-              <Button primary onClick={() => this.stop()}>Stop</Button>
+              <Button primary onClick={this.stop}>Stop</Button>
             </p>
             <p>
-              <Video paused={this.props.videoPaused} ref={this.setVideo}/>
+              <Video paused={this.props.videoPaused}/>
             </p>
             <div id="training-container" style={{ display:'none' }}>
               <p>
@@ -114,7 +64,7 @@ export default class Home extends Component {
             <Result rounds={this.props.rounds}/>
           </div>
         : <p>
-            <Button primary onClick={() => this.start()}>Play!</Button>
+            <Button primary onClick={this.start}>Play!</Button>
           </p>
         }
       </div>

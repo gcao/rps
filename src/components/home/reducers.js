@@ -8,17 +8,20 @@ export const STATE_KEY = 'home'
 
 export default function reducers(state, {type, payload}) {
   switch (type) {
-    case actions.INITIALIZE:
-      return replace(state, STATE_KEY, {})
-
     case actions.START:
       return update(state, STATE_KEY, {started: true})
+
+    case actions.STOP:
+      return update(state, STATE_KEY, {started: false})
 
     case actions.PAUSE:
       return update(state, 'video', {paused: true})
 
     case actions.RESUME:
       return update(state, 'video', {paused: false})
+
+    case actions.DETECT:
+      return update(state, STATE_KEY, {image: payload})
 
     case actions.DESTROY:
       return replace(state, STATE_KEY)
@@ -27,5 +30,4 @@ export default function reducers(state, {type, payload}) {
       return state
   }
 }
-
 addReducer(reducers)
