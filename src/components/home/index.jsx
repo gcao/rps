@@ -17,40 +17,20 @@ function mapStateToProps({rounds, home, video}) {
 
 @connect(mapStateToProps)
 export default class Home extends Component {
-  start = () => {
-    this.props.dispatch(actions.start())
-  }
-
-  restart = () => {
-    this.props.dispatch(actions.restart())
-  }
-
-  pause = () => {
-    this.props.dispatch(actions.pause())
-  }
-
-  resume = () => {
-    this.props.dispatch(actions.resume())
-  }
-
-  stop = () => {
-    this.props.dispatch(actions.stop())
-  }
-
   render() {
     return (
       <div>
         { this.props.started
           ? <div>
             <p>
-              <Button primary onClick={this.restart}>Restart</Button>
+              <Button primary onClick={() => this.props.dipatch(actions.restart())}>Restart</Button>
               { !this.props.videoPaused &&
-                <Button primary onClick={this.pause}>Pause</Button>
+                <Button primary onClick={() => this.props.dispatch(actions.pause())}>Pause</Button>
               }
               { this.props.videoPaused &&
-                <Button primary onClick={this.resume}>Resume</Button>
+                <Button primary onClick={() => this.props.dispatch(actions.resume())}>Resume</Button>
               }
-              <Button primary onClick={this.stop}>Stop</Button>
+              <Button primary onClick={() => this.props.dispatch(actions.stop())}>Stop</Button>
             </p>
             <p>
               <Video paused={this.props.videoPaused}/>
@@ -64,7 +44,7 @@ export default class Home extends Component {
             <Result rounds={this.props.rounds}/>
           </div>
         : <p>
-            <Button primary onClick={this.start}>Play!</Button>
+            <Button primary onClick={() => this.props.dispatch(actions.start())}>Play!</Button>
           </p>
         }
       </div>

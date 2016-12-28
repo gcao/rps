@@ -1,8 +1,7 @@
 import { addReducer } from '../../reducers'
-
-import * as actions from './actions'
 import replace from '../../reducers/replace'
 import update from '../../reducers/update'
+import * as actions from './actions'
 
 export const STATE_KEY = 'home'
 

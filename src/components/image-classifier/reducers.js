@@ -20,6 +20,11 @@ export default function reducers(state, action) {
         showTraining: true,
       })
 
+    case actions.HIDE_TRAINING:
+      return update(state, STATE_KEY, {
+        showTraining: false,
+      })
+
     case actions.FLAG:
     case actions.CAPTURE:
     case actions.TOGGLE_SAVE_FLAG:

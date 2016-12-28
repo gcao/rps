@@ -3,23 +3,17 @@ import { addHandler } from '../../handlers'
 import { ImageClassifierProxy } from '../../rps/image-classifier'
 import * as actions from './actions'
 
+const HIDE_TRAINING_TIMEOUT = 1500
+
 let imageClassifier
 
 export let initialize = (action) => {
-  if (action.type !== actions.INITIALIZE) {
-    return
-  }
-
   let implementation = window[action.payload || 'DefaultImageClassifier']
   imageClassifier    = new ImageClassifierProxy(implementation)
 }
-addHandler(initialize)
+addHandler(initialize, actions.INITIALIZE)
 
 export let capture = (action, {store}) => {
-  if (action.type !== actions.CAPTURE) {
-    return
-  }
-
   let image  = _capture(document.querySelector('video'), document.querySelector('canvas'))
   let result = imageClassifier.predict(image)
   let before = result.prediction
@@ -33,38 +27,28 @@ export let capture = (action, {store}) => {
   })
   return action
 }
-addHandler(capture)
+addHandler(capture, actions.CAPTURE)
 
 export let flag = (action, {store}) => {
-  if (action.type !== actions.FLAG) {
-    return
-  }
-
   let image      = store.getState().imageClassifier.image
-  let imageClass = action.payload.imageClass
+  let imageClass = action.payload
 
   imageClassifier.train(image, imageClass)
 
   let result = imageClassifier.predict(image)
   let after  = result.prediction
 
-  action.payload = Object.assign({}, action.payload, {
+  action.payload = {
     imageClass,
     after,
     flagged: true,
-  })
+  }
   return action
 }
-addHandler(flag)
+addHandler(flag, actions.FLAG)
 
-const HIDE_TRAINING_TIMEOUT = 1500
-
-// This logic can be included in flag as well. However it might be better to separate this
+// This logic can be included in flag() as well. However it might be better to separate this
 export let hideTraining = (action, {store}) => {
-  if (action.type !== actions.FLAG) {
-    return
-  }
-
   setTimeout(() => store.dispatch(actions.hideTraining()), HIDE_TRAINING_TIMEOUT)
 }
-addHandler(hideTraining)
+addHandler(hideTraining, actions.FLAG)
