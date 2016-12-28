@@ -8,11 +8,11 @@ export default class ComputerPlayerPage extends Component {
     return (
       <Container textAlign='center'>
         <Header>Come on, let's see who is the best!</Header>
-        <ComputerPlayer/>
-        <Divider/>
-        <p>
+        <p style={{fontSize: 'small'}}>
           <Link to='/'>Back</Link>
         </p>
+        <ComputerPlayer/>
+        <Divider/>
       </Container>
     )
   }

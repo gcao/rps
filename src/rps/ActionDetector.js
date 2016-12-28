@@ -1,15 +1,12 @@
 import { UNKNOWN } from '.'
-import { ImageClassifierProxy, DefaultImageClassifier } from './image-classifier'
 
 let IMAGE_SIMILARITY_THRESHOLD     = 0.010
 let MOVEMENT_THRESHOLD             = 0.03
 let ACTIONABLE_SIMILAR_IMAGE_COUNT = 5
 
 export default class ActionDetector {
-  constructor() {
-    this.imageClassifier = new ImageClassifierProxy(DefaultImageClassifier)
-    this.imageClassifier.load()
-
+  constructor(imageClassifier) {
+    this.imageClassifier = imageClassifier
     this.reset()
   }
 

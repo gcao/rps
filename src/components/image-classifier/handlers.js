@@ -1,21 +1,18 @@
 import { default as _capture } from '../../common/capture'
+import { getImageClassifier, setImageClassifier } from '../../common/image-classifier'
 import { addHandler } from '../../handlers'
-import { ImageClassifierProxy } from '../../rps/image-classifier'
 import * as actions from './actions'
 
 const HIDE_TRAINING_TIMEOUT = 1500
 
-let imageClassifier
-
-export let initialize = (action) => {
+addHandler(actions.INITIALIZE, action => {
   let implementation = window[action.payload || 'DefaultImageClassifier']
-  imageClassifier    = new ImageClassifierProxy(implementation)
-}
-addHandler(initialize, actions.INITIALIZE)
+  setImageClassifier(implementation)
+})
 
-export let capture = (action, {store}) => {
+addHandler(actions.CAPTURE, (action, {store}) => {
   let image  = _capture(document.querySelector('video'), document.querySelector('canvas'))
-  let result = imageClassifier.predict(image)
+  let result = getImageClassifier().predict(image)
   let before = result.prediction
   action.payload = Object.assign({}, action.payload, {
     image,
@@ -26,16 +23,15 @@ export let capture = (action, {store}) => {
     showTraining: true,
   })
   return action
-}
-addHandler(capture, actions.CAPTURE)
+})
 
-export let flag = (action, {store}) => {
+addHandler(actions.FLAG, (action, {store}) => {
   let image      = store.getState().imageClassifier.image
   let imageClass = action.payload
 
-  imageClassifier.train(image, imageClass)
+  getImageClassifier().train(image, imageClass)
 
-  let result = imageClassifier.predict(image)
+  let result = getImageClassifier().predict(image)
   let after  = result.prediction
 
   action.payload = {
@@ -44,11 +40,9 @@ export let flag = (action, {store}) => {
     flagged: true,
   }
   return action
-}
-addHandler(flag, actions.FLAG)
+})
 
-// This logic can be included in flag() as well. However it might be better to separate this
-export let hideTraining = (action, {store}) => {
+// This logic can be included in previous handler as well. However it might be better to separate this
+addHandler(actions.FLAG, (action, {store}) => {
   setTimeout(() => store.dispatch(actions.hideTraining()), HIDE_TRAINING_TIMEOUT)
-}
-addHandler(hideTraining, actions.FLAG)
+})

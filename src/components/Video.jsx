@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-
-const WIDTH  = 320
-const HEIGHT = 240
+import { WIDTH, HEIGHT } from '../common'
 
 const CONSTRAINTS = {
   video: {

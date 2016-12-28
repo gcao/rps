@@ -6,8 +6,9 @@ import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Result from '../result'
 import { ROCK, PAPER, SCISSORS } from '../../rps'
-import { initialize as initComputerPlayer, play } from './actions'
+import * as actions from './actions'
 import './reducers'
+import './handlers'
 
 function mapStateToProps({rounds, computerPlayer}) {
   return { rounds, ...computerPlayer }
@@ -18,15 +19,11 @@ export default class ComputerPlayer extends Component {
   constructor(props) {
     super(props)
 
-    this.props.dispatch(initComputerPlayer(this.props.name))
+    this.props.dispatch(actions.initialize(this.props.name))
 
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
     key('s, l', () => this.play(SCISSORS))
-  }
-
-  play(move) {
-    this.props.dispatch(play(move))
   }
 
   componentWillUnmount() {
@@ -55,7 +52,11 @@ export default class ComputerPlayer extends Component {
                     <br/>
                   </span>
                 }
-                <Button primary size='small' style={{width: '120px'}} onClick={() => this.play(item.move)}>{item.label}</Button>
+                <Button primary
+                  size='small'
+                  style={{width: '120px'}}
+                  onClick={() => this.props.dispatch(actions.play(item.move))}
+                >{item.label}</Button>
                 { before && before.prediction &&
                   <span className="after-training">
                     {after.prediction.w[index].toFixed(4)}

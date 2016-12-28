@@ -1,8 +1,7 @@
 import { addReducer } from '../../reducers'
-
-import { INITIALIZE, PLAY } from './actions'
 import replace from '../../reducers/replace'
 import update from '../../reducers/update'
+import { INITIALIZE, PLAY } from './actions'
 
 export const STATE_KEY = 'computerPlayer'
 

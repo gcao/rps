@@ -12,17 +12,18 @@ function imageToVol(imageData) {
   return vol
 }
 
-export default function ImageClassifierProxy(modelClass, options) {
-  this.model = new modelClass(options)
+export default function ImageClassifierProxy(implementation, options) {
+  this.implementation = implementation
+  this.model = new implementation(options)
 
   this.load = function() {
-    var stored = window.localStorage.getItem(modelClass.name)
+    var stored = window.localStorage.getItem(implementation.name)
     if (stored) {
       this.model.net.fromJSON(JSON.parse(stored))
       console.log('The image classifier model is loaded successfully.')
     } else {
-      //console.log('No saved image classifier model for ' + modelClass.name + ' is found.')
-      var modelUrl = 'models/' + modelClass.name + '.json'
+      //console.log('No saved image classifier model for ' + implementation.name + ' is found.')
+      var modelUrl = 'models/' + implementation.name + '.json'
       fetch(modelUrl).then((data) => {
         this.model.net.fromJSON(data)
         console.log('The image classifier model is loaded successfully.')
@@ -31,7 +32,7 @@ export default function ImageClassifierProxy(modelClass, options) {
   }
 
   this.save = function() {
-    window.localStorage.setItem(modelClass.name, JSON.stringify(this.model.net.toJSON()))
+    window.localStorage.setItem(implementation.name, JSON.stringify(this.model.net.toJSON()))
     console.log('The image classifier model is saved successfully.')
   }
 

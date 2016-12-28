@@ -1,0 +1,16 @@
+import { ImageClassifierProxy } from '../rps/image-classifier'
+
+let imageClassifier
+
+export function setImageClassifier(implementation) {
+  implementation = implementation || 'DefaultImageClassifier'
+  if (imageClassifier && imageClassifier.implementation === implementation) {
+    return
+  }
+
+  imageClassifier = new ImageClassifierProxy(implementation)
+}
+
+export function getImageClassifier() {
+  return imageClassifier
+}

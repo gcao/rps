@@ -2,37 +2,33 @@ import capture from '../../common/capture'
 import GameState from '../../rps/GameState'
 import { addHandler } from '../../handlers'
 import ActionDetector from '../../rps/ActionDetector'
-import { ComputerPlayerProxy, DefaultComputerPlayer } from '../../rps/computer-player'
+import { getImageClassifier, setImageClassifier } from '../../common/image-classifier'
+import { getComputerPlayer } from '../../common/computer-player'
 import * as actions from './actions'
 
 const ACTION_DETECTION_INTERVAL = 150
 
 let actionDetector
-let computerPlayer
 
-export let start = (action, {store}) => {
-  if (action.type !== actions.START) {
-    return
+addHandler(actions.START, (action, {store}) => {
+  let imageClassifier = getImageClassifier()
+  if (!imageClassifier) {
+    // Use the default one
+    setImageClassifier()
   }
-
-  actionDetector = new ActionDetector()
-  computerPlayer = new ComputerPlayerProxy(DefaultComputerPlayer)
+  actionDetector = new ActionDetector(imageClassifier)
 
   startTimer(action, store)
-}
-addHandler(start)
+})
 
-export let detect = (action, {store}) => {
-  if (action.type !== actions.DETECT) {
-    return
-  }
-
+addHandler(actions.DETECT, (action, {store}) => {
   let image = store.getState().image
   let result = actionDetector.detect(image)
   if (result.detected) {
     store.dispatch(actions.stop())
 
     // let the AI predict and play, then train with the real human move, add to game state
+    let computerPlayer = getComputerPlayer()
     let gameState = new GameState(store.getState().rounds)
     let prediction = computerPlayer.predict(gameState)
 
@@ -50,8 +46,7 @@ export let detect = (action, {store}) => {
   }
 
   startTimer(action, store)
-}
-addHandler(detect)
+})
 
 let startTimer = (action, store) => {
   let state = store.getState()
