@@ -5,22 +5,15 @@ import React, { Component } from 'react'
 import { Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Video from '../Video'
+import Hidden from '../Hidden'
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
 import * as actions from './actions'
 import './handlers'
 import { STATE_KEY } from './reducers'
 
-function mapStateToProps(state) {
-  return state[STATE_KEY] || {}
-}
-
-@connect(mapStateToProps)
+@connect(state => ({ ...state[STATE_KEY] }))
 export default class ImageClassifier extends Component {
-  constructor(props) {
-    super(props)
-
-    this.props.dispatch(actions.initialize())
-
+  componentWillMount() {
     key('g, h', () => this.props.dispatch(actions.capture()))
     key('f, j', () => this.flag(ROCK))
     key('d, k', () => this.flag(PAPER))
@@ -37,6 +30,11 @@ export default class ImageClassifier extends Component {
   }
 
   render() {
+    if (!this.props.initialized) {
+      this.props.dispatch(actions.initialize(this.props.implementation))
+      return <Hidden/>
+    }
+
     var before = this.props.before
     var after  = this.props.after
 

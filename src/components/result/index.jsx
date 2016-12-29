@@ -5,17 +5,12 @@ import { Progress } from 'semantic-ui-react'
 import { computeResult, translateMove } from '../../rps'
 import GameState  from '../../rps/GameState'
 
-function toPercentage(val, digitsAfterDot) {
-  digitsAfterDot = digitsAfterDot || 2
+function toPercentage(val, digitsAfterDot = 2) {
   return (val * 100).toFixed(digitsAfterDot) + '%'
 }
 
 class Result extends Component {
   render() {
-    if (!this.props.rounds) {
-      return null
-    }
-
     var gameState = new GameState(this.props.rounds)
     var reversedRounds = this.props.rounds.slice().reverse()
 

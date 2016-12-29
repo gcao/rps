@@ -1,23 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
+import Hidden from '../Hidden'
 import Result from '../result'
 import Video from '../Video'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 import './handlers'
 
-@connect(state => ({
-  ...state[STATE_KEY],
-}))
+@connect(state => ({ ...state[STATE_KEY] }))
 export default class Home extends Component {
-  constructor(props) {
-    super(props)
-
-    this.props.dispatch(actions.initialize())
-  }
-
   render() {
+    if (!this.props.initialized) {
+      this.props.dispatch(actions.initialize())
+      return <Hidden/>
+    }
+
     return (
       <div>
         { this.props.started

@@ -6,8 +6,7 @@ import * as actions from './actions'
 const HIDE_TRAINING_TIMEOUT = 1500
 
 addHandler(actions.INITIALIZE, action => {
-  let implementation = window[action.payload || 'DefaultImageClassifier']
-  setImageClassifier(implementation)
+  setImageClassifier(action.payload)
 })
 
 addHandler(actions.CAPTURE, (action, {store}) => {

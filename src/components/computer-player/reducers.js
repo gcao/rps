@@ -10,6 +10,7 @@ export default function reducers(state, action) {
     case INITIALIZE:
       let implementation = action.payload
       return replace(state, STATE_KEY, {
+        initialized: true,
         rounds: [],
         implementation,
       })

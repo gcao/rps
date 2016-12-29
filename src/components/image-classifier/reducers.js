@@ -8,7 +8,11 @@ export const STATE_KEY = 'imageClassifier'
 export default function reducers(state, action) {
   switch (action.type) {
     case actions.INITIALIZE:
-      return replace(state, STATE_KEY, action.payload)
+      let implementation = action.payload
+      return replace(state, STATE_KEY, {
+        initialized: true,
+        implementation,
+      })
 
     case actions.CANCEL:
       return update(state, STATE_KEY, {

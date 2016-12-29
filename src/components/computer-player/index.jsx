@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Result from '../result'
+import Hidden from '../Hidden'
 import { ROCK, PAPER, SCISSORS } from '../../rps'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
@@ -12,11 +13,7 @@ import './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class ComputerPlayer extends Component {
-  constructor(props) {
-    super(props)
-
-    this.props.dispatch(actions.initialize(this.props.name))
-
+  componentWillMount() {
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
     key('s, l', () => this.play(SCISSORS))
@@ -29,6 +26,11 @@ export default class ComputerPlayer extends Component {
   }
 
   render() {
+    if (!this.props.initialized) {
+      this.props.dispatch(actions.initialize(this.props.implementation))
+      return <Hidden/>
+    }
+
     var before = this.props.prediction && this.props.prediction.before
     var after  = this.props.prediction && this.props.prediction.after
 

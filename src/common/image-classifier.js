@@ -4,11 +4,12 @@ let imageClassifier
 
 export function setImageClassifier(implementation) {
   implementation = implementation || 'DefaultImageClassifier'
+
   if (imageClassifier && imageClassifier.implementation === implementation) {
     return
   }
 
-  imageClassifier = new ImageClassifierProxy(implementation)
+  imageClassifier = new ImageClassifierProxy(window[implementation])
 }
 
 export function getImageClassifier() {
