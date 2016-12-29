@@ -21,13 +21,13 @@ export default class Video extends Component {
     })
   }
 
-  //componentWillReceiveProps(newProps) {
-  //  if (!newProps.paused && this.video.paused) {
-  //    this.video.play()
-  //  } else if (newProps.paused && !this.video.paused) {
-  //    this.video.pause()
-  //  }
-  //}
+  componentWillReceiveProps(newProps) {
+    if (!newProps.paused && this.video.paused) {
+      this.video.play()
+    } else if (newProps.paused && !this.video.paused) {
+      this.video.pause()
+    }
+  }
 
   capture() {
     let data = null
