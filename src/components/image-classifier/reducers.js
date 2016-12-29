@@ -1,3 +1,4 @@
+import { DefaultImageClassifier } from '../../rps/image-classifier'
 import { addReducer } from '../../reducers'
 import replace from '../../reducers/replace'
 import update from '../../reducers/update'
@@ -8,7 +9,7 @@ export const STATE_KEY = 'imageClassifier'
 export default function reducers(state, action) {
   switch (action.type) {
     case actions.INITIALIZE:
-      let implementation = action.payload
+      let implementation = action.payload || DefaultImageClassifier.name
       return replace(state, STATE_KEY, {
         initialized: true,
         implementation,

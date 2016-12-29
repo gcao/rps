@@ -65,3 +65,21 @@ addHandler(actions.FLAG, (action, {store}) => {
 addHandler(actions.FLAG, (action, {store}) => {
   setTimeout(() => store.dispatch(actions.hideTraining()), HIDE_TRAINING_TIMEOUT)
 })
+
+addHandler(actions.LOAD, (action, {store}) => {
+  let { implementation } = store.getState()[STATE_KEY]
+  let imageClassifier = getImageClassifier()
+  let url = `models/${implementation}.json`
+  fetch(url).then(resp => resp.json(data => imageClassifier.fromJSON(data)))
+})
+
+addHandler(actions.SAVE, (action, {store}) => {
+  let { implementation } = store.getState()[STATE_KEY]
+  let imageClassifier = getImageClassifier()
+  let url = `models/${implementation}.json`
+  fetch(url, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(imageClassifier.toJSON()),
+  })
+})

@@ -16,6 +16,14 @@ export default function ImageClassifierProxy(implementation, options) {
   this.implementation = implementation
   this.model = new implementation(options)
 
+  this.fromJSON = function(json) {
+    this.model.net.fromJSON(json)
+  }
+
+  this.toJSON = function() {
+    return this.model.net.toJSON()
+  }
+
   this.load = function() {
     var stored = window.localStorage.getItem(implementation.name)
     if (stored) {

@@ -7,6 +7,8 @@ export const HIDE_TRAINING    = 'imageClassifier.hideTraining'
 export const CAPTURE          = 'imageClassifier.capture'
 export const FLAG             = 'imageClassifier.flag'
 export const TOGGLE_SAVE_FLAG = 'imageClassifier.toggleSaveFlag'
+export const LOAD             = 'imageClassifier.load'
+export const SAVE             = 'imageClassifier.save'
 
 export let initialize     = createAction(INITIALIZE)
 export let cancel         = createAction(CANCEL)
@@ -15,3 +17,5 @@ export let hideTraining   = createAction(HIDE_TRAINING)
 export let capture        = createAction(CAPTURE)
 export let flag           = createAction(FLAG)
 export let toggleSaveFlag = createAction(TOGGLE_SAVE_FLAG)
+export let load           = createAction(LOAD)
+export let save           = createAction(SAVE)

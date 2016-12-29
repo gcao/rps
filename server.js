@@ -63,7 +63,7 @@ app.get('/data/*', function(req, res) {
   }
 });
 
-app.post('/data/*', function(req, res) {
+app.post('/*', function(req, res) {
   var file = "public/" + req.url;
   fs.writeFile(file, '', function(err) {
     if (err) {
