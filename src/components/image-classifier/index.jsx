@@ -71,7 +71,9 @@ export default class ImageClassifier extends Component {
             }
             <p className="save-training-data-container">
               <label>
-                <input type="checkbox" onClick={() => this.props.dispatch(actions.toggleTrainingFlag())}/>
+                <input type="checkbox"
+                  defaultChecked={this.props.saveFlag}
+                  onChange={() => this.props.dispatch(actions.toggleSaveFlag())} />
                 <span> Auto save training data</span>
               </label>
               <br/>

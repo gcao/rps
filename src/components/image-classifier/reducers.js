@@ -31,8 +31,12 @@ export default function reducers(state, action) {
 
     case actions.FLAG:
     case actions.CAPTURE:
-    case actions.TOGGLE_SAVE_FLAG:
       return update(state, STATE_KEY, action.payload)
+
+    case actions.TOGGLE_SAVE_FLAG:
+      return update(state, STATE_KEY, {
+        saveFlag: !state[STATE_KEY].saveFlag
+      })
 
     default:
       return state

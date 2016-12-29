@@ -1,7 +1,10 @@
+/* global fetch */
+import { translateMove } from '../../rps'
 import { default as _capture } from '../../common/capture'
 import { getImageClassifier, setImageClassifier } from '../../common/image-classifier'
 import { addHandler } from '../../handlers'
 import * as actions from './actions'
+import { STATE_KEY } from './reducers'
 
 const HIDE_TRAINING_TIMEOUT = 1500
 
@@ -25,7 +28,7 @@ addHandler(actions.CAPTURE, (action, {store}) => {
 })
 
 addHandler(actions.FLAG, (action, {store}) => {
-  let image      = store.getState().imageClassifier.image
+  let image      = store.getState()[STATE_KEY].image
   let imageClass = action.payload
 
   getImageClassifier().train(image, imageClass)
@@ -38,6 +41,23 @@ addHandler(actions.FLAG, (action, {store}) => {
     after,
     flagged: true,
   }
+  return action
+})
+
+// Note that the action is changed by previous handlers
+addHandler(actions.FLAG, (action, {store}) => {
+  let saveFlag = store.getState()[STATE_KEY].saveFlag
+  if (saveFlag) {
+    let image = store.getState()[STATE_KEY].image
+    let { imageClass } = action
+    let saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
+    fetch(saveAs, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(image),
+    })
+  }
+
   return action
 })
 
