@@ -4,19 +4,19 @@ import { Button } from 'semantic-ui-react'
 import Result from '../result'
 import Video from '../Video'
 import * as actions from './actions'
-import './reducers'
+import { STATE_KEY } from './reducers'
 import './handlers'
 
-function mapStateToProps({rounds, home, video}) {
-  return {
-    rounds,
-    videoPaused: video && video.paused,
-    ...home
-  }
-}
-
-@connect(mapStateToProps)
+@connect(state => ({
+  ...state[STATE_KEY],
+}))
 export default class Home extends Component {
+  constructor(props) {
+    super(props)
+
+    this.props.dispatch(actions.initialize())
+  }
+
   render() {
     return (
       <div>

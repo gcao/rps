@@ -8,10 +8,14 @@ export const STATE_KEY = 'computerPlayer'
 export default function reducers(state, action) {
   switch (action.type) {
     case INITIALIZE:
-      return replace(state, STATE_KEY, action.payload)
+      let implementation = action.payload
+      return replace(state, STATE_KEY, {
+        rounds: [],
+        implementation,
+      })
 
     case PLAY:
-      let { rounds }  = state
+      let { rounds }  = state[STATE_KEY]
       let player1Move = action.payload.player1Move
       let player2Move = action.payload.player2Move
       let prediction  = action.payload.prediction
@@ -19,9 +23,9 @@ export default function reducers(state, action) {
       rounds.push([player1Move, player2Move])
 
       return update(
-        replace(state, 'rounds', rounds),
+        state,
         STATE_KEY,
-        { prediction },
+        { rounds, prediction },
       )
 
     default:

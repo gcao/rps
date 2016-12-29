@@ -10,11 +10,12 @@ import HomePage from './pages/HomePage'
 import ComputerPlayerPage from './pages/ComputerPlayerPage'
 import ImageClassifierTrainingPage from './pages/ImageClassifierTrainingPage'
 
-const initialState = {
-  rounds: [],
-}
-const store = configureStore(initialState)
-const history = syncHistoryWithStore(hashHistory, store)
+const initialState = {}
+const store        = configureStore(initialState)
+const history      = syncHistoryWithStore(hashHistory, store)
+
+// Added to window for debugging purpose
+window.store = store
 
 render(
   <Provider store={store}>
@@ -26,6 +27,3 @@ render(
   </Provider>,
   document.getElementById('root')
 )
-
-// Added to window for debugging purpose
-window.store = store

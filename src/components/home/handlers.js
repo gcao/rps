@@ -6,6 +6,8 @@ import { getImageClassifier, setImageClassifier } from '../../common/image-class
 import { getComputerPlayer } from '../../common/computer-player'
 import * as actions from './actions'
 
+export const STATE_KEY = 'home'
+
 const ACTION_DETECTION_INTERVAL = 150
 
 let actionDetector
@@ -29,7 +31,8 @@ addHandler(actions.DETECT, (action, {store}) => {
 
     // let the AI predict and play, then train with the real human move, add to game state
     let computerPlayer = getComputerPlayer()
-    let gameState = new GameState(store.getState().rounds)
+    let { rounds } = store.getState()[STATE_KEY]
+    let gameState = new GameState(rounds)
     let prediction = computerPlayer.predict(gameState)
 
     let humanMove = action.imageClass

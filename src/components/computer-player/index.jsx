@@ -7,14 +7,10 @@ import { connect } from 'react-redux'
 import Result from '../result'
 import { ROCK, PAPER, SCISSORS } from '../../rps'
 import * as actions from './actions'
-import './reducers'
+import { STATE_KEY } from './reducers'
 import './handlers'
 
-function mapStateToProps({rounds, computerPlayer}) {
-  return { rounds, ...computerPlayer }
-}
-
-@connect(mapStateToProps)
+@connect(state => ({ ...state[STATE_KEY] }))
 export default class ComputerPlayer extends Component {
   constructor(props) {
     super(props)
