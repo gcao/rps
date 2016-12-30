@@ -24,6 +24,17 @@ export default function reducers(state, action) {
         implementation,
       })
 
+    case actions.RETRAIN:
+      return update(state, STATE_KEY, {
+        retraining: true,
+      })
+
+    case actions.CANCEL_RETRAIN:
+    case actions.END_RETRAIN:
+      return update(state, STATE_KEY, {
+        retraining: false,
+      })
+
     case actions.CANCEL:
       return update(state, STATE_KEY, {
         showTraining: undefined,

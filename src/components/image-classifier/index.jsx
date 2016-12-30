@@ -33,6 +33,15 @@ export default class ImageClassifier extends Component {
     if (!this.props.initialized) {
       this.props.dispatch(actions.initialize(this.props.implementation))
       return <Hidden/>
+    } else if (this.props.retraining) {
+      return (
+        <Container textAlign='center'>
+          <p>Retraining...</p>
+          <p>
+            <Button primary onClick={() => this.props.dispatch(actions.cancelRetrain())}>Cancel</Button>
+          </p>
+        </Container>
+      )
     }
 
     var before = this.props.before

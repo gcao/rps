@@ -8,6 +8,7 @@ import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 
 const HIDE_TRAINING_TIMEOUT = 1500
+const RETRAIN_WAIT          = 500
 
 addHandler(actions.INITIALIZE, action => {
   setImageClassifier(action.payload)
@@ -93,23 +94,31 @@ addHandler(actions.RETRAIN, (action, {store}) => {
   let url = 'data/image-classifier/'
   fetch(url).then(resp => resp.json().then(urls => {
     urls = shuffle(urls)
-    //urls.forEach(url => {
-    Rx.Observable.zip(Rx.Observable.from(urls), Rx.Observable.interval(200)).subscribe(value => {
-      let url = value[0]
-      let imageClass
-      if (url.indexOf('rock') >= 0) {
-        imageClass = ROCK
-      } else if (url.indexOf('paper') >= 0) {
-        imageClass = PAPER
-      } else if (url.indexOf('scissors') >= 0) {
-        imageClass = SCISSORS
-      } else {
-        imageClass = UNKNOWN
+    Rx.Observable.zip(
+      Rx.Observable.from(urls).map(url => Rx.Observable.ajax.getJSON(url)),
+      Rx.Observable.from(urls),
+      Rx.Observable.interval(RETRAIN_WAIT),
+    ).subscribe(
+      ([resp, url]) => {
+        let imageClass
+        if (url.indexOf('rock') >= 0) {
+          imageClass = ROCK
+        } else if (url.indexOf('paper') >= 0) {
+          imageClass = PAPER
+        } else if (url.indexOf('scissors') >= 0) {
+          imageClass = SCISSORS
+        } else {
+          imageClass = UNKNOWN
+        }
+        resp.subscribe(image => {
+          store.dispatch(actions.retrainImage({image, imageClass}))
+        })
+      },
+      null,
+      () => {
+        store.dispatch(actions.endRetrain())
       }
-      fetch(url).then(resp => resp.json().then(image => {
-        store.dispatch(actions.retrainImage({image, imageClass}))
-      }))
-    })
+    )
   }))
 })
 
