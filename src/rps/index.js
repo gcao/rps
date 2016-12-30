@@ -25,26 +25,6 @@ export function getRandomMove() {
   return Math.floor(Math.random()*3)
 }
 
-export function shuffle(array) {
-  var counter = array.length
-
-  // While there are elements in the array
-  while (counter > 0) {
-    // Pick a random index
-    var index = Math.floor(Math.random() * counter)
-
-    // Decrease counter by 1
-    counter--
-
-    // And swap the last element with it
-    var temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
-  }
-
-  return array
-}
-
 export function computeResult(player1Move, player2Move) {
   if (player1Move === player2Move) {
     return 0

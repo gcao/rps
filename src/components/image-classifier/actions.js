@@ -1,6 +1,9 @@
 import { createAction } from 'redux-actions'
 
 export const INITIALIZE       = 'imageClassifier.initialize'
+export const RESET            = 'imageClassifier.reset'
+export const RETRAIN          = 'imageClassifier.retrain'
+export const RETRAIN_IMAGE    = 'imageClassifier.retrainImage'
 export const CANCEL           = 'imageClassifier.cancel'
 export const SHOW_TRAINING    = 'imageClassifier.showTraining'
 export const HIDE_TRAINING    = 'imageClassifier.hideTraining'
@@ -11,6 +14,9 @@ export const LOAD             = 'imageClassifier.load'
 export const SAVE             = 'imageClassifier.save'
 
 export let initialize     = createAction(INITIALIZE)
+export let reset          = createAction(RESET)
+export let retrain        = createAction(RETRAIN)
+export let retrainImage   = createAction(RETRAIN_IMAGE)
 export let cancel         = createAction(CANCEL)
 export let showTraining   = createAction(SHOW_TRAINING)
 export let hideTraining   = createAction(HIDE_TRAINING)

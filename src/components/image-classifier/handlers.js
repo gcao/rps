@@ -1,5 +1,6 @@
 /* global fetch */
-import { translateMove } from '../../rps'
+import Rx from 'rxjs'
+import { ROCK, PAPER, SCISSORS, UNKNOWN, translateMove } from '../../rps'
 import { default as _capture } from '../../common/capture'
 import { getImageClassifier, setImageClassifier } from '../../common/image-classifier'
 import { addHandler } from '../../handlers'
@@ -83,3 +84,69 @@ addHandler(actions.SAVE, (action, {store}) => {
     body: JSON.stringify(imageClassifier.toJSON()),
   })
 })
+
+// Use RxJs
+// TODO show progress
+// TODO show image and training result
+// TODO support cancellation
+addHandler(actions.RETRAIN, (action, {store}) => {
+  let url = 'data/image-classifier/'
+  fetch(url).then(resp => resp.json().then(urls => {
+    urls = shuffle(urls)
+    //urls.forEach(url => {
+    Rx.Observable.zip(Rx.Observable.from(urls), Rx.Observable.interval(200)).subscribe(value => {
+      let url = value[0]
+      let imageClass
+      if (url.indexOf('rock') >= 0) {
+        imageClass = ROCK
+      } else if (url.indexOf('paper') >= 0) {
+        imageClass = PAPER
+      } else if (url.indexOf('scissors') >= 0) {
+        imageClass = SCISSORS
+      } else {
+        imageClass = UNKNOWN
+      }
+      fetch(url).then(resp => resp.json().then(image => {
+        store.dispatch(actions.retrainImage({image, imageClass}))
+      }))
+    })
+  }))
+})
+
+addHandler(actions.RETRAIN_IMAGE, (action, {store}) => {
+  let { image, imageClass } = action.payload
+  let imageClassifier = getImageClassifier()
+  let result          = imageClassifier.predict(image)
+  let before          = result.prediction
+
+  imageClassifier.train(image, imageClass)
+
+  result    = imageClassifier.predict(image)
+  let after = result.prediction
+
+  action.payload = Object.assign({}, action.payload, {
+    before,
+    after,
+  })
+  return action
+})
+
+function shuffle(array) {
+  var counter = array.length
+
+  // While there are elements in the array
+  while (counter > 0) {
+    // Pick a random index
+    var index = Math.floor(Math.random() * counter)
+
+    // Decrease counter by 1
+    counter--
+
+    // And swap the last element with it
+    var temp = array[counter]
+    array[counter] = array[index]
+    array[index] = temp
+  }
+
+  return array
+}
