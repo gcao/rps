@@ -2,7 +2,7 @@ import './index.less'
 
 import key from 'keymaster'
 import React, { Component } from 'react'
-import { Container, Button } from 'semantic-ui-react'
+import { Container, Button, Progress } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Video from '../Video'
 import Hidden from '../Hidden'
@@ -33,13 +33,16 @@ export default class ImageClassifier extends Component {
     if (!this.props.initialized) {
       this.props.dispatch(actions.initialize(this.props.implementation))
       return <Hidden/>
-    } else if (this.props.retraining) {
+    } else if (this.props.retrain) {
       return (
         <Container textAlign='center'>
-          <p>Retraining...</p>
           <p>
-            <Button primary onClick={() => this.props.dispatch(actions.cancelRetrain())}>Cancel</Button>
+            Retraining in progress...
+            &nbsp;&nbsp; <Button primary size='tiny' onClick={() => this.props.dispatch(actions.retrainCancel())}>Cancel</Button>
           </p>
+          <div style={{width: '320px', display: 'inline-block'}}>
+            <Progress percent={this.props.retrainProgress} success />
+          </div>
         </Container>
       )
     }

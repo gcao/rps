@@ -97,9 +97,15 @@ addHandler(actions.RETRAIN, (action, {store}) => {
     Rx.Observable.zip(
       Rx.Observable.from(urls).map(url => Rx.Observable.ajax.getJSON(url)),
       Rx.Observable.from(urls),
-      Rx.Observable.interval(RETRAIN_WAIT),
+      Rx.Observable.range(1, urls.length),
+      Rx.Observable.interval(RETRAIN_WAIT).takeWhile(() => store.getState()[STATE_KEY].retrain),
     ).subscribe(
-      ([resp, url]) => {
+      ([resp, url, progress]) => {
+        // Handle cancellation
+        if (!store.getState()[STATE_KEY].retrain) {
+          return
+        }
+
         let imageClass
         if (url.indexOf('rock') >= 0) {
           imageClass = ROCK
@@ -111,12 +117,18 @@ addHandler(actions.RETRAIN, (action, {store}) => {
           imageClass = UNKNOWN
         }
         resp.subscribe(image => {
+          // Handle cancellation
+          if (!store.getState()[STATE_KEY].retrain) {
+            return
+          }
+
+          store.dispatch(actions.retrainProgress(100 * progress / urls.length))
           store.dispatch(actions.retrainImage({image, imageClass}))
         })
       },
       null,
       () => {
-        store.dispatch(actions.endRetrain())
+        setTimeout(() => store.dispatch(actions.retrainEnd()), 500)
       }
     )
   }))
