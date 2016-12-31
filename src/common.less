@@ -4,6 +4,13 @@ body {
   /*line-height: 1.5;*/
 }
 
+/* http://stackoverflow.com/questions/14455844/is-that-possible-to-make-video-mirrored */
+video {
+  transform: rotateY(180deg);
+  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+  -moz-transform:rotateY(180deg); /* Firefox */
+}
+
 .action-container {
   display: inline-block;
   width: 110px;

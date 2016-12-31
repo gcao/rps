@@ -10,6 +10,7 @@ import drawActivations from './drawActivations'
 
 const HIDE_TRAINING_TIMEOUT = 1500
 const RETRAIN_WAIT          = 500
+const LAYERS_TO_VISUALIZE   = [1, 2, 3, 4, 5, 6]
 
 addHandler(actions.INITIALIZE, action => {
   setImageClassifier(action.payload)
@@ -19,7 +20,7 @@ addHandler(actions.CAPTURE, (action, {store}) => {
   let image  = _capture(document.querySelector('video'), document.querySelector('canvas'))
   let result = getImageClassifier().predict(image)
   let before = result.prediction
-  let layers = [1, 2].map(i => drawActivations(result.debug.layers[i]))
+  let layers = LAYERS_TO_VISUALIZE.map(i => drawActivations(result.debug.layers[i]))
   action.payload = Object.assign({}, action.payload, {
     image,
     before,

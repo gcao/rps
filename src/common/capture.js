@@ -2,7 +2,9 @@ import { WIDTH, HEIGHT } from '.'
 
 export default function capture(video, canvas) {
   let ctx = canvas.getContext('2d')
-  ctx.drawImage(video, 0, 0)
+  // http://stackoverflow.com/a/24260982
+  ctx.scale(-1, 1)
+  ctx.drawImage(video, 0, 0, -1 * WIDTH, HEIGHT)
 
   let imagePixels = ctx.getImageData(0, 0, WIDTH, HEIGHT)
   let image = []
