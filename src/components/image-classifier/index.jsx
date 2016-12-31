@@ -4,6 +4,7 @@ import key from 'keymaster'
 import React, { Component } from 'react'
 import { Container, Button, Progress } from 'semantic-ui-react'
 import { connect } from 'react-redux'
+//import drawActivations from './drawActivations'
 import Video from '../Video'
 import Hidden from '../Hidden'
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
@@ -113,6 +114,16 @@ export default class ImageClassifier extends Component {
                   }
                 </div>
               )
+            }
+            { this.props.layers && this.props.layers.length > 0 &&
+              <div className="model-debug" style={{padding: '15px'}}>
+                { this.props.layers.map((layer, index) =>
+                    <div key={index} style={{padding: '3px'}}>
+                      <img src={ layer }/>
+                    </div>
+                  )
+                }
+              </div>
             }
           </div>
         }

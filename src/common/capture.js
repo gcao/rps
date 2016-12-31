@@ -13,8 +13,11 @@ export default function capture(video, canvas) {
       // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
       var grayScale = (imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3
       image[i].push(grayScale)
+      imagePixels.data[pixelIndex] = imagePixels.data[pixelIndex + 1] = imagePixels.data[pixelIndex + 2] = grayScale
     }
   }
+
+  ctx.putImageData(imagePixels, 0, 0)
 
   return image
 }

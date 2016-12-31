@@ -29,26 +29,29 @@ export default class Video extends Component {
     }
   }
 
-  capture() {
-    let data = null
+  //capture() {
+  //  let data = null
 
-    let ctx = this.canvas.getContext('2d')
-    ctx.drawImage(this.video, 0, 0)
+  //  let ctx = this.canvas.getContext('2d')
+  //  ctx.drawImage(this.video, 0, 0)
 
-    let imagePixels = ctx.getImageData(0, 0, WIDTH, HEIGHT)
-    data = []
-    for (var i=0; i<WIDTH; i++) {
-      data[i] = []
-      for (var j=0; j<HEIGHT; j++) {
-        var pixelIndex = (i * 4) * HEIGHT + j * 4
-        // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
-        var grayScale = (imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3
-        data[i].push(grayScale)
-      }
-    }
+  //  let imagePixels = ctx.getImageData(0, 0, WIDTH, HEIGHT)
+  //  data = []
+  //  for (var i=0; i<WIDTH; i++) {
+  //    data[i] = []
+  //    for (var j=0; j<HEIGHT; j++) {
+  //      var pixelIndex = (i * 4) * HEIGHT + j * 4
+  //      // http://www.ajaxblender.com/howto-convert-image-to-grayscale-using-javascript.html
+  //      var grayScale = (imagePixels.data[pixelIndex] + imagePixels.data[pixelIndex + 1] + imagePixels.data[pixelIndex + 2])/3
+  //      data[i].push(grayScale)
+  //      imagePixels.data[pixelIndex] = imagePixels.data[pixelIndex + 1] = imagePixels.data[pixelIndex + 2] = grayScale
+  //    }
+  //  }
 
-    return data
-  }
+  //  ctx.putImageData(imagePixels, 0, 0)
+
+  //  return data
+  //}
 
   render() {
     return (

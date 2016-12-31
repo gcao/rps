@@ -6,6 +6,7 @@ import { getImageClassifier, setImageClassifier } from '../../common/image-class
 import { addHandler } from '../../handlers'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
+import drawActivations from './drawActivations'
 
 const HIDE_TRAINING_TIMEOUT = 1500
 const RETRAIN_WAIT          = 500
@@ -18,6 +19,7 @@ addHandler(actions.CAPTURE, (action, {store}) => {
   let image  = _capture(document.querySelector('video'), document.querySelector('canvas'))
   let result = getImageClassifier().predict(image)
   let before = result.prediction
+  let layers = [1, 2].map(i => drawActivations(result.debug.layers[i]))
   action.payload = Object.assign({}, action.payload, {
     image,
     before,
@@ -25,6 +27,7 @@ addHandler(actions.CAPTURE, (action, {store}) => {
     captured: true,
     flagged: false,
     showTraining: true,
+    layers,
   })
   return action
 })

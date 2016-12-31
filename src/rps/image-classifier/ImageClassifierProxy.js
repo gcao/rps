@@ -1,4 +1,4 @@
-/*global fetch, convnetjs */
+/*global convnetjs */
 
 function imageToVol(imageData) {
   var sx = imageData.length
@@ -24,37 +24,22 @@ export default function ImageClassifierProxy(implementation, options) {
     return this.model.net.toJSON()
   }
 
-  this.load = function() {
-    var stored = window.localStorage.getItem(implementation.name)
-    if (stored) {
-      this.model.net.fromJSON(JSON.parse(stored))
-      console.log('The image classifier model is loaded successfully.')
-    } else {
-      //console.log('No saved image classifier model for ' + implementation.name + ' is found.')
-      var modelUrl = 'models/' + implementation.name + '.json'
-      fetch(modelUrl).then((data) => {
-        this.model.net.fromJSON(data)
-        console.log('The image classifier model is loaded successfully.')
-      })
-    }
-  }
-
-  this.save = function() {
-    window.localStorage.setItem(implementation.name, JSON.stringify(this.model.net.toJSON()))
-    console.log('The image classifier model is saved successfully.')
-  }
-
   this.predict = function(image) {
     var prediction = this.model.net.forward(imageToVol(image))
     var w = prediction.w
     var imageClass = w.indexOf(Math.max(w[0], w[1], w[2], w[3]))
 
+    let debug = {
+      layers: []
+    }
+    this.model.net.layers.forEach(layer => {
+      debug.layers.push(layer.out_act)
+    })
+
     return {
       imageClass: imageClass,
       prediction: prediction,
-      debug: {
-        // TODO debugging information
-      }
+      debug,
     }
   }
 
