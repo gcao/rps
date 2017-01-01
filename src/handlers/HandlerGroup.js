@@ -1,7 +1,7 @@
 export default class HandlerGroup {
-  constructor(middleware, children) {
+  constructor(middleware) {
     this.middleware = middleware
-    this.children = children || []
+    this.children   = []
   }
 
   add(child) {
@@ -11,7 +11,10 @@ export default class HandlerGroup {
   }
 
   remove(child) {
-    this.children.remove(child)
+    let index = this.children.indexOf(child)
+    if (index >= 0) {
+      this.children.splice(index, 1)
+    }
   }
 
   handle(action, ...args) {

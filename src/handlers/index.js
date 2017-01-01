@@ -17,11 +17,17 @@ export function addHandler(...args) {
       }
     }
     middleware.handlers.add(wrapper)
+    return wrapper
   } else {
     middleware.handlers.add(handler)
+    return handler
   }
 }
 
 export function removeHandler(handler) {
   middleware.handlers.remove(handler)
+}
+
+export function removeHandlers(handlers) {
+  handlers.forEach(handler => removeHandler(handler))
 }

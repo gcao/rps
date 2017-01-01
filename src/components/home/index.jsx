@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
+import { removeHandlers } from '../../handlers'
 import Hidden from '../Hidden'
 import Result from '../result'
 import Video from '../Video'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
-import './handlers'
+import registerHandlers from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class Home extends Component {
+  componentWillMount() {
+    this.handlers = registerHandlers()
+  }
+
+  componentWillUnmount() {
+    removeHandlers(this.handlers)
+  }
+
   render() {
     if (!this.props.initialized) {
       this.props.dispatch(actions.initialize())

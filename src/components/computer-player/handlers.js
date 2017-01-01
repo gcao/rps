@@ -4,30 +4,34 @@ import { getComputerPlayer, setComputerPlayer } from '../../common/computer-play
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 
-addHandler(actions.INITIALIZE, (action) => {
-  setComputerPlayer(action.payload)
-})
+export default function registerHandlers() {
+  let handlers = []
 
-addHandler(actions.PLAY, (action, {store}) => {
-  let computerPlayer = getComputerPlayer()
-  let move           = action.payload
-  let rounds         = store.getState()[STATE_KEY].rounds
-  let gameState      = new GameState(rounds)
-  let before         = computerPlayer.predict(gameState)
-  let computerMove   = before.winningMove
+  handlers.push(addHandler(actions.INITIALIZE, (action) => {
+    setComputerPlayer(action.payload)
+  }))
 
-  computerPlayer.train(gameState, move)
-  let after      = computerPlayer.predict(gameState)
-  let prediction = {
-    before: before,
-    after:  after,
-  }
+  handlers.push(addHandler(actions.PLAY, (action, {store}) => {
+    let computerPlayer = getComputerPlayer()
+    let move           = action.payload
+    let rounds         = store.getState()[STATE_KEY].rounds
+    let gameState      = new GameState(rounds)
+    let before         = computerPlayer.predict(gameState)
+    let computerMove   = before.winningMove
 
-  action.payload = {
-    player1Move: move,
-    player2Move: computerMove,
-    prediction,
-  }
+    computerPlayer.train(gameState, move)
+    let after      = computerPlayer.predict(gameState)
+    let prediction = {
+      before: before,
+      after:  after,
+    }
 
-  return action
-})
+    action.payload = {
+      player1Move: move,
+      player2Move: computerMove,
+      prediction,
+    }
+
+    return action
+  }))
+}
