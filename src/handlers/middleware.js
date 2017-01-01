@@ -12,6 +12,8 @@ const middleware = store => next => {
 
     if (result && result.isAbort) {
       // TODO cleanup or anything else?
+    } else if (result && typeof result.then === 'function') {
+      result.then(action2 => next(action2))
     } else {
       return next(action)
     }

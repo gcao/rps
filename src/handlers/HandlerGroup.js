@@ -18,13 +18,20 @@ export default class HandlerGroup {
   }
 
   handle(action, ...args) {
+    return this.handle_(action, 0, ...args)
+  }
+
+  handle_(action, startIndex, ...args) {
     let result
     let child
 
-    for (var i = 0; i < this.children.length; i++) {
+    for (var i = startIndex; i < this.children.length; i++) {
       child  = this.children[i]
       result = child(action, ...args)
       if (result && result.isAbort) {
+        break
+      } else if (result && typeof result.then === 'function') {
+        result.then(action => this.handle_(action, i + 1, ...args))
         break
       }
     }
