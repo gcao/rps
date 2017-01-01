@@ -13,6 +13,7 @@ import { registerHandlers, deregisterHandlers } from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class ComputerPlayer extends Component {
+
   componentWillMount() {
     registerHandlers()
     this.props.dispatch(actions.initialize(this.props.implementation))

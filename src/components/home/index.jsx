@@ -10,6 +10,7 @@ import { registerHandlers, deregisterHandlers } from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class Home extends Component {
+
   componentWillMount() {
     registerHandlers()
     this.props.dispatch(actions.initialize())

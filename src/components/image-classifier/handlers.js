@@ -24,6 +24,7 @@ export function registerHandlers() {
     let result = getImageClassifier().predict(image)
     let before = result.prediction
     let layers = LAYERS_TO_VISUALIZE.map(i => drawActivations(result.debug.layers[i]))
+
     action.payload = Object.assign({}, action.payload, {
       image,
       before,
@@ -44,11 +45,13 @@ export function registerHandlers() {
 
     let result = getImageClassifier().predict(image)
     let after  = result.prediction
+    let layers = LAYERS_TO_VISUALIZE.map(i => drawActivations(result.debug.layers[i]))
 
     action.payload = {
       imageClass,
       after,
       flagged: true,
+      layers,
     }
     return action
   }))

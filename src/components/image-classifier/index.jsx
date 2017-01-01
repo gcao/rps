@@ -13,6 +13,7 @@ import { registerHandlers, deregisterHandlers } from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class ImageClassifier extends Component {
+
   componentWillMount() {
     registerHandlers()
     this.props.dispatch(actions.initialize(this.props.implementation))
@@ -119,8 +120,11 @@ export default class ImageClassifier extends Component {
             { this.props.layers && this.props.layers.length > 0 &&
               <div className="model-debug" style={{padding: '15px'}}>
                 { this.props.layers.map((layer, index) =>
-                    <div key={index} style={{padding: '3px'}}>
-                      <img src={ layer }/>
+                    <div key={index} style={{padding: '5px'}}>
+                      { layer.map((image, imageIndex) =>
+                          <img key={imageIndex} src={image} style={{ border: '1px solid black' }} style={{padding: '1px'}}/>
+                        )
+                      }
                     </div>
                   )
                 }

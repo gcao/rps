@@ -38,7 +38,6 @@ export default class Video extends Component {
         />
         <canvas width={ WIDTH } height={ HEIGHT }
           style={{ display: this.props.showCaptured ? '' : 'none' }}
-          ref={ (el) => this.canvas = el }
         />
       </span>
     )
