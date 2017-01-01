@@ -1,8 +1,8 @@
 import capture from '../../common/capture'
 import GameState from '../../rps/GameState'
-import { addHandler } from '../../handlers'
+import { addHandler, removeHandlers } from '../../handlers'
 import ActionDetector from '../../rps/ActionDetector'
-import { getImageClassifier, setImageClassifier } from '../../common/image-classifier'
+import { getImageClassifier } from '../../common/image-classifier'
 import { getComputerPlayer } from '../../common/computer-player'
 import * as actions from './actions'
 
@@ -10,16 +10,13 @@ export const STATE_KEY = 'home'
 
 const ACTION_DETECTION_INTERVAL = 150
 
-export default function registerHandlers() {
-  let handlers = []
+let handlers = []
+
+export function registerHandlers() {
   let actionDetector
 
   handlers.push(addHandler(actions.START, (action, {store}) => {
     let imageClassifier = getImageClassifier()
-    if (!imageClassifier) {
-      // Use the default one
-      setImageClassifier()
-    }
     actionDetector = new ActionDetector(imageClassifier)
 
     startTimer(action, store)
@@ -67,4 +64,8 @@ export default function registerHandlers() {
 
     startTimer(action, store)
   }))
+}
+
+export function deregisterHandlers() {
+  removeHandlers(handlers)
 }

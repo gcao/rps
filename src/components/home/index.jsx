@@ -1,27 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
-import { removeHandlers } from '../../handlers'
 import Hidden from '../Hidden'
 import Result from '../result'
 import Video from '../Video'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
-import registerHandlers from './handlers'
+import { registerHandlers, deregisterHandlers } from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class Home extends Component {
   componentWillMount() {
-    this.handlers = registerHandlers()
+    registerHandlers()
+    this.props.dispatch(actions.initialize())
   }
 
   componentWillUnmount() {
-    removeHandlers(this.handlers)
+    deregisterHandlers()
   }
 
   render() {
     if (!this.props.initialized) {
-      this.props.dispatch(actions.initialize())
       return <Hidden/>
     }
 
@@ -30,7 +29,7 @@ export default class Home extends Component {
         { this.props.started
           ? <div>
               <p>
-                <Button primary onClick={() => this.props.dipatch(actions.restart())}>Restart</Button>
+                <Button primary onClick={() => this.props.dispatch(actions.restart())}>Restart</Button>
                 { !this.props.videoPaused &&
                   <Button primary onClick={() => this.props.dispatch(actions.pause())}>Pause</Button>
                 }

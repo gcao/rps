@@ -12,5 +12,9 @@ export function setComputerPlayer(implementation) {
 }
 
 export function getComputerPlayer() {
+  if (!computerPlayer) {
+    debugger
+    setComputerPlayer()
+  }
   return computerPlayer
 }

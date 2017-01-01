@@ -3,7 +3,7 @@ import Rx from 'rxjs'
 import { ROCK, PAPER, SCISSORS, UNKNOWN, translateMove } from '../../rps'
 import { default as _capture } from '../../common/capture'
 import { getImageClassifier, setImageClassifier } from '../../common/image-classifier'
-import { addHandler } from '../../handlers'
+import { addHandler, removeHandlers } from '../../handlers'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 import drawActivations from './drawActivations'
@@ -12,9 +12,9 @@ const HIDE_TRAINING_TIMEOUT = 1500
 const RETRAIN_WAIT          = 500
 const LAYERS_TO_VISUALIZE   = [1, 2, 3, 4, 5, 6]
 
-export default function registerHandlers() {
-  let handlers = []
+let handlers = []
 
+export function registerHandlers() {
   handlers.push(addHandler(actions.INITIALIZE, action => {
     setImageClassifier(action.payload)
   }))
@@ -160,6 +160,10 @@ export default function registerHandlers() {
   }))
 
   return handlers
+}
+
+export function deregisterHandlers() {
+  removeHandlers(handlers)
 }
 
 function shuffle(array) {

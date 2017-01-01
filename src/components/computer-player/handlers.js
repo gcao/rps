@@ -1,12 +1,12 @@
 import GameState from '../../rps/GameState'
-import { addHandler } from '../../handlers'
+import { addHandler, removeHandlers } from '../../handlers'
 import { getComputerPlayer, setComputerPlayer } from '../../common/computer-player'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 
-export default function registerHandlers() {
-  let handlers = []
+let handlers = []
 
+export function registerHandlers() {
   handlers.push(addHandler(actions.INITIALIZE, (action) => {
     setComputerPlayer(action.payload)
   }))
@@ -34,4 +34,8 @@ export default function registerHandlers() {
 
     return action
   }))
+}
+
+export function deregisterHandlers() {
+  removeHandlers(handlers)
 }

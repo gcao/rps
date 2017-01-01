@@ -4,18 +4,18 @@ import key from 'keymaster'
 import React, { Component } from 'react'
 import { Container, Button, Progress } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { removeHandlers } from '../../handlers'
 import Video from '../Video'
 import Hidden from '../Hidden'
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
-import registerHandlers from './handlers'
+import { registerHandlers, deregisterHandlers } from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class ImageClassifier extends Component {
   componentWillMount() {
-    this.handlers = registerHandlers()
+    registerHandlers()
+    this.props.dispatch(actions.initialize(this.props.implementation))
     key('g, h', () => this.props.dispatch(actions.capture()))
     key('f, j', () => this.flag(ROCK))
     key('d, k', () => this.flag(PAPER))
@@ -24,7 +24,7 @@ export default class ImageClassifier extends Component {
   }
 
   componentWillUnmount() {
-    removeHandlers(this.handlers)
+    deregisterHandlers()
     key.unbind('g, h')
     key.unbind('f, j')
     key.unbind('d, k')
@@ -34,7 +34,6 @@ export default class ImageClassifier extends Component {
 
   render() {
     if (!this.props.initialized) {
-      this.props.dispatch(actions.initialize(this.props.implementation))
       return <Hidden/>
     } else if (this.props.retrain) {
       return (

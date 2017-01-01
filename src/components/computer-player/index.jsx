@@ -4,25 +4,25 @@ import key from 'keymaster'
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { removeHandlers } from '../../handlers'
 import Result from '../result'
 import Hidden from '../Hidden'
 import { ROCK, PAPER, SCISSORS } from '../../rps'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
-import registerHandlers from './handlers'
+import { registerHandlers, deregisterHandlers } from './handlers'
 
 @connect(state => ({ ...state[STATE_KEY] }))
 export default class ComputerPlayer extends Component {
   componentWillMount() {
-    this.handlers = registerHandlers()
+    registerHandlers()
+    this.props.dispatch(actions.initialize(this.props.implementation))
     key('f, j', () => this.play(ROCK))
     key('d, k', () => this.play(PAPER))
     key('s, l', () => this.play(SCISSORS))
   }
 
   componentWillUnmount() {
-    removeHandlers(this.handlers)
+    deregisterHandlers()
     key.unbind('f, j')
     key.unbind('d, k')
     key.unbind('s, l')
@@ -30,7 +30,6 @@ export default class ComputerPlayer extends Component {
 
   render() {
     if (!this.props.initialized) {
-      this.props.dispatch(actions.initialize(this.props.implementation))
       return <Hidden/>
     }
 

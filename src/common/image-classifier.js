@@ -13,5 +13,16 @@ export function setImageClassifier(implementation) {
 }
 
 export function getImageClassifier() {
+  if (!imageClassifier) {
+    // TODO find out when this module is reloaded
+    debugger
+    setImageClassifier()
+  }
   return imageClassifier
+}
+
+if (module.hot) {
+  module.hot.dispose(function() {
+    debugger
+  })
 }
