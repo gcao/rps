@@ -1,5 +1,6 @@
 // http://stackoverflow.com/a/26218192
 var fs = require('fs');
+var exec = require('child_process').exec;
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
@@ -37,29 +38,29 @@ app.get('/test', function(req, res) {
   res.end();
 });
 
+app.delete('/data/image-classifier', function(req, res) {
+  console.log('Delete image classifier training data');
+  exec("rm -f public/data/image-classifier/*.json", function (error, stdout, stderr) {
+    //sys.print('stdout: ' + stdout);
+    if (stderr) sys.print('stderr: ' + stderr);
+    if (error) {
+      console.log('Delete image classifier training data error: ' + error);
+      res.write('{"success": false}');
+    } else {
+      res.write('{"success": true}');
+    }
+    res.end();
+  });
+});
+
 app.get('/data/*', function(req, res) {
   if (req.url.match(/data\/image-classifier[\/]?$/)) {
-    if (req.method === 'DELETE') {
-      console.log('Delete image classifier training data');
-      exec("rm -f public/data/image-classifier/*.json", function (error, stdout, stderr) {
-        //sys.print('stdout: ' + stdout);
-        if (stderr) sys.print('stderr: ' + stderr);
-        if (error) {
-          console.log('Delete image classifier training data error: ' + error);
-          res.write('{"success": false}');
-        } else {
-          res.write('{"success": true}');
-        }
-        res.end();
-      });
-    } else {
-      fs.readdir('public/data/image-classifier', function(err, items) {
-        res.write(JSON.stringify(items.map(function(item) {
-          return 'data/image-classifier/' + item;
-        })));
-        res.end();
-      })
-    }
+    fs.readdir('public/data/image-classifier', function(err, items) {
+      res.write(JSON.stringify(items.map(function(item) {
+        return 'data/image-classifier/' + item;
+      })));
+      res.end();
+    })
   }
 });
 

@@ -78,6 +78,10 @@ export function registerHandlers() {
     setTimeout(() => store.dispatch(actions.hideTraining()), HIDE_TRAINING_TIMEOUT)
   }))
 
+  handlers.push(addHandler(actions.CLEAR_TRAINING, (action, {store}) => {
+    fetch('data/image-classifier', {method: 'DELETE'})
+  }))
+
   handlers.push(addHandler(actions.LOAD, (action, {store}) => {
     let { implementation } = store.getState()[STATE_KEY]
     let imageClassifier = getImageClassifier()
