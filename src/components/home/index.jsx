@@ -30,7 +30,6 @@ export default class Home extends Component {
         { this.props.started
           ? <div>
               <p>
-                <Button primary onClick={() => this.props.dispatch(actions.restart())}>Restart</Button>
                 { !this.props.videoPaused &&
                   <Button primary onClick={() => this.props.dispatch(actions.pause())}>Pause</Button>
                 }

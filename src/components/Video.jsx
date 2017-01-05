@@ -15,7 +15,9 @@ export default class Video extends Component {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
 
     navigator.getUserMedia(CONSTRAINTS, (stream) => {
-      this.video.src = window.URL.createObjectURL(stream)
+      if (this.video) {
+        this.video.src = window.URL.createObjectURL(stream)
+      }
     }, function(e) {
       console.log('Access to camera is rejected!', e)
     })

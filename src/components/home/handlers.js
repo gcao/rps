@@ -22,47 +22,50 @@ export function registerHandlers() {
     startTimer(action, store)
   }))
 
-  let startTimer = (action, store) => {
-    let state = store.getState()
-    let started = state.home && state.home.started
-    if (!started) {
-      return
-    }
+  handlers.push(addHandler(actions.RESUME, (action, {store}) => {
+    startTimer(action, store)
+  }))
 
+  let startTimer = (action, store) => {
     setTimeout(() => {
-      let video = document.querySelector('video')
+      let { started, videoPaused } = store.getState()[STATE_KEY]
+      if (!started || videoPaused) {
+        return
+      }
+
+      let video  = document.querySelector('video')
       let canvas = document.querySelector('canvas')
-      let image = capture(video, canvas)
-      store.dispatch(action.detect(image))
+      if (video && canvas) {
+        let image = capture(video, canvas)
+        store.dispatch(actions.detect(image))
+      }
     }, ACTION_DETECTION_INTERVAL)
   }
 
   handlers.push(addHandler(actions.DETECT, (action, {store}) => {
-    let image = store.getState().image
+    let image  = action.payload
     let result = actionDetector.detect(image)
     if (result.detected) {
-      store.dispatch(actions.stop())
-
       // let the AI predict and play, then train with the real human move, add to game state
       let computerPlayer = getComputerPlayer()
-      let { rounds } = store.getState()[STATE_KEY]
-      let gameState = new GameState(rounds)
-      let prediction = computerPlayer.predict(gameState)
+      let { rounds }     = store.getState()[STATE_KEY]
+      let gameState      = new GameState(rounds)
+      let prediction     = computerPlayer.predict(gameState)
 
-      let humanMove = action.imageClass
-      let computerMove = prediction.myMove
+      let humanMove    = result.imageClass
+      let computerMove = prediction.winningMove
 
       computerPlayer.train(gameState, humanMove)
 
-      store.dispatch(
-        actions.play({
-          player1Move: humanMove,
-          player2Move: computerMove,
-        })
-      )
-    }
+      setTimeout(() => store.dispatch(actions.play({
+        player1Move: humanMove,
+        player2Move: computerMove,
+      })), 0)
 
-    startTimer(action, store)
+      setTimeout(() => startTimer(action, store), 1500)
+    } else {
+      startTimer(action, store)
+    }
   }))
 }
 

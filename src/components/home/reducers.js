@@ -38,8 +38,17 @@ export default function reducers(state, {type, payload}) {
         image: payload,
       })
 
-    case actions.DESTROY:
-      return replace(state, STATE_KEY)
+    case actions.PLAY:
+      let { rounds }  = state[STATE_KEY]
+      let { player1Move, player2Move } = payload
+
+      rounds.push([player1Move, player2Move])
+
+      return update(
+        state,
+        STATE_KEY,
+        { rounds },
+      )
 
     default:
       return state
