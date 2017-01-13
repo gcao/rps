@@ -6,6 +6,7 @@ import { Container, Button, Progress } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Video from '../Video'
 import Hidden from '../Hidden'
+import drawActivations from './drawActivations'
 import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
@@ -120,8 +121,9 @@ export default class ImageClassifier extends Component {
             { this.props.layers && this.props.layers.length > 0 &&
               <div className="model-debug" style={{padding: '15px'}}>
                 { this.props.layers.map((layer, index) =>
-                    <div key={index} style={{margin: '5px'}}>
-                      { layer.map((image, imageIndex) =>
+                    <div key={index} style={{margin: '10px 0', padding: '5px 0 10px', background: '#bee'}}>
+                      <div>{ layer.type }</div>
+                      { drawActivations(layer.data).map((image, imageIndex) =>
                           <img key={imageIndex}
                             src={image}
                             style={{ border: '1px solid gray', margin: '1px' }}/>

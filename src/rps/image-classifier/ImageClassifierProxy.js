@@ -12,6 +12,16 @@ function imageToVol(imageData) {
   return vol
 }
 
+const LAYER_TYPES = {
+  conv: 'Convolutional Layer',
+  relu: 'ReLU Layer',
+  pool: 'Pool Layer',
+}
+
+function getDescriptiveLayerType(type) {
+  return LAYER_TYPES[type] || type
+}
+
 export default function ImageClassifierProxy(implementation, options) {
   this.implementation = implementation
   this.model = new implementation(options)
@@ -33,7 +43,10 @@ export default function ImageClassifierProxy(implementation, options) {
       layers: []
     }
     this.model.net.layers.forEach(layer => {
-      debug.layers.push(layer.out_act)
+      debug.layers.push({
+        type: getDescriptiveLayerType(layer.layer_type),
+        data: layer.out_act,
+      })
     })
 
     return {
