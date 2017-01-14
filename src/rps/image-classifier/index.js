@@ -1,7 +1,8 @@
-export ImageClassifierProxy from './ImageClassifierProxy'
+import ImageClassifierProxy from './ImageClassifierProxy'
 import ImageClassifier1 from './ImageClassifier1'
 import ImageClassifier2 from './ImageClassifier2'
 
+export { ImageClassifierProxy }
 export const DefaultImageClassifier = ImageClassifier2
 
 window.DefaultImageClassifier = DefaultImageClassifier

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import Video from '../Video'
 import Hidden from '../Hidden'
 import drawActivations from './drawActivations'
-import { ROCK, PAPER, SCISSORS, UNKNOWN } from '../../rps'
+import Move from '../../rps/Move'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 import { registerHandlers, deregisterHandlers } from './handlers'
@@ -19,10 +19,10 @@ export default class ImageClassifier extends Component {
     registerHandlers()
     this.props.dispatch(actions.initialize(this.props.implementation))
     key('g, h', () => this.props.dispatch(actions.capture()))
-    key('f, j', () => this.flag(ROCK))
-    key('d, k', () => this.flag(PAPER))
-    key('s, l', () => this.flag(SCISSORS))
-    key('a, ;', () => this.flag(UNKNOWN))
+    key('f, j', () => this.flag(Move.ROCK))
+    key('d, k', () => this.flag(Move.PAPER))
+    key('s, l', () => this.flag(Move.SCISSORS))
+    key('a, ;', () => this.flag(Move.UNKNOWN))
   }
 
   componentWillUnmount() {
@@ -97,10 +97,10 @@ export default class ImageClassifier extends Component {
             </p>
             {
               [
-                { name: 'rock',     label: 'Rock (F/J)',     value: ROCK },
-                { name: 'paper',    label: 'Paper (D/K)',    value: PAPER },
-                { name: 'scissors', label: 'Scissors (S/L)', value: SCISSORS },
-                { name: 'unknown',  label: 'Unknown (A/;)',  value: UNKNOWN },
+                { name: 'rock',     label: 'Rock (F/J)',     value: Move.ROCK },
+                { name: 'paper',    label: 'Paper (D/K)',    value: Move.PAPER },
+                { name: 'scissors', label: 'Scissors (S/L)', value: Move.SCISSORS },
+                { name: 'unknown',  label: 'Unknown (A/;)',  value: Move.UNKNOWN },
               ].map((item, index) =>
                 <div key={index} className={`${item.name} class-container`}>
                   { before &&

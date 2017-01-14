@@ -34,5 +34,6 @@ module.exports = {
     'new-cap': 0,
     'key-spacing': 0,
     'no-return-assign': 0,
+    'eol-last': 0,
   }
 }

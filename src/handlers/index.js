@@ -1,8 +1,8 @@
 import GroupHandler from './GroupHandler'
 import middleware from './middleware'
 
-export HandlerGroup from './HandlerGroup'
-export { middleware }
+import HandlerGroup from './HandlerGroup'
+export { middleware, HandlerGroup }
 
 let handleGroupActions = new GroupHandler(middleware.handlers).handle
 middleware.handlers.add(handleGroupActions)

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "allowJs": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
