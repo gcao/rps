@@ -23,7 +23,7 @@ export default class GameState {
     }
   }
 
-  getPlayer1WinningRate(n: number): number {
+  getPlayer1WinningRate(n?: number): number {
     if (this.rounds.length === 0) {
       return 0.5
     }

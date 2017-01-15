@@ -2,10 +2,11 @@ import { addReducer } from '../../reducers'
 import replace from '../../reducers/replace'
 import update from '../../reducers/update'
 import { INITIALIZE, PLAY } from './actions'
+import Round from '../../rps/Round'
 
 export const STATE_KEY = 'computerPlayer'
 
-export default function reducers(state, action) {
+export default function reducers(state: any, action: any) {
   switch (action.type) {
     case INITIALIZE:
       let implementation = action.payload
@@ -16,12 +17,12 @@ export default function reducers(state, action) {
       })
 
     case PLAY:
-      let { rounds }  = state[STATE_KEY]
+      let { rounds } = state[STATE_KEY]
       let player1Move = action.payload.player1Move
       let player2Move = action.payload.player2Move
-      let prediction  = action.payload.prediction
+      let prediction = action.payload.prediction
 
-      rounds.push([player1Move, player2Move])
+      rounds.push(new Round(player1Move, player2Move))
 
       return update(
         state,
