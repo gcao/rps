@@ -1,22 +1,23 @@
-import ComputerPlayer from './ComputerPlayer'
 import Move from '../Move'
 import ConvNetPlayer from './ConvNetPlayer'
+import IComputerPlayer from './IComputerPlayer'
+import IdontcarePlayer from './IdontcarePlayer'
 
-export default class MainPlayer implements ComputerPlayer {
-  workers: Array<ComputerPlayer>
+export default class MainPlayer implements IComputerPlayer {
+  workers: Array<IComputerPlayer>
 
-  constructor(workers?: Array<ComputerPlayer>) {
-    workers = workers || [
-      new ConvNetPlayer()
+  constructor(workers?: Array<IComputerPlayer>) {
+    this.workers = workers || [
+      new ConvNetPlayer(),
+      new IdontcarePlayer()
     ]
-    this.workers = workers
   }
 
   public predict(input: any): any {
     return this.workers[0].predict(input)
   }
 
-  public train(move: Move): any {
-    return this.workers[0].train(move)
+  public train(input: any, move: Move): any {
+    return this.workers[0].train(input, move)
   }
 }

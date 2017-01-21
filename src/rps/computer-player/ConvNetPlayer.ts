@@ -1,16 +1,16 @@
 /*global convnetjs */
 declare let convnetjs: any
 
-import { findWinningMoveAgainst } from '..'
-import ComputerPlayer from './ComputerPlayer'
+import IComputerPlayer from './IComputerPlayer'
 import Move from '../Move'
 import GameState from '../GameState'
 import Round from '../Round'
+import Prediction from './Prediction'
 
 const ROUNDS = 10
 const DEPTH = ROUNDS * 6
 
-export default class ConvNetPlayer implements ComputerPlayer {
+export default class ConvNetPlayer implements IComputerPlayer {
   net: any
   trainer: any
 
@@ -36,38 +36,40 @@ export default class ConvNetPlayer implements ComputerPlayer {
     })
   }
 
-  public predict(input: any): any {
+  predict(input: any): any {
     this.input = input
     let prediction = this.net.forward(convert(input))
-    let w = prediction.w
+    return new Prediction(prediction.w)
 
-    // TODO if I won last round, play random move on next one because
-    // the current model will always play same move!!
-    let isRandom = false
-    //if (state.getWinner(0) === 2) {
-    //  var r1 = Math.random(), r2 = Math.random(), r3 = Math.random()
-    //  var sum = r1 + r2 + r3
-    //  w[0] = r1/sum
-    //  w[1] = r2/sum
-    //  w[2] = r3/sum
-    //  isRandom = true
-    //}
+    // let w = prediction.w
 
-    let move = w.indexOf(Math.max(w[0], w[1], w[2]))
-    let winningMove = findWinningMoveAgainst(move)
+    // // TODO if I won last round, play random move on next one because
+    // // the current model will always play same move!!
+    // let isRandom = false
+    // //if (state.getWinner(0) === 2) {
+    // //  var r1 = Math.random(), r2 = Math.random(), r3 = Math.random()
+    // //  var sum = r1 + r2 + r3
+    // //  w[0] = r1/sum
+    // //  w[1] = r2/sum
+    // //  w[2] = r3/sum
+    // //  isRandom = true
+    // //}
 
-    return {
-      move: move,
-      winningMove: winningMove,
-      prediction: prediction,
-      debug: { // debugging information
-        isRandom: isRandom,
-      }
-    }
+    // let move = w.indexOf(Math.max(w[0], w[1], w[2]))
+    // let winningMove = findWinningMoveAgainst(move)
+
+    // return {
+    //   move: move,
+    //   winningMove: winningMove,
+    //   prediction: prediction,
+    //   debug: { // debugging information
+    //     isRandom: isRandom,
+    //   }
+    // }
   }
 
-  public train(move: Move): any {
-    let result = this.trainer.train(convert(this.input), move)
+  train(input: any, move: Move): any {
+    let result = this.trainer.train(convert(input), move)
     return result
   }
 }

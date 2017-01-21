@@ -2,13 +2,13 @@
 declare let RL: any
 
 import Move from '../Move'
-import ComputerPlayer from './ComputerPlayer'
+import IComputerPlayer from './IComputerPlayer'
 
 const ACTIONS = 3
 const ROUNDS = 6
 const DEPTH = ROUNDS * 6
 
-export default class DqnPlayer implements ComputerPlayer {
+export default class DqnPlayer implements IComputerPlayer {
   agent: any
   myMove: Move
 
@@ -40,7 +40,7 @@ export default class DqnPlayer implements ComputerPlayer {
     }
   }
 
-  train(move: Move) {
+  train(input: any, move: Move) {
     let reward = -0.5
     if (this.myMove === (move + 1) % 3) {
       reward = 1

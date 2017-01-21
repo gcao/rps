@@ -1,13 +1,13 @@
-import ComputerPlayer from '../rps/computer-player/ComputerPlayer'
+import IComputerPlayer from '../rps/computer-player/IComputerPlayer'
 import MainPlayer from '../rps/computer-player/MainPlayer'
 
-let computerPlayer: ComputerPlayer
+let computerPlayer: IComputerPlayer
 
-export function setComputerPlayer() {
+export function setComputerPlayer(implementation?: string) {
   computerPlayer = new MainPlayer()
 }
 
-export function getComputerPlayer(): ComputerPlayer {
+export function getComputerPlayer(): IComputerPlayer {
   if (!computerPlayer) {
     setComputerPlayer()
   }
