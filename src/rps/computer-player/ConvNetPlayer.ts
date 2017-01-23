@@ -3,9 +3,9 @@ declare let convnetjs: any
 
 import IComputerPlayer from './IComputerPlayer'
 import Move from '../Move'
-import GameState from '../GameState'
 import Round from '../Round'
 import Prediction from './Prediction'
+import GameState from '../GameState'
 
 const ROUNDS = 10
 const DEPTH = ROUNDS * 6
@@ -13,8 +13,6 @@ const DEPTH = ROUNDS * 6
 export default class ConvNetPlayer implements IComputerPlayer {
   net: any
   trainer: any
-
-  input: GameState
 
   constructor() {
     let layerDefs: any = []
@@ -36,8 +34,7 @@ export default class ConvNetPlayer implements IComputerPlayer {
     })
   }
 
-  predict(input: any): any {
-    this.input = input
+  predict(input: GameState): Prediction {
     let prediction = this.net.forward(convert(input))
     return new Prediction(prediction.w)
 
@@ -68,13 +65,12 @@ export default class ConvNetPlayer implements IComputerPlayer {
     // }
   }
 
-  train(input: any, move: Move): any {
-    let result = this.trainer.train(convert(input), move)
-    return result
+  train(input: GameState, move: Move) {
+    this.trainer.train(convert(input), move)
   }
 }
 
-function convert(input: any): any {
+function convert(input: GameState): any {
   let rounds: Array<Round> = input.rounds
   let data = new Array(DEPTH).fill(0)
   let reversedRounds = rounds.slice().reverse()

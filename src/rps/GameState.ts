@@ -4,6 +4,10 @@ import Move from './Move'
 export default class GameState {
   rounds: Array<Round>
 
+  get isLosing(): boolean {
+    return this.getPlayer1WinningRate() < 0.5
+  }
+
   constructor(rounds: Array<Round>) {
     this.rounds = rounds
   }

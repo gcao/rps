@@ -3,6 +3,8 @@ declare let RL: any
 
 import Move from '../Move'
 import IComputerPlayer from './IComputerPlayer'
+import GameState from '../GameState'
+import Prediction from './Prediction'
 
 const ACTIONS = 3
 const ROUNDS = 6
@@ -32,12 +34,14 @@ export default class DqnPlayer implements IComputerPlayer {
     this.agent = new RL.DQNAgent(env, spec)
   }
 
-  predict(input: any) {
-    let myMove = this.agent.act(convert(input))
+  predict(input: GameState): Prediction {
+    return null
+    // TODO
+    // let myMove = this.agent.act(convert(input))
 
-    return {
-      myMove: myMove
-    }
+    // return {
+    //   myMove: myMove
+    // }
   }
 
   train(input: any, move: Move) {
@@ -51,17 +55,17 @@ export default class DqnPlayer implements IComputerPlayer {
   }
 }
 
-function convert(input: Array<number>) {
-  let data = new Array(DEPTH).fill(0)
-  let reversedRounds = input.slice().reverse()
+// function convert(input: Array<number>) {
+//   let data = new Array(DEPTH).fill(0)
+//   let reversedRounds = input.slice().reverse()
 
-  for (let i = 0; i < ROUNDS && i < reversedRounds.length; i++) {
-    let round: any = reversedRounds[i]
-    let move1 = round[0]
-    let move2 = round[1]
-    data[round * 6 + move1] = 1
-    data[round * 6 + 3 + move2] = 1
-  }
+//   for (let i = 0; i < ROUNDS && i < reversedRounds.length; i++) {
+//     let round: any = reversedRounds[i]
+//     let move1 = round[0]
+//     let move2 = round[1]
+//     data[round * 6 + move1] = 1
+//     data[round * 6 + 3 + move2] = 1
+//   }
 
-  return data
-}
+//   return data
+// }

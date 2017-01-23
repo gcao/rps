@@ -5,7 +5,7 @@ import IComputerPlayer from './IComputerPlayer'
 /**
  * A player that throws randomly
  */
-export default class IdontcarePlayer implements IComputerPlayer {
+export default class DummyPlayer implements IComputerPlayer {
   public predict(input: any): any {
     let probs = [Math.random(), Math.random(), Math.random()]
     let sum = R.sum(probs)
