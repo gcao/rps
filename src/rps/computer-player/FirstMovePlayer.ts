@@ -10,6 +10,10 @@ export default class FirstMovePlayer implements IComputerPlayer {
   history: Array<Move> = []
 
   predict(input: GameState): Prediction {
+    if (input.rounds.length > 0) {
+      return null
+    }
+
     let probabilities: Array<number>
 
     if (this.history.length === 0) {

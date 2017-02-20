@@ -14,6 +14,17 @@ export default class Prediction {
     return findWinningMoveAgainst(this.myMove)
   }
 
+  get maxProbability(): number {
+    return Math.max(...this.probabilities)
+    // let max = 0
+    // this.probabilities.forEach(probability => {
+    //   if (max < probability) {
+    //     max = probability
+    //   }
+    // })
+    // return max
+  }
+
   constructor(probabilities: Array<number>, debugInfo?: any) {
     this.probabilities = probabilities
     this.debugInfo = debugInfo
