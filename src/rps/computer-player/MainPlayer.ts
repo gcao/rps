@@ -104,6 +104,10 @@ class MainPlayerModelInput {
 
     for (let i = 0; i < MAIN_PLAYER_ROUNDS; i++) {
       let round = this.gameState.getReversedRound(i)
+      if (!round) {
+        break
+      }
+
       data[index + round.player1Move]
       index += 3
       data[index + round.player2Move]

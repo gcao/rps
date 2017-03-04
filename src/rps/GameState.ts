@@ -55,4 +55,8 @@ export default class GameState {
   getPlayer2WinningRate(n: number): number {
     return 1 - this.getPlayer1WinningRate(n)
   }
+
+  getReversedRound(n: number): Round {
+    return this.rounds[this.rounds.length - n - 1]
+  }
 }
