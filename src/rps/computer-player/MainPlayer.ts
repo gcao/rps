@@ -10,7 +10,7 @@ import Prediction from './Prediction'
 import GameState from '../GameState'
 
 const NO_OF_CHILDREN = 2
-const MAIN_PLAYER_ROUNDS = 10
+const MAIN_PLAYER_ROUNDS = 3
 const DEPTH = 1 + NO_OF_CHILDREN * 3 + MAIN_PLAYER_ROUNDS * 7
 
 export default class MainPlayer implements IComputerPlayer {
@@ -55,8 +55,8 @@ class MainPlayerModel {
     // input layer (all volumes are 3D)
     layerDefs.push({ type: 'input', out_sx: 1, out_sy: 1, out_depth: DEPTH })
     // some fully connected layers
-    layerDefs.push({ type: 'fc', num_neurons: 720, activation: 'sigmoid' })
-    //layerDefs.push({type:'fc', num_neurons:100, activation:'relu'})
+    // layerDefs.push({ type: 'fc', num_neurons: DEPTH * 10, activation: 'sigmoid' })
+    layerDefs.push({ type: 'fc', num_neurons: DEPTH * 10, activation: 'relu' })
     // a softmax classifier predicting probabilities for three classes: 0,1,2
     layerDefs.push({ type: 'softmax', num_classes: 3 })
 

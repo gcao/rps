@@ -42,13 +42,11 @@ export default function reducers(state, {type, payload}) {
       let { rounds }  = state[STATE_KEY]
       let { player1Move, player2Move } = payload
 
-      rounds.push([player1Move, player2Move])
+      rounds = rounds.concat([player1Move, player2Move])
 
-      return update(
-        state,
-        STATE_KEY,
-        { rounds },
-      )
+      return update(state, STATE_KEY, {
+        rounds
+      })
 
     default:
       return state

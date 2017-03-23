@@ -21,7 +21,7 @@ export default function reducers(state: any, action: Action) {
       let { rounds } = state[STATE_KEY]
       let { player1Move, player2Move, prediction } = action.payload
 
-      rounds.push(new Round(player1Move, player2Move))
+      rounds = rounds.concat(new Round(player1Move, player2Move))
 
       return update(
         state,

@@ -59,7 +59,7 @@ class ComputerPlayerComponent extends React.Component<any, any> {
                   style={{ width: '120px' }}
                   onClick={() => this.props.dispatch(actions.play(item.move))}
                 >{item.label}</Button>
-                {before && before.prediction &&
+                {after && after.prediction &&
                   <span className='after-training'>
                     {after.prediction.w[index].toFixed(4)}
                     <br />
