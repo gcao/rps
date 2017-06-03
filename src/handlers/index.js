@@ -1,11 +1,7 @@
-import GroupHandler from './GroupHandler'
 import middleware from './middleware'
-
 import HandlerGroup from './HandlerGroup'
-export { middleware, HandlerGroup }
 
-let handleGroupActions = new GroupHandler(middleware.handlers).handle
-middleware.handlers.add(handleGroupActions)
+export { middleware, HandlerGroup }
 
 export function addHandler(...args) {
   let handler = args.pop()
@@ -16,16 +12,16 @@ export function addHandler(...args) {
         return handler(action, ...rest)
       }
     }
-    middleware.handlers.add(wrapper)
+    middleware.rootHandler.add(wrapper)
     return wrapper
   } else {
-    middleware.handlers.add(handler)
+    middleware.rootHandler.add(handler)
     return handler
   }
 }
 
 export function removeHandler(handler) {
-  middleware.handlers.remove(handler)
+  middleware.rootHandler.remove(handler)
 }
 
 export function removeHandlers(handlers) {

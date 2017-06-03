@@ -8,7 +8,7 @@ const middleware = store => next => {
     let options = {
       store
     }
-    let result = middleware.handlers.handle(action, options)
+    let result = middleware.rootHandler.handle(action, options)
 
     if (result && result.isAbort) {
       // TODO cleanup or anything else?
@@ -20,7 +20,7 @@ const middleware = store => next => {
   }
 }
 
-middleware.handlers = new HandlerGroup(middleware)
+middleware.rootHandler = new HandlerGroup(middleware)
 
 export let abort = () => ({isAbort: true})
 
