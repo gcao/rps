@@ -6,7 +6,7 @@ Rock Paper Scissors: You vs The Machine
 ```
 npm install
 npm start
-open http://localhost:3000
+open http://localhost:3300
 ```
 
 ### Notes
