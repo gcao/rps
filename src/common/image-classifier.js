@@ -15,7 +15,7 @@ export function setImageClassifier(implementation) {
 export function getImageClassifier() {
   if (!imageClassifier) {
     // TODO find out when this module is reloaded
-    debugger
+    // debugger
     setImageClassifier()
   }
   return imageClassifier

@@ -23,11 +23,10 @@ export default function reducers(state: any, action: Action) {
 
       rounds = rounds.concat(new Round(player1Move, player2Move))
 
-      return update(
-        state,
-        STATE_KEY,
-        { rounds, prediction },
-      )
+      return update(state, STATE_KEY, {
+        rounds,
+        prediction
+      })
 
     default:
       return state

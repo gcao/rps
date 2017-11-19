@@ -64,7 +64,7 @@ app.get('/data/*', function(req, res) {
   }
 });
 
-app.post('/*', function(req, res) {
+app.post('/*.json', function(req, res) {
   var file = "public/" + req.url;
   fs.writeFile(file, '', function(err) {
     if (err) {
@@ -80,6 +80,32 @@ app.post('/*', function(req, res) {
         res.end();
       });
     }
+  });
+});
+
+app.post('/*.png', function(req, res) {
+  console.log("POST " + req.url + " BEGIN");
+  var file = "public/" + req.url;
+  var chunks = [];
+
+  res.on('data', function(chunk){
+    console.log("POST " + req.url + " DATA");
+    chunks.push(chunk);
+  });
+
+  res.on('end', function(){
+    console.log("POST " + req.url + " END");
+    var buffer = Buffer.concat(chunks);
+    fs.writeFile(file, buffer, function(err){
+      if (err) {
+        console.log(err);
+        res.write('{"success": false}');
+        res.end();
+      } else {
+        res.write('{"success": true}');
+        res.end();
+      }
+    })
   });
 });
 

@@ -14,6 +14,7 @@ export default function reducers(state, action) {
       implementation = action.payload || DefaultImageClassifier.name
       return replace(state, STATE_KEY, {
         initialized: true,
+        showLayers: false,
         implementation,
       })
 
@@ -21,6 +22,7 @@ export default function reducers(state, action) {
       implementation = state[STATE_KEY].implementation
       return replace(state, STATE_KEY, {
         initialized: true,
+        showLayers: false,
         implementation,
       })
 

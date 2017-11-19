@@ -1,4 +1,4 @@
-/* global fetch */
+/* global fetch, FormData */
 import Rx from 'rxjs'
 import { ROCK, PAPER, SCISSORS, UNKNOWN, translateMove } from '../../rps'
 import { default as _capture } from '../../common/capture'
@@ -62,6 +62,14 @@ export function flag2(action, {store}) {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(image),
+    })
+
+    let imageData = document.querySelector('canvas').toDataURL('image/png')
+    let formData = new FormData()
+    formData.append('image', imageData)
+    fetch(saveAs.replace(/json$/, 'png'), {
+      method: 'POST',
+      body: formData,
     })
   }
 

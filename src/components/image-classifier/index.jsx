@@ -19,10 +19,10 @@ export default class ImageClassifier extends Component {
     registerHandlers()
     this.props.dispatch(actions.initialize(this.props.implementation))
     key('g, h', () => this.props.dispatch(actions.capture()))
-    key('f, j', () => this.flag(Move.ROCK))
-    key('d, k', () => this.flag(Move.PAPER))
-    key('s, l', () => this.flag(Move.SCISSORS))
-    key('a, ;', () => this.flag(Move.UNKNOWN))
+    key('f, j', () => this.props.dispatch(actions.flag(Move.ROCK)))
+    key('d, k', () => this.props.dispatch(actions.flag(Move.SCISSORS)))
+    key('s, l', () => this.props.dispatch(actions.flag(Move.PAPER)))
+    key('a, ;', () => this.props.dispatch(actions.flag(Move.UNKNOWN)))
   }
 
   componentWillUnmount() {
@@ -118,7 +118,7 @@ export default class ImageClassifier extends Component {
                 </div>
               )
             }
-            { this.props.layers && this.props.layers.length > 0 &&
+            { this.props.showLayers && this.props.layers && this.props.layers.length > 0 &&
               <div className="model-debug" style={{padding: '15px'}}>
                 { this.props.layers.map((layer, index) =>
                     <div key={index} style={{margin: '10px 0', padding: '5px 0 10px', background: '#bee'}}>

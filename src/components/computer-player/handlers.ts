@@ -20,8 +20,8 @@ export function play(action: Action, { store }: any) {
   computerPlayer.train(gameState, move)
   let after = computerPlayer.predict(gameState)
   let prediction = {
-    before: before,
-    after: after,
+    before,
+    after,
   }
 
   action.payload = {

@@ -11,4 +11,6 @@ tags
 *.swo
 *.bkup
 .idea/
+.chrome/
 public/data/
+public/models/

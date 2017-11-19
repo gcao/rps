@@ -9,6 +9,7 @@ import * as actions from './actions'
 export const STATE_KEY = 'home'
 
 const ACTION_DETECTION_INTERVAL = 150
+const WAIT_AFTER_PLAY_DETECTED  = 1500
 
 let actionDetector
 
@@ -59,7 +60,7 @@ export function detect(action, {store}) {
       player2Move: computerMove,
     })), 0)
 
-    setTimeout(() => startTimer(action, store), 1500)
+    setTimeout(() => startTimer(action, store), WAIT_AFTER_PLAY_DETECTED)
   } else {
     startTimer(action, store)
   }
