@@ -27,3 +27,21 @@ export function removeHandler(handler) {
 export function removeHandlers(handlers) {
   handlers.forEach(handler => removeHandler(handler))
 }
+
+export function prepareHandlers(map) {
+  let handlers = []
+
+  function register() {
+    foreach(map, function(name, handler) {
+      handlers.push(addHandler(name, handler))
+    })
+  }
+
+  function deregister() {
+    removeHandlers(handlers)
+  }
+
+  return {
+    register, deregister
+  }
+}

@@ -1,6 +1,6 @@
 import Action from '../../common/Action'
 import { getComputerPlayer, setComputerPlayer } from '../../common/computer-player'
-import { addHandler, removeHandlers } from '../../handlers'
+import { prepareHandlers } from '../../handlers'
 import GameState from '../../rps/GameState'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
@@ -11,11 +11,11 @@ export function initialize(action: Action) {
 
 export function play(action: Action, { store }: any) {
   let computerPlayer = getComputerPlayer()
-  let move = action.payload
-  let rounds = store.getState()[STATE_KEY].rounds
-  let gameState = new GameState(rounds)
-  let before = computerPlayer.predict(gameState)
-  let computerMove = before.winningMove
+  let move           = action.payload
+  let { rounds }     = store.getState()[STATE_KEY]
+  let gameState      = new GameState(rounds)
+  let before         = computerPlayer.predict(gameState)
+  let computerMove   = before.winningMove
 
   computerPlayer.train(gameState, move)
   let after = computerPlayer.predict(gameState)
@@ -33,13 +33,18 @@ export function play(action: Action, { store }: any) {
   return action
 }
 
-let handlers: Array<any> = []
+export const { register, deregister } = prepareHandlers({
+  [actions.INITIALIZE]: initialize,
+  [actions.PLAY]: play,
+})
 
-export function registerHandlers() {
-  handlers.push(addHandler(actions.INITIALIZE, initialize))
-  handlers.push(addHandler(actions.PLAY, play))
-}
+// let handlers: Array<any> = []
 
-export function deregisterHandlers() {
-  removeHandlers(handlers)
-}
+// export function registerHandlers() {
+//   handlers.push(addHandler(actions.INITIALIZE, initialize))
+//   handlers.push(addHandler(actions.PLAY, play))
+// }
+
+// export function deregisterHandlers() {
+//   removeHandlers(handlers)
+// }

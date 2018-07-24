@@ -10,11 +10,10 @@ export const STATE_KEY = 'computerPlayer'
 export default function reducers(state: any, action: Action) {
   switch (action.type) {
     case INITIALIZE:
-      let implementation = action.payload
       return replace(state, STATE_KEY, {
         initialized: true,
         rounds: [],
-        implementation,
+        implementation: action.payload,
       })
 
     case PLAY:

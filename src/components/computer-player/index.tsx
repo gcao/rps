@@ -11,12 +11,12 @@ import Hidden from '../Hidden'
 import Move from '../../rps/Move'
 import * as actions from './actions'
 import { STATE_KEY } from './reducers'
-import { registerHandlers, deregisterHandlers } from './handlers'
+// import { registerHandlers, deregisterHandlers } from './handlers'
 
 class ComputerPlayerComponent extends React.Component<any, any> {
 
   componentWillMount() {
-    registerHandlers()
+    // registerHandlers()
     this.props.dispatch(actions.initialize())
     key('f, j', () => this.props.dispatch(actions.play(Move.ROCK)))
     key('d, k', () => this.props.dispatch(actions.play(Move.PAPER)))
@@ -24,7 +24,7 @@ class ComputerPlayerComponent extends React.Component<any, any> {
   }
 
   componentWillUnmount() {
-    deregisterHandlers()
+    // deregisterHandlers()
     key.unbind('f, j')
     key.unbind('d, k')
     key.unbind('s, l')
