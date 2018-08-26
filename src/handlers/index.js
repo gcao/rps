@@ -32,9 +32,10 @@ export function prepareHandlers(map) {
   let handlers = []
 
   function register() {
-    foreach(map, function(name, handler) {
+    for (var name in map) {
+      let handler = map[name]
       handlers.push(addHandler(name, handler))
-    })
+    }
   }
 
   function deregister() {

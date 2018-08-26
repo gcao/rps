@@ -1,5 +1,4 @@
 import ReducerGroup from './ReducerGroup'
-import Action  from './common/Action'
 import replace from './replace'
 import update  from './update'
 
@@ -26,7 +25,7 @@ export function removeReducer(reducer) {
 //}
 
 export function addReducerFor(mappings) {
-  defaultReducers.add(function(state: any, action: Action) {
+  defaultReducers.add(function(state, action) {
     for (var key in mappings) {
       var reducer = mappings[key]
       if (action.type === key) {
