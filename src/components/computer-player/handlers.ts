@@ -11,11 +11,11 @@ export function initialize(action: Action) {
 
 export function play(action: Action, { store }: any) {
   let computerPlayer = getComputerPlayer()
-  let move           = action.payload
-  let { rounds }     = store.getState()[STATE_KEY]
-  let gameState      = new GameState(rounds)
-  let before         = computerPlayer.predict(gameState)
-  let computerMove   = before.winningMove
+  let move = action.payload
+  let { rounds } = store.getState()[STATE_KEY]
+  let gameState = new GameState(rounds)
+  let before = computerPlayer.predict(gameState)
+  let computerMove = before.winningMove
 
   computerPlayer.train(gameState, move)
   let after = computerPlayer.predict(gameState)

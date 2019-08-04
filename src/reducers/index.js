@@ -29,7 +29,7 @@ export function addReducerFor(mappings) {
     for (var key in mappings) {
       var reducer = mappings[key]
       if (action.type === key) {
-        return reducer(state, key)
+        return reducer(state, action)
       }
     }
     return state

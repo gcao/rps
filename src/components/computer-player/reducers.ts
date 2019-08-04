@@ -29,6 +29,6 @@ export function play(state: any, action: Action) {
 //addReducerFor(INITIALIZE, initialize)
 
 addReducerFor({
-  [PLAY]:       play,
-  [INITIALIZE]: initializeie,
+  [PLAY]: play,
+  [INITIALIZE]: initialize,
 })
