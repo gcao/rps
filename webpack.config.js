@@ -22,7 +22,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
-    publicPath: 'http://localhost:3100/static/'
+    publicPath: 'http://localhost:3100/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
