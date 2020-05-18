@@ -32,6 +32,8 @@ app.use('/', express.static('./public'))
 
 // proxy the request for static assets
 app.use('/static', proxy(url.parse('http://localhost:3100/static')));
+app.use('/main.js', proxy(url.parse('http://localhost:3100/main.js')));
+app.use('/vendor.js', proxy(url.parse('http://localhost:3100/vendor.js')));
 
 app.get('/test', function(req, res) {
   res.write('This is a test.');
