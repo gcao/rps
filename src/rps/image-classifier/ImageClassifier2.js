@@ -20,6 +20,6 @@ export default function ImageClassifier2(options) {
     method: 'adadelta',
     batch_size: 1,
     l2_decay:0.0007,
-    learning_rate: 0.0005,
+    learning_rate: 0.005,
   })
 }

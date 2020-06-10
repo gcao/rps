@@ -8,6 +8,9 @@ var config = require('./webpack.config');
 var express = require('express');
 var proxy = require('proxy-middleware');
 var url = require('url');
+// var multer = require('multer');
+
+// var multerUpload = multer({dest: 'public/data/image-classifier/'})
 
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
@@ -85,17 +88,18 @@ app.post('/*.json', function(req, res) {
   });
 });
 
+// app.post('/*.png', multerUpload.any(), function(req, res) {
 app.post('/*.png', function(req, res) {
   console.log("POST " + req.url + " BEGIN");
   var file = "public/" + req.url;
   var chunks = [];
 
-  res.on('data', function(chunk){
+  req.on('data', function(chunk){
     console.log("POST " + req.url + " DATA");
     chunks.push(chunk);
   });
 
-  res.on('end', function(){
+  req.on('end', function(){
     console.log("POST " + req.url + " END");
     var buffer = Buffer.concat(chunks);
     fs.writeFile(file, buffer, function(err){

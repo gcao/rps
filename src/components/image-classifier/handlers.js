@@ -57,7 +57,8 @@ export function flag2(action, {store}) {
   if (saveFlag) {
     let image = store.getState()[STATE_KEY].image
     let { imageClass } = action
-    let saveAs = 'data/image-classifier/' + translateMove(imageClass) + (Math.random()*100000).toFixed(0) + '.json'
+    let fileBaseName = translateMove(imageClass) + (Math.random()*100000).toFixed(0)
+    let saveAs = 'data/image-classifier/' + fileBaseName + '.json'
     fetch(saveAs, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -66,10 +67,11 @@ export function flag2(action, {store}) {
 
     let imageData = document.querySelector('canvas').toDataURL('image/png')
     let formData = new FormData()
-    formData.append('image', imageData)
+    formData.append(fileBaseName + '.png', imageData)
     fetch(saveAs.replace(/json$/, 'png'), {
       method: 'POST',
       body: formData,
+      // body: imageData,
     })
   }
 

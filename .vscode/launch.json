@@ -12,6 +12,17 @@
       "sourceMapPathOverrides": {
         "webpack:///./src/*": "${webRoot}/*"
       }
-    }
+    },
+    {
+      "name": "Attach",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "url": "http://localhost:3300",
+      "webRoot": "${workspaceRoot}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    },
   ]
 }
