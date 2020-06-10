@@ -70,7 +70,7 @@
     "@types/react-router-redux": "^4.0.35",
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
-    "jquery": "^3.1.1",
+    "jquery": "^3.5.0",
     "keymaster": "madrobby/keymaster#v1.6.3",
     "multer": "^1.4.2",
     "ramda": "^0.23.0",
