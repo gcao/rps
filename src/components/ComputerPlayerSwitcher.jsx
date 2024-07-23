@@ -1,31 +1,32 @@
 /*global localStorage */
 
 import React, { Component } from 'react'
+import { getComputerPlayer } from '../common/computer-player'
 
 class ComputerPlayerSwitcher extends Component {
   constructor(props) {
     super(props)
-    this.state = { playerType: 'default' }
+    this.state = { opponent: getComputerPlayer().name }
   }
 
   componentDidMount() {
-    const savedPlayerType = localStorage.getItem('playerType')
-    if (savedPlayerType) {
-      this.setState({ playerType: savedPlayerType })
+    const savedOpponent = localStorage.getItem('opponent')
+    if (savedOpponent) {
+      this.setState({ opponent: savedOpponent })
     }
   }
 
-  handlePlayerTypeChange = (event) => {
-    const newPlayerType = event.target.value
-    this.setState({ playerType: newPlayerType })
-    localStorage.setItem('playerType', newPlayerType)
+  handleOpponentChange = (event) => {
+    const newOpponent = event.target.value
+    this.setState({ opponent: newOpponent })
+    localStorage.setItem('opponent', newOpponent)
   }
 
   render() {
     return (
       <div>
         Choose your opponent &nbsp;&nbsp;
-        <select className='ui dropdown' value={this.state.playerType} onChange={this.handlePlayerTypeChange}>
+        <select className='ui dropdown' value={this.state.opponent} onChange={this.handleOpponentChange}>
           <option value="Dqn Player">Dqn Player</option>
           <option value="Dummy Player">Dummy Player</option>
         </select>
