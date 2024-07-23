@@ -1,6 +1,5 @@
 import './common.less'
 
-import * as R from 'ramda'
 import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, hashHistory } from 'react-router'
@@ -17,7 +16,6 @@ const history      = syncHistoryWithStore(hashHistory, store)
 
 // Added to window for debugging purpose
 window.store = store
-window.R = R
 
 render(
   <Provider store={store}>

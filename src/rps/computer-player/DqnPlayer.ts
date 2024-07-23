@@ -35,17 +35,15 @@ export default class DqnPlayer implements IComputerPlayer {
   }
 
   predict(input: GameState): Prediction {
-    return null
-    // TODO
-    // let myMove = this.agent.act(convert(input))
+    let myMove = this.agent.act(convert(input))
+    let predition = new Prediction([0, 0, 0])
+    predition.probabilities[myMove] = 1.0
 
-    // return {
-    //   myMove: myMove
-    // }
+    return predition
   }
 
   train(input: any, move: Move) {
-    let reward = -0.5
+    let reward = -0.5   // Draw
     if (this.myMove === (move + 1) % 3) {
       reward = 1
     } else if (move === (this.myMove + 1) % 3) {
@@ -55,17 +53,17 @@ export default class DqnPlayer implements IComputerPlayer {
   }
 }
 
-// function convert(input: Array<number>) {
-//   let data = new Array(DEPTH).fill(0)
-//   let reversedRounds = input.slice().reverse()
+function convert(input: GameState) {
+  let data = new Array(DEPTH).fill(0)
+  let reversedRounds = input.rounds.slice().reverse()
 
-//   for (let i = 0; i < ROUNDS && i < reversedRounds.length; i++) {
-//     let round: any = reversedRounds[i]
-//     let move1 = round[0]
-//     let move2 = round[1]
-//     data[round * 6 + move1] = 1
-//     data[round * 6 + 3 + move2] = 1
-//   }
+  for (let i = 0; i < ROUNDS && i < reversedRounds.length; i++) {
+    let round: any = reversedRounds[i]
+    let move1 = round[0]
+    let move2 = round[1]
+    data[round * 6 + move1] = 1
+    data[round * 6 + 3 + move2] = 1
+  }
 
-//   return data
-// }
+  return data
+}
