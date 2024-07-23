@@ -6,7 +6,7 @@ import * as actions from './actions'
 import { STATE_KEY } from './reducers'
 
 export function initialize(action: Action) {
-  setComputerPlayer(action.payload)
+  setComputerPlayer()
 }
 
 export function play(action: Action, { store }: any) {

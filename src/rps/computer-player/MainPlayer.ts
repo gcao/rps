@@ -1,120 +1,124 @@
-/*global convnetjs */
-declare let convnetjs: any
+// /*global convnetjs */
+// declare let convnetjs: any
 
-// import * as R from 'ramda'
-import Move from '../Move'
-import ConvNetPlayer from './ConvNetPlayer'
-import IComputerPlayer from './IComputerPlayer'
-import DummyPlayer from './DummyPlayer'
-import Prediction from './Prediction'
-import GameState from '../GameState'
+// // import * as R from 'ramda'
+// import Move from '../Move'
+// import ConvNetPlayer from './ConvNetPlayer'
+// import IComputerPlayer from './IComputerPlayer'
+// import DummyPlayer from './DummyPlayer'
+// import Prediction from './Prediction'
+// import GameState from '../GameState'
 
-const NO_OF_CHILDREN = 2
-const MAIN_PLAYER_ROUNDS = 3
-const DEPTH = 1 + NO_OF_CHILDREN * 3 + MAIN_PLAYER_ROUNDS * 7
+// const NO_OF_CHILDREN = 2
+// const MAIN_PLAYER_ROUNDS = 3
+// const DEPTH = 1 + NO_OF_CHILDREN * 3 + MAIN_PLAYER_ROUNDS * 7
 
-export default class MainPlayer implements IComputerPlayer {
-  model: MainPlayerModel
-  workers: Array<IComputerPlayer>
-  cachedResults: Array<Prediction>
+// export default class MainPlayer implements IComputerPlayer {
+//   model: MainPlayerModel
+//   workers: Array<IComputerPlayer>
+//   cachedResults: Array<Prediction>
 
-  constructor(workers?: Array<IComputerPlayer>) {
-    this.workers = workers || [
-      new ConvNetPlayer(),
-      new DummyPlayer(),
-    ]
-    this.model = new MainPlayerModel(this.workers.length)
-  }
+//   get name(): string {
+//     return 'Meta Player'
+//   }
 
-  public predict(input: any): any {
-    let results = this.workers.map(worker => worker.predict(input))
-    this.cachedResults = results
+//   constructor(workers?: Array<IComputerPlayer>) {
+//     this.workers = workers || [
+//       new ConvNetPlayer(),
+//       new DummyPlayer(),
+//     ]
+//     this.model = new MainPlayerModel(this.workers.length)
+//   }
 
-    let mainModelInput = new MainPlayerModelInput(input as GameState, results)
-    return this.model.predict(mainModelInput)
-  }
+//   public predict(input: any): any {
+//     let results = this.workers.map(worker => worker.predict(input))
+//     this.cachedResults = results
 
-  public train(input: any, move: Move) {
-    this.workers.forEach(worker => worker.train(input, move))
+//     let mainModelInput = new MainPlayerModelInput(input as GameState, results)
+//     return this.model.predict(mainModelInput)
+//   }
 
-    let mainModelInput = new MainPlayerModelInput(input as GameState, this.cachedResults)
-    this.model.train(mainModelInput, move)
-  }
+//   public train(input: any, move: Move) {
+//     this.workers.forEach(worker => worker.train(input, move))
 
-  // findBest(predictions: Array<Prediction>): Prediction {
-  //   return R.sort(prediction => prediction.maxProbability, predictions)[0]
-  // }
-}
+//     let mainModelInput = new MainPlayerModelInput(input as GameState, this.cachedResults)
+//     this.model.train(mainModelInput, move)
+//   }
 
-class MainPlayerModel {
-  net: any
-  trainer: any
+//   // findBest(predictions: Array<Prediction>): Prediction {
+//   //   return R.sort(prediction => prediction.maxProbability, predictions)[0]
+//   // }
+// }
 
-  constructor(noOfChildren: number) {
-    let layerDefs: any = []
-    // input layer (all volumes are 3D)
-    layerDefs.push({ type: 'input', out_sx: 1, out_sy: 1, out_depth: DEPTH })
-    // some fully connected layers
-    // layerDefs.push({ type: 'fc', num_neurons: DEPTH * 10, activation: 'sigmoid' })
-    layerDefs.push({ type: 'fc', num_neurons: DEPTH * 10, activation: 'relu' })
-    // a softmax classifier predicting probabilities for three classes: 0,1,2
-    layerDefs.push({ type: 'softmax', num_classes: 3 })
+// class MainPlayerModel {
+//   net: any
+//   trainer: any
 
-    this.net = new convnetjs.Net()
-    this.net.makeLayers(layerDefs)
-    this.trainer = new convnetjs.Trainer(this.net, {
-      //method: 'adadelta',
-      //batch_size: 1,
-      l2_decay: 0.0005,
-      learning_rate: 0.85,
-    })
-  }
+//   constructor(noOfChildren: number) {
+//     let layerDefs: any = []
+//     // input layer (all volumes are 3D)
+//     layerDefs.push({ type: 'input', out_sx: 1, out_sy: 1, out_depth: DEPTH })
+//     // some fully connected layers
+//     // layerDefs.push({ type: 'fc', num_neurons: DEPTH * 10, activation: 'sigmoid' })
+//     layerDefs.push({ type: 'fc', num_neurons: DEPTH * 10, activation: 'relu' })
+//     // a softmax classifier predicting probabilities for three classes: 0,1,2
+//     layerDefs.push({ type: 'softmax', num_classes: 3 })
 
-  public predict(input: any): any {
-    let prediction = this.net.forward(input.toVol())
-    return new Prediction(prediction.w)
-  }
+//     this.net = new convnetjs.Net()
+//     this.net.makeLayers(layerDefs)
+//     this.trainer = new convnetjs.Trainer(this.net, {
+//       //method: 'adadelta',
+//       //batch_size: 1,
+//       l2_decay: 0.0005,
+//       learning_rate: 0.85,
+//     })
+//   }
 
-  public train(input: any, move: Move) {
-    this.trainer.train(input.toVol(), move)
-  }
-}
+//   public predict(input: any): any {
+//     let prediction = this.net.forward(input.toVol())
+//     return new Prediction(prediction.w)
+//   }
 
-class MainPlayerModelInput {
-  winning: boolean
-  childrenOutput: Array<Prediction>
-  gameState: GameState
+//   public train(input: any, move: Move) {
+//     this.trainer.train(input.toVol(), move)
+//   }
+// }
 
-  constructor(gameState: GameState, childrenOutput: Array<Prediction>) {
-    this.winning = gameState.getPlayer1WinningRate() > 0.5
-    this.childrenOutput = childrenOutput
-    this.gameState = gameState
-  }
+// class MainPlayerModelInput {
+//   winning: boolean
+//   childrenOutput: Array<Prediction>
+//   gameState: GameState
 
-  toVol() {
-    let data = new Array(DEPTH).fill(0)
-    let index = 0
-    data[index++] = this.winning
+//   constructor(gameState: GameState, childrenOutput: Array<Prediction>) {
+//     this.winning = gameState.getPlayer1WinningRate() > 0.5
+//     this.childrenOutput = childrenOutput
+//     this.gameState = gameState
+//   }
 
-    this.childrenOutput.forEach((output, i) => {
-      data[index++] = output.probabilities[0]
-      data[index++] = output.probabilities[1]
-      data[index++] = output.probabilities[2]
-    })
+//   toVol() {
+//     let data = new Array(DEPTH).fill(0)
+//     let index = 0
+//     data[index++] = this.winning
 
-    for (let i = 0; i < MAIN_PLAYER_ROUNDS; i++) {
-      let round = this.gameState.getReversedRound(i)
-      if (!round) {
-        break
-      }
+//     this.childrenOutput.forEach((output, i) => {
+//       data[index++] = output.probabilities[0]
+//       data[index++] = output.probabilities[1]
+//       data[index++] = output.probabilities[2]
+//     })
 
-      data[index + round.player1Move]
-      index += 3
-      data[index + round.player2Move]
-      index += 3
-      data[index++] = round.result
-    }
+//     for (let i = 0; i < MAIN_PLAYER_ROUNDS; i++) {
+//       let round = this.gameState.getReversedRound(i)
+//       if (!round) {
+//         break
+//       }
 
-    return new convnetjs.Vol(data)
-  }
-}
+//       data[index + round.player1Move]
+//       index += 3
+//       data[index + round.player2Move]
+//       index += 3
+//       data[index++] = round.result
+//     }
+
+//     return new convnetjs.Vol(data)
+//   }
+// }

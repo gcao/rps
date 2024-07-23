@@ -14,6 +14,10 @@ export default class DqnPlayer implements IComputerPlayer {
   agent: any
   myMove: Move
 
+  get name(): string {
+    return 'Dqn Player'
+  }
+
   constructor() {
     let env: any = {}
     env.getNumStates = () => DEPTH
@@ -36,10 +40,10 @@ export default class DqnPlayer implements IComputerPlayer {
 
   predict(input: GameState): Prediction {
     let myMove = this.agent.act(convert(input))
-    let predition = new Prediction([0, 0, 0])
-    predition.probabilities[myMove] = 1.0
+    let prediction = new Prediction([0, 0, 0])
+    prediction.probabilities[myMove] = 1.0
 
-    return predition
+    return prediction
   }
 
   train(input: any, move: Move) {

@@ -1,10 +1,10 @@
 import IComputerPlayer from '../rps/computer-player/IComputerPlayer'
-import MainPlayer from '../rps/computer-player/MainPlayer'
+// import MainPlayer from '../rps/computer-player/MainPlayer'
 import DqnPlayer from '../rps/computer-player/DqnPlayer'
 
 let computerPlayer: IComputerPlayer
 
-export function setComputerPlayer(implementation?: string) {
+export function setComputerPlayer() {
   // computerPlayer = new MainPlayer()
   computerPlayer = new DqnPlayer()
 }

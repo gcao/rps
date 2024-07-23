@@ -7,6 +7,10 @@ import Prediction from './Prediction'
  * A player that throws randomly
  */
 export default class DummyPlayer implements IComputerPlayer {
+  get name(): string {
+    return 'Dummy Player'
+  }
+
   public predict(input: any): any {
     let probs = [Math.random(), Math.random(), Math.random()]
     let sum = R.sum(probs)
