@@ -7,11 +7,12 @@ export default class Homepage extends Component {
   render() {
     return (
       <div>
-        <div className="header">
+        <div className="logo-container">
           <img src="/images/rps-logo.png" alt="Logo" className="logo" />
+        </div>
+        <div className="header">
           <h1>Welcome to Rock Paper Scissors: YOU vs THE MACHINE</h1>
         </div>
-        <div>
 
           <p>
             If you haven't, <Link to='/action-trainer'>train the gesture detector</Link> first.
