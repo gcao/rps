@@ -6,6 +6,7 @@ import { Router, Route, hashHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import configureStore from './configureStore'
+import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import ComputerPlayerPage from './pages/ComputerPlayerPage'
 import ImageClassifierTrainingPage from './pages/ImageClassifierTrainingPage'
@@ -19,11 +20,13 @@ window.store = store
 
 render(
   <Provider store={store}>
-    <Router history={history}>
-      <Route path="/" component={HomePage}/>
-      <Route path="/computer-player" component={ComputerPlayerPage}/>
-      <Route path="/action-trainer" component={ImageClassifierTrainingPage}/>
-    </Router>
+    <Layout>
+      <Router history={history}>
+        <Route path="/" component={HomePage}/>
+        <Route path="/computer-player" component={ComputerPlayerPage}/>
+        <Route path="/action-trainer" component={ImageClassifierTrainingPage}/>
+      </Router>
+    </Layout>
   </Provider>,
   document.getElementById('root')
 )
