@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Container, Header } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 import { Link } from 'react-router'
 import ImageClassifier from '../components/image-classifier'
-import Layout from '../components/Layout'
 
 export default class ImageClassifierTrainingPage extends Component {
   render() {

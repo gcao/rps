@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import Home from '../components/home'
 import ComputerPlayerSwitcher from '../components/ComputerPlayerSwitcher'
-import Layout from '../components/Layout'
 
 export default class Homepage extends Component {
   render() {
