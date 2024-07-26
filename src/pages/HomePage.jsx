@@ -7,6 +7,9 @@ export default class Homepage extends Component {
   render() {
     return (
       <div>
+        <img src="/path/to/logo.png" alt="Logo" style={{ width: '100px', height: '100px' }} />
+        <h1>Welcome to Our Application</h1>
+        
         <p>
           If you haven't, <Link to='/action-trainer'>train the gesture detector</Link> first.
         </p>
