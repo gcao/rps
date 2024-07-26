@@ -8,8 +8,6 @@ export default class Homepage extends Component {
   render() {
     return (
       <Layout>
-        <br/>
-        <br/>
         <p>
           If you haven't, <Link to='/action-trainer'>train the gesture detector</Link> first.
         </p>
