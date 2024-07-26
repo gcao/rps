@@ -8,11 +8,15 @@ export default class ImageClassifierTrainingPage extends Component {
   render() {
     return (
       <Layout>
-        <Container textAlign='center'>
-          <Header>Train the machine to recognize your action</Header>
-          <p>When training is complete, click <Link to="/">here</Link> to play!</p>
-          <ImageClassifier/>
-        </Container>
+        <Header>
+          Train the machine to recognize your action
+        </Header>
+
+        <p>
+          When training is complete, click <Link to="/">here</Link> to play!
+        </p>
+
+        <ImageClassifier/>
       </Layout>
     )
   }

@@ -8,14 +8,13 @@ export default class ComputerPlayerPage extends Component {
   render() {
     return (
       <Layout>
-        <Container textAlign='center'>
-          <Header>Come on, let's see who is the best!</Header>
-          <p style={{fontSize: 'small'}}>
-            <Link to='/'>Back</Link>
-          </p>
-          <ComputerPlayer/>
-          <Divider/>
-        </Container>
+        <Header>
+          Play with the machine without camera
+        </Header>
+
+        <ComputerPlayer/>
+
+        <Divider/>
       </Layout>
     )
   }
