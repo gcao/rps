@@ -7,7 +7,7 @@ import Layout from '../components/Layout'
 export default class ComputerPlayerPage extends Component {
   render() {
     return (
-      <Layout>
+      <div>
         <Header>
           Play with the machine without camera
         </Header>
@@ -15,7 +15,7 @@ export default class ComputerPlayerPage extends Component {
         <ComputerPlayer/>
 
         <Divider/>
-      </Layout>
+      </div>
     )
   }
 }

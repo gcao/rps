@@ -7,9 +7,13 @@ import Layout from '../components/Layout'
 export default class Homepage extends Component {
   render() {
     return (
-      <Layout>
+      <div>
         <p>
-          If you haven't, <Link to='/action-trainer'>train the gesture detector</Link> first.
+          If you haven't, &nbsp;&nbsp;
+          <b>
+            <Link to='/action-trainer'>train the gesture detector</Link>
+          </b>
+          &nbsp;&nbsp;first.
         </p>
 
         <p>
@@ -23,7 +27,7 @@ export default class Homepage extends Component {
         <p>
           You can also <Link to='/computer-player'>play with the machine without camera</Link>.
         </p>
-      </Layout>
+      </div>
     )
   }
 }

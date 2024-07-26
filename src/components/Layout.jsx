@@ -9,7 +9,7 @@ const Layout = ({ children }) => (
       </Link>
     </div>
     <div className="header">
-      <h1>Welcome to Rock Paper Scissors: YOU vs THE MACHINE</h1>
+      <h1>Welcome to Rock Paper Scissors: You vs The Machine</h1>
     </div>
     {children}
   </div>
