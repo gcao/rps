@@ -14,6 +14,9 @@ export default class Homepage extends Component {
           <h1>Welcome to Rock Paper Scissors: YOU vs THE MACHINE</h1>
         </div>
 
+        <div>
+          <br/>
+          <br/>
           <p>
             If you haven't, <Link to='/action-trainer'>train the gesture detector</Link> first.
           </p>
