@@ -20,7 +20,7 @@ window.store = store
 
 render(
   <Provider store={store}>
-    <Layout style={{background: '#f0f0f0'}}>
+    <Layout>
       <Router history={history}>
         <Route path="/" component={HomePage}/>
         <Route path="/computer-player" component={ComputerPlayerPage}/>

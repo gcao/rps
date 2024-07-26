@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-const Layout = ({ children }) => (
-  <div>
+const Layout = ({ children, style }) => (
+  <div style={style}>
     <div className="logo-container">
       <Link to="/">
         <img src="/images/rps-logo.png" alt="Logo" className="logo" />
