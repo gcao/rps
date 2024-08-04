@@ -27,7 +27,8 @@ class ComputerPlayerSwitcher extends Component {
       <div>
         Choose your opponent &nbsp;&nbsp;
         <select className='ui dropdown' value={this.state.opponent} onChange={this.handleOpponentChange}>
-          <option value="Dqn Player">Dqn Player</option>
+          <option value="DQN Player">DQN Player</option>
+          <option value="CNN Player">CNN Player</option>
           <option value="Dummy Player">Dummy Player</option>
         </select>
       </div>

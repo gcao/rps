@@ -3,12 +3,14 @@ import Move from '../Move'
 import IComputerPlayer from './IComputerPlayer'
 import Prediction from './Prediction'
 
+export const PLAYER_NAME = 'Dummy Player'
+
 /**
  * A player that throws randomly
  */
 export default class DummyPlayer implements IComputerPlayer {
   get name(): string {
-    return 'Dummy Player'
+    return PLAYER_NAME
   }
 
   public predict(input: any): any {

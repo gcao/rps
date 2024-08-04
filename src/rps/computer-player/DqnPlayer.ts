@@ -6,8 +6,10 @@ import IComputerPlayer from './IComputerPlayer'
 import GameState from '../GameState'
 import Prediction from './Prediction'
 
+export const PLAYER_NAME = 'DQN Player'
+
 const ACTIONS = 3
-const ROUNDS = 6
+const ROUNDS = 5
 const DEPTH = ROUNDS * 6
 
 export default class DqnPlayer implements IComputerPlayer {
@@ -15,7 +17,7 @@ export default class DqnPlayer implements IComputerPlayer {
   myMove: Move
 
   get name(): string {
-    return 'Dqn Player'
+    return PLAYER_NAME
   }
 
   constructor() {
@@ -24,15 +26,15 @@ export default class DqnPlayer implements IComputerPlayer {
     env.getMaxNumActions = () => ACTIONS
 
     let spec = {
-      update: 'qlearn',  // qlearn | sarsa
-      gamma: 0.0,      // discount factor, [0, 1)
-      epsilon: 0.15,      // initial epsilon for epsilon-greedy policy, [0, 1)
-      alpha: 0.35,      // value function learning rate
-      experience_add_every: 1,        // number of time steps before we add another experience to replay memory
-      experience_size: 1000,     // size of experience replay memory
+      update: 'qlearn',                // qlearn | sarsa
+      gamma: 0.0,                      // discount factor, [0, 1)
+      epsilon: 0.15,                   // initial epsilon for epsilon-greedy policy, [0, 1)
+      alpha: 0.35,                     // value function learning rate
+      experience_add_every: 1,         // number of time steps before we add another experience to replay memory
+      experience_size: 1000,           // size of experience replay memory
       learning_steps_per_iteration: 1,
-      tderror_clamp: 1.0,      // for robustness
-      num_hidden_units: 120,      // number of neurons in hidden layer
+      tderror_clamp: 1.0,              // for robustness
+      num_hidden_units: 120,           // number of neurons in hidden layer
     }
 
     this.agent = new RL.DQNAgent(env, spec)
